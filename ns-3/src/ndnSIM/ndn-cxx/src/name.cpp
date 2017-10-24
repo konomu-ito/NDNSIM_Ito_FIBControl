@@ -157,6 +157,48 @@ Name::wireEncode() const
   return m_nameBlock;
 }
 
+/**********Function NAME Encode******************/
+template<encoding::Tag TAG>
+size_t
+Name::wireEncodeFunc(EncodingImpl<TAG>& encoder) const
+{
+  size_t totalLength = 0;
+
+  for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
+    {
+      totalLength += i->wireEncode(encoder);
+    }
+
+  totalLength += encoder.prependVarNumber(totalLength);
+  totalLength += encoder.prependVarNumber(tlv::FunctionName);
+  return totalLength;
+}
+
+template size_t
+Name::wireEncodeFunc<encoding::EncoderTag>(EncodingImpl<encoding::EncoderTag>& encoder) const;
+
+template size_t
+Name::wireEncodeFunc<encoding::EstimatorTag>(EncodingImpl<encoding::EstimatorTag>& encoder) const;
+
+const Block&
+Name::wireEncodeFunc() const
+{
+  if (m_nameBlock.hasWire())
+    return m_nameBlock;
+
+  EncodingEstimator estimator;
+  size_t estimatedSize = wireEncode(estimator);
+
+  EncodingBuffer buffer(estimatedSize, 0);
+  wireEncode(buffer);
+
+  m_nameBlock = buffer.block();
+  m_nameBlock.parse();
+
+  return m_nameBlock;
+}
+/*************************************************/
+
 void
 Name::wireDecode(const Block& wire)
 {
@@ -174,6 +216,18 @@ Name::toUri() const
   os << *this;
   return os.str();
 }
+
+/****************Function NAME Decode********************/
+void
+Name::wireDecodeFunc(const Block& wire)
+{
+  if (wire.type() != tlv::FunctionName)
+    BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
+
+  m_nameBlock = wire;
+  m_nameBlock.parse();
+}
+/******************************************************/
 
 Name&
 Name::append(const PartialName& name)
