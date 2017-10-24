@@ -87,7 +87,6 @@ enum {
   LinkPreference = 30,
   LinkDelegation = 31,
   SelectedDelegation = 32,
-  FunctionName = 33.
 
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767
