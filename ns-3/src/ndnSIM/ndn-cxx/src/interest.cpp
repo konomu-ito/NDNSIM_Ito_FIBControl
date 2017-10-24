@@ -228,6 +228,9 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
 
   // (reverse encoding)
 
+  //FunctionName
+  totalLength += getFunction().wireEncode(encoder);
+
   if (hasLink()) {
     if (hasSelectedDelegation()) {
       totalLength += prependNonNegativeIntegerBlock(encoder,
@@ -358,6 +361,10 @@ Interest::wireDecode(const Block& wire)
   else {
     m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
   }
+
+  //FunctionName
+  m_functionName.wireDecode(m_wire.get(tlv::FunctionName));
+  
 }
 
 bool
