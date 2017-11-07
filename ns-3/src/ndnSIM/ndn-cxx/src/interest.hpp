@@ -231,12 +231,13 @@ public: // Name and guiders
     return m_functionName;
   }
 
-  Interest&
-  setFunction(const Name& functionName)
+  void
+  setFunction (Name& functionName)
+  const
   {
     m_functionName = functionName;
     m_wire.reset();
-    return *this;
+    //return *this;
   }
 
   const time::milliseconds&
@@ -409,7 +410,7 @@ public: // EqualityComparable concept
 
 private:
   Name m_name;
-  Name m_functionName;
+  mutable Name m_functionName;
   Selectors m_selectors;
   mutable Block m_nonce;
   time::milliseconds m_interestLifetime;

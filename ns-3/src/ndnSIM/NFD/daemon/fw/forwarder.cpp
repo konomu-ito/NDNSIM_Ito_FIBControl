@@ -214,7 +214,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 
   // set PIT unsatisfy timer
   this->setUnsatisfyTimer(pitEntry);
-  
+
   // has NextHopFaceId?
   shared_ptr<lp::NextHopFaceIdTag> nextHopTag = interest.getTag<lp::NextHopFaceIdTag>();
   if (nextHopTag != nullptr) {
@@ -245,7 +245,7 @@ Forwarder::onContentStoreHit(const Face& inFace, const shared_ptr<pit::Entry>& p
     [&] (fw::Strategy& strategy) { strategy.beforeSatisfyInterest(pitEntry, *m_csFace, data); });
 
   data.setTag(make_shared<lp::IncomingFaceIdTag>(face::FACEID_CONTENT_STORE));
-  // XXX should we lookup PIT for other Interests that also match csMatch?
+  //should we lookup PIT for other Interests that also match csMatch?
 
   // set PIT straggler timer
   this->setStragglerTimer(pitEntry, true, data.getFreshnessPeriod());
