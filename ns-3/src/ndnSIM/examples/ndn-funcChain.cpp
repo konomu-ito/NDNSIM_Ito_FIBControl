@@ -75,7 +75,7 @@ main(int argc, char* argv[])
   ndnHelper.InstallAll();
 
   // Choosing forwarding strategy
-  ndn::StrategyChoiceHelper::InstallAll("/prefix", "/localhost/nfd/strategy/multicast");
+  ndn::StrategyChoiceHelper::InstallAll("/prefix", "/localhost/nfd/strategy/unicast");
 
   ndn::FibHelper::AddRoute(nodes.Get(1), "/func1", nodes.Get(2), 0);
 

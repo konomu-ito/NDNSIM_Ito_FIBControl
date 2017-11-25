@@ -38,7 +38,9 @@
 #include "table/strategy-choice.hpp"
 #include "table/dead-nonce-list.hpp"
 #include "table/network-region-table.hpp"
-
+#include "ns3/node.h"
+#include "ns3/ptr.h"
+#include "ns3/ndnSIM/model/ndn-l3-protocol.hpp"
 #include "ns3/ndnSIM/model/cs/ndn-content-store.hpp"
 
 namespace nfd {
@@ -58,6 +60,17 @@ public:
 
   VIRTUAL_WITH_TESTS
   ~Forwarder();
+
+  void
+  setNode(ns3::Ptr<ns3::Node> node) {
+    m_node = node;
+  }
+
+  ns3::Ptr<ns3::Node>
+  getNode()
+  {
+    return m_node;
+  }
 
   const ForwarderCounters&
   getCounters() const
@@ -298,6 +311,8 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
 
 private:
   ForwarderCounters m_counters;
+
+  ns3::Ptr<ns3::Node> m_node;
 
   FaceTable m_faceTable;
   unique_ptr<fw::UnsolicitedDataPolicy> m_unsolicitedDataPolicy;

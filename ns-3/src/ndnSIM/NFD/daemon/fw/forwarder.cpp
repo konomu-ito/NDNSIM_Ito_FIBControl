@@ -212,9 +212,39 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
   // insert in-record
   pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), interest);
 
+ //ADDED Print Interest functionName
+ //std::cout << "Name: " << interest.getName() << std::endl;
+ /*
+ if(interest.getName().toUri().find("localhost") == std::string::npos){
+   interest.removeHeadFunction(interest);
+   std::cout << "Function Name:" << interest.getFunction() << std::endl;
+ }
+ */
+
   // set PIT unsatisfy timer
   this->setUnsatisfyTimer(pitEntry);
 
+//ADDED Find Fib Entry for Function Chaining
+ //std::cout<<"Node "<<getNode()->GetId()<<std::endl;
+ //std::cout<<"NONCE: "<<interest.getNonce()<<std::endl;
+ Name functionName = interest.getFunction();
+ fib::Entry* fibEntry;
+ Face* nextHopFaceFunction;
+ if(functionName.toUri() != "/"){ //When Function Field is not Empty
+   fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+   if(fibEntry != nullptr){ //When there is matching FIB route
+     //std::cout<<"LPM FIB Route: "<<fibEntry->getPrefix()<<std::endl;
+     for(auto it : fibEntry->getNextHops()){
+       nextHopFaceFunction = &it.getFace();
+       //std::cout<< "Passed: "<<interest.getNonce()<<std::endl;
+       interest.removeHeadFunction(interest);
+       //Go to OutGoingInterest Pipeline
+       this->onOutgoingInterest(pitEntry, *nextHopFaceFunction, interest);
+     }
+     return;
+
+   }
+ }
   // has NextHopFaceId?
   shared_ptr<lp::NextHopFaceIdTag> nextHopTag = interest.getTag<lp::NextHopFaceIdTag>();
   if (nextHopTag != nullptr) {

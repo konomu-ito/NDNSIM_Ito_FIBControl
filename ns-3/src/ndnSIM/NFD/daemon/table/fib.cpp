@@ -82,6 +82,20 @@ Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
   return this->findLongestPrefixMatchImpl(pitEntry);
 }
 
+//ADDED Longest Prefix Match for Function Chaining
+fib::Entry*
+Fib::findLongestPrefixMatchFunction(const Name& prefix) const
+{
+  nfd::name_tree::Entry* nameTreeEntry = m_nameTree.findLongestPrefixMatch(prefix);
+  if (static_cast<bool>(nameTreeEntry)) {
+    fib::Entry* fibEntry = nameTreeEntry->getFibEntry();
+    if(fibEntry->getPrefix().toUri()!="/"){
+      return fibEntry;
+    }
+  }
+  return nullptr;
+}
+
 const Entry&
 Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const
 {

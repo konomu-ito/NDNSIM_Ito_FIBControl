@@ -22,6 +22,7 @@
 #ifndef NDN_INTEREST_HPP
 #define NDN_INTEREST_HPP
 
+#include <string>
 #include "name.hpp"
 #include "selectors.hpp"
 #include "util/time.hpp"
@@ -232,12 +233,30 @@ public: // Name and guiders
   }
 
   void
-  setFunction (Name& functionName)
+  setFunction(const Name& functionName)
   const
   {
     m_functionName = functionName;
     m_wire.reset();
     //return *this;
+  }
+
+  void
+  removeHeadFunction(const Interest& interest)
+  const
+  {
+    std::string funcStr = interest.getFunction().toUri();
+    int pos = funcStr.find("/", 1);
+    if(pos == -1 && funcStr.size() > 1){
+      funcStr.erase(1, funcStr.size()-1);
+      Name newFunc(funcStr);
+      interest.setFunction(newFunc);
+    }
+    else if(pos != -1){
+      funcStr.erase(1, pos);
+      Name newFunc(funcStr);
+      interest.setFunction(newFunc);
+    }
   }
 
   const time::milliseconds&

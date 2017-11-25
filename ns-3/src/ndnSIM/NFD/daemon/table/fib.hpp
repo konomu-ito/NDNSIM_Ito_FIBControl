@@ -62,6 +62,9 @@ public: // lookup
   const Entry&
   findLongestPrefixMatch(const Name& prefix) const;
 
+  fib::Entry*
+  findLongestPrefixMatchFunction(const Name& prefix) const;
+
   /** \brief performs a longest prefix match
    *
    *  This is equivalent to .findLongestPrefixMatch(pitEntry.getName())
