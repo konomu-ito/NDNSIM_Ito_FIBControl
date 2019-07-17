@@ -88,6 +88,9 @@ enum {
   LinkDelegation = 31,
   SelectedDelegation = 32,
   FunctionName = 33,
+  FunctionFlag = 34,
+  ServiceTime = 35,
+  FunctionTime = 36,
 
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767

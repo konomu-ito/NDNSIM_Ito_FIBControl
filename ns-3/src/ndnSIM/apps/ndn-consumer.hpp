@@ -47,6 +47,7 @@ namespace ndn {
  * \brief NDN application for sending out Interest packets
  */
 class Consumer : public App {
+
 public:
   static TypeId
   GetTypeId();

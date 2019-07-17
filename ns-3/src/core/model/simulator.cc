@@ -64,6 +64,7 @@ static GlobalValue g_simTypeImpl = GlobalValue
    StringValue ("ns3::DefaultSimulatorImpl"),
    MakeStringChecker ());
 
+
 /**
  * \ingroup scheduler
  * The specific event scheduler implementation to use.
@@ -393,6 +394,541 @@ Simulator::GetImplementation (void)
   return GetImpl ();
 }
 
+int functionCallCount1 = 0;
+int functionCallCount2 = 0;
+int functionCallCount3 = 0;
+int functionCallCount4 = 0;
+int functionCallCount5 = 0;
+int functionCallCount6 = 0;
+int functionCallCount7 = 0;
+int functionCallCount8 = 0;
+int functionCallCount9 = 0;
+int functionCallCount10 = 0;
+int functionCallCount11 = 0;
+int functionCallCount12 = 0;
+int functionCallCount13 = 0;
+int functionCallCount14 = 0;
+int functionCallCount15 = 0;
+
+int totalFcc1 = 0;
+int totalFcc2 = 0;
+int totalFcc3 = 0;
+int totalFcc4 = 0;
+int totalFcc5 = 0;
+int totalFcc6 = 0;
+int totalFcc7 = 0;
+int totalFcc8 = 0;
+int totalFcc9 = 0;
+int totalFcc10 = 0;
+int totalFcc11 = 0;
+int totalFcc12 = 0;
+int totalFcc13 = 0;
+int totalFcc14 = 0;
+int totalFcc15 = 0;
+
+int totalFcc1temp = 0;
+int totalFcc2temp = 0;
+int totalFcc3temp = 0;
+int totalFcc4temp = 0;
+int totalFcc5temp = 0;
+int totalFcc6temp = 0;
+int totalFcc7temp = 0;
+int totalFcc8temp = 0;
+int totalFcc9temp = 0;
+int totalFcc10temp = 0;
+int totalFcc11temp = 0;
+int totalFcc12temp = 0;
+int totalFcc13temp = 0;
+int totalFcc14temp = 0;
+int totalFcc15temp = 0;
+
+int currentFcc1 = 0;
+int currentFcc2 = 0;
+int currentFcc3 = 0;
+int currentFcc4 = 0;
+int currentFcc5 = 0;
+int currentFcc6 = 0;
+int currentFcc7 = 0;
+int currentFcc8 = 0;
+int currentFcc9 = 0;
+int currentFcc10 = 0;
+int currentFcc11 = 0;
+int currentFcc12 = 0;
+int currentFcc13 = 0;
+int currentFcc14 = 0;
+int currentFcc15 = 0;
+
+
+int allFcc = 0;
+
+int totalHops = 0;
+
+int interestNum = 0;
+int dataNum = 0;
+int serviceNum = 0;
+
+int totalServiceTime = 0;
+
+
+int getFunctionCallCount(int i){
+  switch(i) {
+    case 1:
+      return functionCallCount1;
+      break;
+    case 2:
+      return functionCallCount2;
+      break;
+    case 3:
+      return functionCallCount3;
+      break;
+    case 4:
+      return functionCallCount4;
+      break;
+    case 5:
+      return functionCallCount5;
+      break;
+    case 6:
+      return functionCallCount6;
+      break;
+    case 7:
+      return functionCallCount7;
+      break;
+    case 8:
+      return functionCallCount8;
+      break;
+    case 9:
+      return functionCallCount9;
+      break;
+    case 10:
+      return functionCallCount10;
+      break;
+    case 11:
+      return functionCallCount11;
+      break;
+    case 12:
+      return functionCallCount12;
+      break;
+    case 13:
+      return functionCallCount13;
+      break;
+    case 14:
+      return functionCallCount14;
+      break;
+    case 15:
+      return functionCallCount15;
+      break;
+    default:
+      break;
+  }
+}
+
+
+void increaseFunctionCallCount(int i){
+  switch(i) {
+    case 1:
+      currentFcc1++;
+      break;
+    case 2:
+      currentFcc2++;
+      break;
+    case 3:
+      currentFcc3++;
+      break;
+    case 4:
+      currentFcc4++;
+      break;
+    case 5:
+      currentFcc5++;
+      break;
+    case 6:
+      currentFcc6++;
+      break;
+    case 7:
+      currentFcc7++;
+      break;
+    case 8:
+      currentFcc8++;
+      break;
+    case 9:
+      currentFcc9++;
+      break;
+    case 10:
+      currentFcc10++;
+      break;
+    case 11:
+      currentFcc11++;
+      break;
+    case 12:
+      currentFcc12++;
+      break;
+    case 13:
+      currentFcc13++;
+      break;
+    case 14:
+      currentFcc14++;
+      break;
+    case 15:
+      currentFcc15++;
+      break;
+    default:
+      break;
+  }
+}
+
+
+void decreaseFunctionCallCount(int i){
+  switch(i) {
+    case 1:
+      currentFcc1--;
+      break;
+    case 2:
+      currentFcc2--;
+      break;
+    case 3:
+      currentFcc3--;
+      break;
+    case 4:
+      currentFcc4--;
+      break;
+    case 5:
+      currentFcc5--;
+      break;
+    case 6:
+      currentFcc6--;
+      break;
+    case 7:
+      currentFcc7--;
+      break;
+    case 8:
+      currentFcc8--;
+      break;
+    case 9:
+      currentFcc9--;
+      break;
+    case 10:
+      currentFcc10--;
+      break;
+    case 11:
+      currentFcc11--;
+      break;
+    case 12:
+      currentFcc12--;
+      break;
+    case 13:
+      currentFcc13--;
+      break;
+    case 14:
+      currentFcc14--;
+      break;
+    case 15:
+      currentFcc15--;
+      break;
+    default:
+      break;
+  }
+}
+
+int getCurrentFcc(int i){
+  switch(i) {
+    case 1:
+      return currentFcc1;
+      break;
+    case 2:
+      return currentFcc2;
+      break;
+    case 3:
+      return currentFcc3;
+      break;
+    case 4:
+      return currentFcc4;
+      break;
+    case 5:
+      return currentFcc5;
+      break;
+    case 6:
+      return currentFcc6;
+      break;
+    case 7:
+      return currentFcc7;
+      break;
+    case 8:
+      return currentFcc8;
+      break;
+    case 9:
+      return currentFcc9;
+      break;
+    case 10:
+      return currentFcc10;
+      break;
+    case 11:
+      return currentFcc11;
+      break;
+    case 12:
+      return currentFcc12;
+      break;
+    case 13:
+      return currentFcc13;
+      break;
+    case 14:
+      return currentFcc14;
+      break;
+    case 15:
+      return currentFcc15;
+      break;
+    default:
+      break;
+  }
+}
+
+
+int getTotalFcc(int i){
+  switch(i) {
+    case 1:
+      return totalFcc1;
+      break;
+    case 2:
+      return totalFcc2;
+      break;
+    case 3:
+      return totalFcc3;
+      break;
+    case 4:
+      return totalFcc4;
+      break;
+    case 5:
+      return totalFcc5;
+      break;
+    case 6:
+      return totalFcc6;
+      break;
+    case 7:
+      return totalFcc7;
+      break;
+    case 8:
+      return totalFcc8;
+      break;
+    case 9:
+      return totalFcc9;
+      break;
+    case 10:
+      return totalFcc10;
+      break;
+    case 11:
+      return totalFcc11;
+      break;
+    case 12:
+      return totalFcc12;
+      break;
+    case 13:
+      return totalFcc13;
+      break;
+    case 14:
+      return totalFcc14;
+      break;
+    case 15:
+      return totalFcc15;
+      break;
+    default:
+      break;
+  }
+}
+
+int getTotalFccTemp(int i){
+  switch(i) {
+    case 1:
+      return totalFcc1temp;
+      break;
+    case 2:
+      return totalFcc2temp;
+      break;
+    case 3:
+      return totalFcc3temp;
+      break;
+    case 4:
+      return totalFcc4temp;
+      break;
+    case 5:
+      return totalFcc5temp;
+      break;
+    case 6:
+      return totalFcc6temp;
+      break;
+    case 7:
+      return totalFcc7temp;
+      break;
+    case 8:
+      return totalFcc8temp;
+      break;
+    case 9:
+      return totalFcc9temp;
+      break;
+    case 10:
+      return totalFcc10temp;
+      break;
+    case 11:
+      return totalFcc11temp;
+      break;
+    case 12:
+      return totalFcc12temp;
+      break;
+    case 13:
+      return totalFcc13temp;
+      break;
+    case 14:
+      return totalFcc14temp;
+      break;
+    case 15:
+      return totalFcc15temp;
+      break;
+    default:
+      break;
+  }
+}
+
+void increaseTotalFcc(int i){
+  switch(i) {
+    case 1:
+      totalFcc1++;
+      totalFcc1temp++;
+      break;
+    case 2:
+      totalFcc2++;
+      totalFcc2temp++;
+      break;
+    case 3:
+      totalFcc3++;
+      totalFcc3temp++;
+      break;
+    case 4:
+      totalFcc4++;
+      totalFcc4temp++;
+      break;
+    case 5:
+      totalFcc5++;
+      totalFcc5temp++;
+      break;
+    case 6:
+      totalFcc6++;
+      totalFcc6temp++;
+      break;
+    case 7:
+      totalFcc7++;
+      totalFcc7temp++;
+      break;
+    case 8:
+      totalFcc8++;
+      totalFcc8temp++;
+      break;
+    case 9:
+      totalFcc9++;
+      totalFcc9temp++;
+      break;
+    case 10:
+      totalFcc10++;
+      totalFcc10temp++;
+      break;
+    case 11:
+      totalFcc11++;
+      totalFcc11temp++;
+      break;
+    case 12:
+      totalFcc12++;
+      totalFcc12temp++;
+      break;
+    case 13:
+      totalFcc13++;
+      totalFcc13temp++;
+      break;
+    case 14:
+      totalFcc14++;
+      totalFcc14temp++;
+      break;
+    case 15:
+      totalFcc15++;
+      totalFcc15temp++;
+      break;
+    default:
+      break;
+  }
+}
+
+int getInterestNum(){
+  return interestNum;
+}
+
+int getDataNum(){
+  return dataNum;
+}
+
+void increaseInterestNum(){
+  interestNum++;
+}
+
+void increaseDataNum(){
+  dataNum++;
+}
+
+int getServiceNum(){
+  return serviceNum;
+}
+
+void increaseServiceNum(){
+  serviceNum++;
+}
+
+void increaseAllFcc(){
+  allFcc++;
+}
+
+int getAllFcc(){
+  return allFcc;
+}
+
+void resetFcc(){
+  allFcc = 0;
+  functionCallCount1 = totalFcc1temp;
+  totalFcc1temp = 0;
+  functionCallCount2 = totalFcc2temp;
+  totalFcc2temp = 0;
+  functionCallCount3 = totalFcc3temp;
+  totalFcc3temp = 0;
+  functionCallCount4 = totalFcc4temp;
+  totalFcc4temp = 0;
+  functionCallCount5 = totalFcc5temp;
+  totalFcc5temp = 0;
+  functionCallCount6 = totalFcc6temp;
+  totalFcc6temp = 0;
+  functionCallCount7 = totalFcc7temp;
+  totalFcc7temp = 0;
+  functionCallCount8 = totalFcc8temp;
+  totalFcc8temp = 0;
+  functionCallCount9 = totalFcc9temp;
+  totalFcc9temp = 0;
+  functionCallCount10 = totalFcc10temp;
+  totalFcc10temp = 0;
+  functionCallCount11 = totalFcc11temp;
+  totalFcc11temp = 0;
+  functionCallCount12 = totalFcc12temp;
+  totalFcc12temp = 0;
+  functionCallCount13 = totalFcc13temp;
+  totalFcc13temp = 0;
+  functionCallCount14 = totalFcc14temp;
+  totalFcc14temp = 0;
+  functionCallCount15 = totalFcc15temp;
+  totalFcc15temp = 0;
+}
+
+void increaseTotalHops(int i){
+  totalHops += i;
+}
+
+void increaseTotalServiceTime(int i){
+  totalServiceTime += i;
+}
+
+int getTotalServiceTime(){
+  return totalServiceTime;
+}
 
 
 } // namespace ns3

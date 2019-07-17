@@ -35,6 +35,7 @@ static_assert(std::is_base_of<tlv::Error, MetaInfo::Error>::value,
 MetaInfo::MetaInfo()
   : m_type(tlv::ContentType_Blob)
   , m_freshnessPeriod(-1)
+  , m_serviceTime(-1)
 {
 }
 
@@ -56,6 +57,15 @@ MetaInfo::setFreshnessPeriod(const time::milliseconds& freshnessPeriod)
 {
   m_wire.reset();
   m_freshnessPeriod = freshnessPeriod;
+  return *this;
+}
+
+//ServiceTime
+MetaInfo&
+MetaInfo::setServiceTime(const time::milliseconds& serviceTime)
+{
+  m_wire.reset();
+  m_serviceTime = serviceTime;
   return *this;
 }
 
@@ -148,6 +158,13 @@ MetaInfo::wireEncode(EncodingImpl<TAG>& encoder) const
       totalLength += prependNestedBlock(encoder, tlv::FinalBlockId, m_finalBlockId);
     }
 
+  // ServiceTime
+  if (m_serviceTime >= time::milliseconds::zero())
+    {
+      totalLength += prependNonNegativeIntegerBlock(encoder, tlv::ServiceTime,
+                                                    m_serviceTime.count());
+    }
+
   // FreshnessPeriod
   if (m_freshnessPeriod >= time::milliseconds::zero())
     {
@@ -221,6 +238,15 @@ MetaInfo::wireDecode(const Block& wire)
     m_freshnessPeriod = time::milliseconds::min();
   }
 
+  // ServiceTime
+  if (val != m_wire.elements_end() && val->type() == tlv::ServiceTime) {
+    m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
+    ++val;
+  }
+  else {
+    m_serviceTime = time::milliseconds::min();
+  }
+
   // FinalBlockId
   if (val != m_wire.elements_end() && val->type() == tlv::FinalBlockId) {
     m_finalBlockId = val->blockFromValue();
@@ -250,6 +276,11 @@ operator<<(std::ostream& os, const MetaInfo& info)
   // FreshnessPeriod
   if (info.getFreshnessPeriod() >= time::milliseconds::zero()) {
     os << ", FreshnessPeriod: " << info.getFreshnessPeriod();
+  }
+
+  // ServiceTime
+  if (info.getServiceTime() >= time::milliseconds::zero()) {
+    os << ", ServiceTime: " << info.getServiceTime();
   }
 
   // FinalBlockId

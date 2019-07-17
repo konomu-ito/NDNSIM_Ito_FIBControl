@@ -1554,6 +1554,60 @@ Simulator::ScheduleDestroy (void (*f)(U1,U2,U3,U4,U5), T1 a1, T2 a2, T3 a3, T4 a
   return DoScheduleDestroy (MakeEvent (f, a1, a2, a3, a4, a5));
 }
 
+int
+getFunctionCallCount(int i);
+
+void
+increaseFunctionCallCount(int i);
+
+void
+decreaseFunctionCallCount(int i);
+
+int
+getCurrentFcc(int i);
+
+int
+getTotalFcc(int i);
+
+int
+getTotalFccTemp(int i);
+
+void
+increaseTotalFcc(int i);
+
+int
+getInterestNum();
+
+int
+getDataNum();
+
+void
+increaseInterestNum();
+
+void
+increaseDataNum();
+
+int
+getServiceNum();
+
+void
+increaseServiceNum();
+
+void
+increaseAllFcc();
+
+int
+getAllFcc();
+
+void
+resetFcc();
+
+void increaseTotalHops(int i);
+
+void increaseTotalServiceTime(int i);
+
+int getTotalServiceTime();
+
 } // namespace ns3
 
 #endif /* SIMULATOR_H */

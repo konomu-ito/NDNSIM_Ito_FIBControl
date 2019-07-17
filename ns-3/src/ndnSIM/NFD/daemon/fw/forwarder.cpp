@@ -31,6 +31,8 @@
 #include <ndn-cxx/lp/tags.hpp>
 #include "face/null-face.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
+#include <chrono>
+#include <thread>
 
 namespace nfd {
 
@@ -137,11 +139,14 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 
   // detect duplicate Nonce with Dead Nonce List
   bool hasDuplicateNonceInDnl = m_deadNonceList.has(interest.getName(), interest.getNonce());
+  
+  /*
   if (hasDuplicateNonceInDnl) {
     // goto Interest loop pipeline
     this->onInterestLoop(inFace, interest);
     return;
   }
+  */
 
   // PIT insert
   shared_ptr<pit::Entry> pitEntry = m_pit.insert(interest).first;
@@ -149,11 +154,14 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
   // detect duplicate Nonce in PIT entry
   bool hasDuplicateNonceInPit = fw::findDuplicateNonce(*pitEntry, interest.getNonce(), inFace) !=
                                 fw::DUPLICATE_NONCE_NONE;
+  
+  /*
   if (hasDuplicateNonceInPit) {
     // goto Interest loop pipeline
     this->onInterestLoop(inFace, interest);
     return;
   }
+  */
 
   // cancel unsatisfy & straggler timer
   this->cancelUnsatisfyAndStragglerTimer(*pitEntry);
@@ -227,26 +235,487 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 //ADDED Find Fib Entry for Function Chaining
  //std::cout<<"Node "<<getNode()->GetId()<<std::endl;
  //std::cout<<"NONCE: "<<interest.getNonce()<<std::endl;
- Name functionName = interest.getFunction();
- fib::Entry* fibEntry;
- Face* nextHopFaceFunction;
- if(functionName.toUri() != "/"){ //When Function Field is not Empty
-   fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
-   if(fibEntry != nullptr){ //When there is matching FIB route
+
+  Name functionName = interest.getFunction();
+
+  auto string = functionName.toUri();
+  //std::cout << "Function Name:" << string << std::endl;
+  auto separator = std::string("/");
+  auto separator_length = separator.length();
+
+  auto list = std::vector<std::string>();
+
+  if (separator_length == 0) {
+    list.push_back(string);
+  } else {
+    auto offset = std::string::size_type(0);
+    while (1) {
+      auto pos = string.find(separator, offset);
+      if (pos == std::string::npos) {
+        list.push_back(string.substr(offset));
+        break;
+      }
+      list.push_back(string.substr(offset, pos - offset));
+      offset = pos + separator_length;
+    }
+  }
+
+  //std::cout << list[0] << std::endl;
+  //std::cout << list[1] << std::endl;
+
+  int currentNode = getNode()->GetId();
+  std::string currentNodeName;
+  int funcNum = 0;
+
+  /*
+  //for us
+  switch(currentNode) {
+    case 0:
+      currentNodeName = "Consumer";
+      break;
+    case 1:
+      currentNodeName = "Node1";
+      break;
+    case 2:
+      currentNodeName = "Node2";
+      break;
+    case 3:
+      currentNodeName = "Node3";
+      break;
+    case 4:
+      currentNodeName = "Node4";
+      break;
+    case 5:
+      currentNodeName = "Node5";
+      break;
+    case 6:
+      currentNodeName = "Node6";
+      break;
+    case 7:
+      currentNodeName = "Node7";
+      break;
+    case 8:
+      currentNodeName = "Node8";
+      break;
+    case 9:
+      currentNodeName = "Node9";
+      break;
+    case 10:
+      currentNodeName = "Node10";
+      break;
+    case 11:
+      currentNodeName = "Node11";
+      break;
+    case 12:
+      currentNodeName = "Node12";
+      break;
+    case 13:
+      currentNodeName = "Node13";
+      break;
+    case 14:
+      currentNodeName = "Node14";
+      break;
+    case 15:
+      currentNodeName = "Node15";
+      break;
+    case 16:
+      currentNodeName = "Node16";
+      break;
+    case 17:
+      currentNodeName = "Node17";
+      break;
+    case 18:
+      currentNodeName = "Node18";
+      break;
+    case 19:
+      currentNodeName = "Node19";
+      break;
+    case 20:
+      currentNodeName = "Node20";
+      break;
+    case 21:
+      currentNodeName = "Node21";
+      break;
+    case 22:
+      currentNodeName = "Node22";
+      break;
+    case 23:
+      currentNodeName = "Node23";
+      break;
+    case 24:
+      currentNodeName = "Node24";
+      break;
+    case 25:
+      currentNodeName = "Producer";
+      break;
+    case 26:
+      currentNodeName = "F1a";
+      funcNum = 1;
+      break;
+    case 27:
+      currentNodeName = "F1b";
+      funcNum = 2;
+      break;
+    case 28:
+      currentNodeName = "F1c";
+      funcNum = 3;
+      break;
+    case 29:
+      currentNodeName = "F2a";
+      funcNum = 4;
+      break;
+    case 30:
+      currentNodeName = "F2b";
+      funcNum = 5;
+      break;
+    case 31:
+      currentNodeName = "F2c";
+      funcNum = 6;
+      break;
+    case 32:
+      currentNodeName = "F3a";
+      funcNum = 7;
+      break;
+    case 33:
+      currentNodeName = "F3b";
+      funcNum = 8;
+      break;
+    case 34:
+      currentNodeName = "F3c";
+      funcNum = 9;
+      break;
+    case 35:
+      currentNodeName = "F4a";
+      funcNum = 10;
+      break;
+    case 36:
+      currentNodeName = "F4b";
+      funcNum = 11;
+      break;
+    case 37:
+      currentNodeName = "F4c";
+      funcNum = 12;
+      break;
+    case 38:
+      currentNodeName = "F5a";
+      funcNum = 13;
+      break;
+    case 39:
+      currentNodeName = "F5b";
+      funcNum = 14;
+      break;
+    case 40:
+      currentNodeName = "F5c";
+      funcNum = 15;
+      break;
+    case 41:
+      currentNodeName = "Consumer2";
+      break;
+    case 42:
+      currentNodeName = "Consumer3";
+      break;
+    case 43:
+      currentNodeName = "Consumer4";
+      break;
+    case 44:
+      currentNodeName = "Producer2";
+      break;
+    case 45:
+      currentNodeName = "Producer3";
+      break;
+    case 46:
+      currentNodeName = "Producer4";
+      break;
+  }
+  */
+
+  
+  //for us1
+  switch(currentNode) {
+    case 0:
+      currentNodeName = "Consumer1";
+      break;
+    case 1:
+      currentNodeName = "Node1";
+      break;
+    case 2:
+      currentNodeName = "Node2";
+      break;
+    case 3:
+      currentNodeName = "Node3";
+      break;
+    case 4:
+      currentNodeName = "Node4";
+      break;
+    case 5:
+      currentNodeName = "Node5";
+      break;
+    case 6:
+      currentNodeName = "Node6";
+      break;
+    case 7:
+      currentNodeName = "Node7";
+      break;
+    case 8:
+      currentNodeName = "Node8";
+      break;
+    case 9:
+      currentNodeName = "Node9";
+      break;
+    case 10:
+      currentNodeName = "Node10";
+      break;
+    case 11:
+      currentNodeName = "Node11";
+      break;
+    case 12:
+      currentNodeName = "Node12";
+      break;
+    case 13:
+      currentNodeName = "Node13";
+      break;
+    case 14:
+      currentNodeName = "Node14";
+      break;
+    case 15:
+      currentNodeName = "Node15";
+      break;
+    case 16:
+      currentNodeName = "Node16";
+      break;
+    case 17:
+      currentNodeName = "Node17";
+      break;
+    case 18:
+      currentNodeName = "Node18";
+      break;
+    case 19:
+      currentNodeName = "Node19";
+      break;
+    case 20:
+      currentNodeName = "Node20";
+      break;
+    case 21:
+      currentNodeName = "Node21";
+      break;
+    case 22:
+      currentNodeName = "Node22";
+      break;
+    case 23:
+      currentNodeName = "Node23";
+      break;
+    case 24:
+      currentNodeName = "Node24";
+      break;
+    case 25:
+      currentNodeName = "Producer1";
+      break;
+    case 26:
+      currentNodeName = "F1a";
+      funcNum = 1;
+      break;
+    case 27:
+      currentNodeName = "F1b";
+      funcNum = 2;
+      break;
+    case 28:
+      currentNodeName = "F1c";
+      funcNum = 3;
+      break;
+    case 29:
+      currentNodeName = "F2a";
+      funcNum = 4;
+      break;
+    case 30:
+      currentNodeName = "F2b";
+      funcNum = 5;
+      break;
+    case 31:
+      currentNodeName = "F2c";
+      funcNum = 6;
+      break;
+    case 32:
+      currentNodeName = "F3a";
+      funcNum = 7;
+      break;
+    case 33:
+      currentNodeName = "F3b";
+      funcNum = 8;
+      break;
+    case 34:
+      currentNodeName = "F3c";
+      funcNum = 9;
+      break;
+    case 35:
+      currentNodeName = "F4a";
+      funcNum = 10;
+      break;
+    case 36:
+      currentNodeName = "F4b";
+      funcNum = 11;
+      break;
+    case 37:
+      currentNodeName = "F4c";
+      funcNum = 12;
+      break;
+    case 38:
+      currentNodeName = "F5a";
+      funcNum = 13;
+      break;
+    case 39:
+      currentNodeName = "F5b";
+      funcNum = 14;
+      break;
+    case 40:
+      currentNodeName = "F5c";
+      funcNum = 15;
+      break;
+    case 41:
+      currentNodeName = "Consumer2";
+      break;
+    case 42:
+      currentNodeName = "Consumer3";
+      break;
+    case 43:
+      currentNodeName = "Consumer4";
+      break;
+    case 44:
+      currentNodeName = "Producer2";
+      break;
+    case 45:
+      currentNodeName = "Producer3";
+      break;
+    case 46:
+      currentNodeName = "Producer4";
+      break;
+  }
+  
+
+  std::cout << "Node          : " << currentNodeName << std::endl;
+  std::cout << "Function Name : " << interest.getFunction() << std::endl;
+  std::cout << "Content  Name : " << interest.getName() << std::endl;
+
+  if (interest.getFunctionFlag() == 1){
+    interest.setFunctionFlag(0);
+    time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
+    time::milliseconds functionTime = nowTime - interest.getFunctionTime();
+    //std::cout << "functionTime: " << functionTime.count() << std::endl;
+    time::milliseconds serviceTime = interest.getServiceTime() + functionTime;
+    interest.setServiceTime(serviceTime);
+    //std::cout << "ServiceTime: " << interest.getServiceTime().count() << std::endl;
+  }
+
+  if (list[1] == currentNodeName){
+    interest.removeHeadFunction(interest);
+    interest.setFunctionFlag(1);
+    ns3::increaseTotalFcc(funcNum);
+    ns3::increaseAllFcc();
+    if(ns3::getAllFcc() == 30){
+      ns3::resetFcc();
+    }
+  }
+
+  functionName = interest.getFunction();
+  fib::Entry* fibEntry;
+  Face* nextHopFaceFunction;
+  if(functionName.toUri() != "/"){ //When Function Field is not Empty
+    //std::cout << "function routing" << std::endl;
+    fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+    //std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
+    //std::cout << "Node: " << currentNode << std::endl;
+
+    time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
+
+    /*
+    // for us
+    if(currentNode == 2 && fibEntry->getPrefix().toUri() == "/F1a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 11 && fibEntry->getPrefix().toUri() == "/F1b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 18 && fibEntry->getPrefix().toUri() == "/F1c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 7 && fibEntry->getPrefix().toUri() == "/F2a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 10 && fibEntry->getPrefix().toUri() == "/F2b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 16 && fibEntry->getPrefix().toUri() == "/F2c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 8 && fibEntry->getPrefix().toUri() == "/F3a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 13 && fibEntry->getPrefix().toUri() == "/F3b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 15 && fibEntry->getPrefix().toUri() == "/F3c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 5 && fibEntry->getPrefix().toUri() == "/F4a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 12 && fibEntry->getPrefix().toUri() == "/F4b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 21 && fibEntry->getPrefix().toUri() == "/F4c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 3 && fibEntry->getPrefix().toUri() == "/F5a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 9 && fibEntry->getPrefix().toUri() == "/F5b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 23 && fibEntry->getPrefix().toUri() == "/F5c"){
+      interest.setFunctionTime(nowTime);
+    }
+    */
+    
+    // for us1
+    if(currentNode == 3 && fibEntry->getPrefix().toUri() == "/F1a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 10 && fibEntry->getPrefix().toUri() == "/F1b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 21 && fibEntry->getPrefix().toUri() == "/F1c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 7 && fibEntry->getPrefix().toUri() == "/F2a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 13 && fibEntry->getPrefix().toUri() == "/F2b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 23 && fibEntry->getPrefix().toUri() == "/F2c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 4 && fibEntry->getPrefix().toUri() == "/F3a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 12 && fibEntry->getPrefix().toUri() == "/F3b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 17 && fibEntry->getPrefix().toUri() == "/F3c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 6 && fibEntry->getPrefix().toUri() == "/F4a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 9 && fibEntry->getPrefix().toUri() == "/F4b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 15 && fibEntry->getPrefix().toUri() == "/F4c"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 2 && fibEntry->getPrefix().toUri() == "/F5a"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 11 && fibEntry->getPrefix().toUri() == "/F5b"){
+      interest.setFunctionTime(nowTime);
+    } else if(currentNode == 20 && fibEntry->getPrefix().toUri() == "/F5c"){
+      interest.setFunctionTime(nowTime);
+    }
+
+
+    std::cout << "--------------------------------------------" << std::endl;
+    
+
+    if(fibEntry != nullptr){ //When there is matching FIB route
      //std::cout<<"LPM FIB Route: "<<fibEntry->getPrefix()<<std::endl;
-     for(auto it : fibEntry->getNextHops()){
-       nextHopFaceFunction = &it.getFace();
+      for(auto it : fibEntry->getNextHops()){
+        nextHopFaceFunction = &it.getFace();
        //std::cout<< "Passed: "<<interest.getNonce()<<std::endl;
-       interest.removeHeadFunction(interest);
+
+       //interest.removeHeadFunction(interest);
        //Go to OutGoingInterest Pipeline
        this->onOutgoingInterest(pitEntry, *nextHopFaceFunction, interest);
      }
      return;
 
-   }
- }
+    }
+  }
+
   // has NextHopFaceId?
   shared_ptr<lp::NextHopFaceIdTag> nextHopTag = interest.getTag<lp::NextHopFaceIdTag>();
+  //std::cout << nextHopTag << std::endl;
   if (nextHopTag != nullptr) {
     // chosen NextHop face exists?
     Face* nextHopFace = m_faceTable.get(*nextHopTag);
@@ -259,6 +728,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
     return;
   }
 
+  std::cout << "default routing" << std::endl;
+  std::cout << "--------------------------------------------" << std::endl;
   // dispatch to strategy: after incoming Interest
   this->dispatchToStrategy(*pitEntry,
     [&] (fw::Strategy& strategy) { strategy.afterReceiveInterest(inFace, interest, pitEntry); });
@@ -292,6 +763,15 @@ Forwarder::onOutgoingInterest(const shared_ptr<pit::Entry>& pitEntry, Face& outF
 
   // insert out-record
   pitEntry->insertOrUpdateOutRecord(outFace, interest);
+
+  /*
+  int currentNode = getNode()->GetId();
+
+  if (interest.getFunctionFlag() == 1){
+    interest.setFunctionFlag(0);
+    ns3::decreaseFunctionCallCount(currentNode + 10);
+  }
+  */
 
   // send Interest
   outFace.sendInterest(interest);
@@ -347,6 +827,7 @@ Forwarder::onInterestFinalize(const shared_ptr<pit::Entry>& pitEntry, bool isSat
 void
 Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
+
   // receive Data
   NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());
   data.setTag(make_shared<lp::IncomingFaceIdTag>(inFace.getId()));
@@ -362,6 +843,231 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     return;
   }
 
+  int currentNode = getNode()->GetId();
+  std::string currentNodeName;
+
+  // for us
+  switch(currentNode) {
+    case 0:
+      currentNodeName = "Consumer1";
+      break;
+    case 1:
+      currentNodeName = "Node1";
+      break;
+    case 2:
+      currentNodeName = "Node2";
+      break;
+    case 3:
+      currentNodeName = "Node3";
+      break;
+    case 4:
+      currentNodeName = "Node4";
+      break;
+    case 5:
+      currentNodeName = "Node5";
+      break;
+    case 6:
+      currentNodeName = "Node6";
+      break;
+    case 7:
+      currentNodeName = "Node7";
+      break;
+    case 8:
+      currentNodeName = "Node8";
+      break;
+    case 9:
+      currentNodeName = "Node9";
+      break;
+    case 10:
+      currentNodeName = "Node10";
+      break;
+    case 11:
+      currentNodeName = "Node11";
+      break;
+    case 12:
+      currentNodeName = "Node12";
+      break;
+    case 13:
+      currentNodeName = "Node13";
+      break;
+    case 14:
+      currentNodeName = "Node14";
+      break;
+    case 15:
+      currentNodeName = "Node15";
+      break;
+    case 16:
+      currentNodeName = "Node16";
+      break;
+    case 17:
+      currentNodeName = "Node17";
+      break;
+    case 18:
+      currentNodeName = "Node18";
+      break;
+    case 19:
+      currentNodeName = "Node19";
+      break;
+    case 20:
+      currentNodeName = "Node20";
+      break;
+    case 21:
+      currentNodeName = "Node21";
+      break;
+    case 22:
+      currentNodeName = "Node22";
+      break;
+    case 23:
+      currentNodeName = "Node23";
+      break;
+    case 24:
+      currentNodeName = "Node24";
+      break;
+    case 25:
+      currentNodeName = "Producer1";
+      break;
+    case 26:
+      currentNodeName = "F1a";
+      break;
+    case 27:
+      currentNodeName = "F1b";
+      break;
+    case 28:
+      currentNodeName = "F1c";
+      break;
+    case 29:
+      currentNodeName = "F2a";
+      break;
+    case 30:
+      currentNodeName = "F2b";
+      break;
+    case 31:
+      currentNodeName = "F2c";
+      break;
+    case 32:
+      currentNodeName = "F3a";
+      break;
+    case 33:
+      currentNodeName = "F3b";
+      break;
+    case 34:
+      currentNodeName = "F3c";
+      break;
+    case 35:
+      currentNodeName = "F4a";
+      break;
+    case 36:
+      currentNodeName = "F4b";
+      break;
+    case 37:
+      currentNodeName = "F4c";
+      break;
+    case 38:
+      currentNodeName = "F5a";
+      break;
+    case 39:
+      currentNodeName = "F5b";
+      break;
+    case 40:
+      currentNodeName = "F5c";
+      break;
+    case 41:
+      currentNodeName = "Consumer2";
+      break;
+    case 42:
+      currentNodeName = "Consumer3";
+      break;
+    case 43:
+      currentNodeName = "Consumer4";
+      break;
+    case 44:
+      currentNodeName = "Producer2";
+      break;
+    case 45:
+      currentNodeName = "Producer3";
+      break;
+    case 46:
+      currentNodeName = "Producer4";
+      break;
+  }
+  
+
+  /*
+  switch(currentNode) {
+    case 0:
+      currentNodeName = "Consumer";
+      break;
+    case 1:
+      currentNodeName = "Node0";
+      break;
+    case 2:
+      currentNodeName = "Node1";
+      break;
+    case 3:
+      currentNodeName = "Node2";
+      break;
+    case 4:
+      currentNodeName = "Node3";
+      break;
+    case 5:
+      currentNodeName = "Node4";
+      break;
+    case 6:
+      currentNodeName = "Node5";
+      break;
+    case 7:
+      currentNodeName = "Node6";
+      break;
+    case 8:
+      currentNodeName = "Node7";
+      break;
+    case 9:
+      currentNodeName = "Node8";
+      break;
+    case 10:
+      currentNodeName = "Producer";
+      break;
+    case 11:
+      currentNodeName = "F1a";
+      break;
+    case 12:
+      currentNodeName = "F2a";
+      break;
+    case 13:
+      currentNodeName = "F3a";
+      break;
+    case 14:
+      currentNodeName = "F2b";
+      break;
+    case 15:
+      currentNodeName = "F3b";
+      break;
+    case 16:
+      currentNodeName = "F1b";
+      break;
+    case 17:
+      currentNodeName = "F3c";
+      break;
+    case 18:
+      currentNodeName = "F2c";
+      break;
+    case 19:
+      currentNodeName = "F1c";
+      break;
+    case 20:
+      currentNodeName = "Consumer2";
+      break;
+    case 21:
+      currentNodeName = "Consumer3";
+      break;
+  }
+  */
+
+  std::cout << "Node          : " << currentNodeName << std::endl;
+  std::cout << "Content  Name : " << data.getName() << std::endl;
+
+  std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
+
   // PIT match
   pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
   if (pitMatches.begin() == pitMatches.end()) {
@@ -369,6 +1075,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     this->onDataUnsolicited(inFace, data);
     return;
   }
+
+  //std::cout << "PIT Matches: " << pitMatches.size() << std::endl;
 
   shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);
   dataCopyWithoutTag->removeTag<lp::HopCountTag>();
@@ -380,18 +1088,36 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     m_csFromNdnSim->Add(dataCopyWithoutTag);
 
   std::set<Face*> pendingDownstreams;
+  bool pitSatisfyFlag = true;
   // foreach PitEntry
   auto now = time::steady_clock::now();
   for (const shared_ptr<pit::Entry>& pitEntry : pitMatches) {
     NFD_LOG_DEBUG("onIncomingData matching=" << pitEntry->getName());
+    //std::cout << "Pit Entry: " << pitEntry->getName() << std::endl;
 
     // cancel unsatisfy & straggler timer
     this->cancelUnsatisfyAndStragglerTimer(*pitEntry);
 
-    // remember pending downstreams
-    for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-      if (inRecord.getExpiry() > now) {
-        pendingDownstreams.insert(&inRecord.getFace());
+    uint32_t max = 1;
+    Face* savedFace;
+    for(const pit::InRecord& inRecord : pitEntry->getInRecords()) {
+      std::cout << inRecord.getSequenceNumber() << std::endl;
+      if(inRecord.getSequenceNumber() > max){
+        max = inRecord.getSequenceNumber();
+        savedFace = &inRecord.getFace();
+      }
+    }
+      
+    if(max > 1){
+      pendingDownstreams.insert(savedFace);
+      pitEntry->deleteInRecord(*savedFace);
+      pitSatisfyFlag = false;
+    } else {
+      // remember pending downstreams
+      for (const pit::InRecord& inRecord : pitEntry->getInRecords()) {
+        if (inRecord.getExpiry() > now) {
+          pendingDownstreams.insert(&inRecord.getFace());
+        }
       }
     }
 
@@ -403,9 +1129,16 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
     // Dead Nonce List insert if necessary (for out-record of inFace)
     this->insertDeadNonceList(*pitEntry, true, data.getFreshnessPeriod(), &inFace);
 
+    /*
     // mark PIT satisfied
     pitEntry->clearInRecords();
     pitEntry->deleteOutRecord(inFace);
+    */
+
+    if(pitSatisfyFlag){
+      pitEntry->clearInRecords();
+      pitEntry->deleteOutRecord(inFace);
+    }
 
     // set PIT straggler timer
     this->setStragglerTimer(pitEntry, true, data.getFreshnessPeriod());
@@ -413,12 +1146,19 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
   // foreach pending downstream
   for (Face* pendingDownstream : pendingDownstreams) {
+    /*
     if (pendingDownstream == &inFace) {
+      std::cout << "bitch" << std::endl;
       continue;
     }
+    */
     // goto outgoing Data pipeline
     this->onOutgoingData(data, *pendingDownstream);
+    //std::cout << "bitch" << std::endl;
   }
+
+  std::cout << "--------------------------------------------" << std::endl;
+
 }
 
 void
@@ -594,7 +1334,7 @@ void
 Forwarder::setStragglerTimer(const shared_ptr<pit::Entry>& pitEntry, bool isSatisfied,
                              time::milliseconds dataFreshnessPeriod)
 {
-  time::nanoseconds stragglerTime = time::milliseconds(100);
+  time::nanoseconds stragglerTime = time::milliseconds(1000);
 
   scheduler::cancel(pitEntry->m_stragglerTimer);
   pitEntry->m_stragglerTimer = scheduler::schedule(stragglerTime,

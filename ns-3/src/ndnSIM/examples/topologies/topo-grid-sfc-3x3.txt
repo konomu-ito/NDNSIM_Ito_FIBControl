@@ -1,0 +1,64 @@
+# topo-grid-3x3.txt
+
+#   /--------\	    /-\	        /-\
+#   |Consumer|<---->| |<------->| |
+#   \--------/	    \-/	        \-/
+#       ^   	     ^ 	         ^
+#       |            |           |   1Mbps/10ms delay
+#       v            v           v
+#      /-\          /-\         /-\
+#      | |<-------->| |<------->| |
+#      \-/          \-/         \-/
+#       ^   	     ^ 	         ^
+#       |            |           |
+#       v            v           v
+#      /-\	    /-\	     /--------\
+#      | |<-------->| |<---->|Producer|
+#      \-/          \-/      \--------/
+
+# any empty lines and lines starting with '#' symbol is ignored
+#
+# The file should contain exactly two sections: router and link, each starting with the corresponding keyword
+#
+# router section defines topology nodes and their relative positions (e.g., to use in visualizer)
+router
+
+# each line in this section represents one router and should have the following data
+# node  comment     yPos    xPos
+Consumer NA         3       0
+F1a   NA          3       1
+F2a   NA          3       2
+F3a   NA          3       3
+F2b   NA          2       1
+F3b   NA          2       2
+F1b   NA          2       3
+F3c   NA          1       1
+F2c   NA          1       2
+F1c   NA          1       3
+Producer NA         1       4
+# Note that `node` can be any string. It is possible to access to the node by name using Names::Find, see examples.
+
+# link section defines point-to-point links between nodes and characteristics of these links
+link
+
+# Each line should be in the following format (only first two are required, the rest can be omitted)
+# srcNode   dstNode     bandwidth   metric  delay   queue
+# bandwidth: link bandwidth
+# metric: routing metric
+# delay:  link delay
+# queue:  MaxPackets for transmission queue on the link (both directions)
+Consumer  F1a       1Mbps       1       10ms    10
+F1a       F2a       1Mbps       1       10ms    10
+F1a       F2b       1Mbps       1       10ms    10
+F2a       F3a       1Mbps       1       10ms    10
+F2a       F3b       1Mbps       1       10ms    10
+F3a       F1b       1Mbps       1       10ms    10
+F2b       F3b       1Mbps       1       10ms    10
+F2b       F3c       1Mbps       1       10ms    10
+F3b       F1b       1Mbps       1       10ms    10
+F3b       F2c       1Mbps       1       10ms    10
+F1b       F1c       1Mbps       1       10ms    10
+F3c       F2c       1Mbps       1       10ms    10
+F2c       F1c       1Mbps       1       10ms    10
+F1c       Producer  1Mbps       1       10ms    10  
+

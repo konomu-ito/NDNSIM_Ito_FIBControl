@@ -29,6 +29,7 @@
 
 #include <memory>
 
+
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
 
 namespace ns3 {
@@ -104,9 +105,14 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   // dataName.append(m_postfix);
   // dataName.appendVersion();
 
+  increaseDataNum();
+  std::cout << "Data Num:" << getDataNum() << std::endl;
+
   auto data = make_shared<Data>();
   data->setName(dataName);
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
+  //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;
+  data->setServiceTime(interest->getServiceTime());
 
   data->setContent(make_shared< ::ndn::Buffer>(m_virtualPayloadSize));
 

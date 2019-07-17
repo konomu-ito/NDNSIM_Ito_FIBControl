@@ -37,6 +37,8 @@ class Data;
  *  @brief default value for InterestLifetime
  */
 const time::milliseconds DEFAULT_INTEREST_LIFETIME = time::milliseconds(4000);
+const time::milliseconds DEFAULT_SERVICETIME = time::milliseconds(0);
+const time::milliseconds DEFAULT_FUNCTIONTIME = time::milliseconds(0);
 
 /** @brief represents an Interest packet
  */
@@ -273,6 +275,48 @@ public: // Name and guiders
     return *this;
   }
 
+  const time::milliseconds&
+  getServiceTime() const
+  {
+    return m_serviceTime;
+  }
+
+  void
+  setServiceTime(const time::milliseconds& serviceTime) const
+  {
+    m_serviceTime = serviceTime;
+    m_wire.reset();
+    //return *this;
+  }
+
+  const time::milliseconds&
+  getFunctionTime() const
+  {
+    return m_functionTime;
+  }
+
+  //Interest&
+  void
+  setFunctionTime(const time::milliseconds& functionTime) const
+  {
+    m_functionTime = functionTime;
+    m_wire.reset();
+    //return *this;
+  }
+
+  int
+  getFunctionFlag() const
+  {
+    return m_functionFlag;
+  }
+
+  void
+  setFunctionFlag(const int functionFlag) const
+  {
+    m_functionFlag = functionFlag;
+    m_wire.reset();
+  }
+
   /** @brief Check if Nonce set
    */
   bool
@@ -433,11 +477,14 @@ private:
   Selectors m_selectors;
   mutable Block m_nonce;
   time::milliseconds m_interestLifetime;
+  mutable time::milliseconds m_serviceTime;
+  mutable time::milliseconds m_functionTime;
 
   mutable Block m_link;
   mutable shared_ptr<Link> m_linkCached;
   size_t m_selectedDelegationIndex;
   mutable Block m_wire;
+  mutable int m_functionFlag;
 };
 
 std::ostream&

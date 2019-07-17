@@ -201,6 +201,13 @@ public:
   Data&
   setFreshnessPeriod(const time::milliseconds& freshnessPeriod);
 
+  //ServiceTime
+  const time::milliseconds&
+  getServiceTime() const;
+
+  Data&
+  setServiceTime(const time::milliseconds& serviceTime);
+
   //
 
   const name::Component&
@@ -336,6 +343,13 @@ inline const time::milliseconds&
 Data::getFreshnessPeriod() const
 {
   return m_metaInfo.getFreshnessPeriod();
+}
+
+//ServiceTime
+inline const time::milliseconds&
+Data::getServiceTime() const
+{
+  return m_metaInfo.getServiceTime();
 }
 
 inline const name::Component&

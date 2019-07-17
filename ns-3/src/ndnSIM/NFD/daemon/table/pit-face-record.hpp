@@ -58,6 +58,12 @@ public:
   time::steady_clock::TimePoint
   getExpiry() const;
 
+  void
+  setSequenceNumber(uint32_t size) const;
+
+  uint32_t
+  getSequenceNumber() const;
+
   /** \brief updates lastNonce, lastRenewed, expiry fields
    */
   void
@@ -68,6 +74,7 @@ private:
   uint32_t m_lastNonce;
   time::steady_clock::TimePoint m_lastRenewed;
   time::steady_clock::TimePoint m_expiry;
+  mutable uint32_t m_sequenceNumber;
 };
 
 inline Face&
@@ -92,6 +99,18 @@ inline time::steady_clock::TimePoint
 FaceRecord::getExpiry() const
 {
   return m_expiry;
+}
+
+inline void
+FaceRecord::setSequenceNumber(uint32_t size) const
+{
+  m_sequenceNumber = size;
+}
+
+inline uint32_t
+FaceRecord::getSequenceNumber() const
+{
+  return m_sequenceNumber;
 }
 
 } // namespace pit

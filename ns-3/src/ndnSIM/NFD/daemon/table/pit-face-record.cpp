@@ -33,6 +33,7 @@ FaceRecord::FaceRecord(Face& face)
   , m_lastNonce(0)
   , m_lastRenewed(time::steady_clock::TimePoint::min())
   , m_expiry(time::steady_clock::TimePoint::min())
+  , m_sequenceNumber(0)
 {
 }
 

@@ -217,6 +217,16 @@ Data::setFreshnessPeriod(const time::milliseconds& freshnessPeriod)
   return *this;
 }
 
+//ServiceTime
+Data&
+Data::setServiceTime(const time::milliseconds& serviceTime)
+{
+  onChanged();
+  m_metaInfo.setServiceTime(serviceTime);
+
+  return *this;
+}
+
 Data&
 Data::setFinalBlockId(const name::Component& finalBlockId)
 {
@@ -318,7 +328,7 @@ Data::operator!=(const Data& other) const
 
 std::ostream&
 operator<<(std::ostream& os, const Data& data)
-{
+{ 
   os << "Name: " << data.getName() << "\n";
   os << "MetaInfo: " << data.getMetaInfo() << "\n";
   os << "Content: (size: " << data.getContent().value_size() << ")\n";

@@ -228,7 +228,32 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
 
   // (reverse encoding)
 
-  //Function
+  //FunctionTime
+  if (getFunctionTime() >= time::milliseconds::zero() &&
+      getFunctionTime() != DEFAULT_SERVICETIME)
+    {
+      totalLength += prependNonNegativeIntegerBlock(encoder,
+                                                    tlv::FunctionTime,
+                                                    getFunctionTime().count());
+    }
+
+  //ServiceTime
+  if (getServiceTime() >= time::milliseconds::zero() &&
+      getServiceTime() != DEFAULT_SERVICETIME)
+    {
+      totalLength += prependNonNegativeIntegerBlock(encoder,
+                                                    tlv::ServiceTime,
+                                                    getServiceTime().count());
+    }
+
+  //FunctionFlag
+  if (getFunctionFlag() >= 0){
+    totalLength += prependNonNegativeIntegerBlock(encoder,
+                                                    tlv::FunctionFlag,
+                                                    getFunctionFlag());
+  }
+
+  //FunctionName
   totalLength += getFunction().wireEncodeFunc(encoder);
 
   if (hasLink()) {
@@ -362,8 +387,32 @@ Interest::wireDecode(const Block& wire)
     m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
   }
 
-  //Function
+  //FunctionName
   m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
+
+  //FunctionFlag
+  val = m_wire.find(tlv::FunctionFlag);
+  if (val != m_wire.elements_end()){
+    m_functionFlag = readNonNegativeInteger(*val);
+  }
+
+  //ServiceTime
+  val = m_wire.find(tlv::ServiceTime);
+  if (val != m_wire.elements_end()) {
+    m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
+  }
+  else {
+    m_serviceTime = DEFAULT_SERVICETIME;
+  }
+
+  //FunctionTime
+  val = m_wire.find(tlv::FunctionTime);
+  if (val != m_wire.elements_end()) {
+    m_functionTime = time::milliseconds(readNonNegativeInteger(*val));
+  }
+  else {
+    m_functionTime = DEFAULT_FUNCTIONTIME;
+  }
 
 }
 

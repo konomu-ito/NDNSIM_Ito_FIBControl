@@ -100,6 +100,13 @@ public: // getter/setter
   MetaInfo&
   setFreshnessPeriod(const time::milliseconds& freshnessPeriod);
 
+  //ServiceTime
+  const time::milliseconds&
+  getServiceTime() const;
+
+  MetaInfo&
+  setServiceTime(const time::milliseconds& serviceTime);
+
   const name::Component&
   getFinalBlockId() const;
 
@@ -187,6 +194,7 @@ public: // EqualityComparable concept
 private:
   uint32_t m_type;
   time::milliseconds m_freshnessPeriod;
+  time::milliseconds m_serviceTime;
   name::Component m_finalBlockId;
   std::list<Block> m_appMetaInfo;
 
@@ -208,6 +216,12 @@ inline const time::milliseconds&
 MetaInfo::getFreshnessPeriod() const
 {
   return m_freshnessPeriod;
+}
+
+inline const time::milliseconds&
+MetaInfo::getServiceTime() const
+{
+  return m_serviceTime;
 }
 
 inline const name::Component&

@@ -41,10 +41,13 @@ void
 BestRouteStrategy::afterReceiveInterest(const Face& inFace, const Interest& interest,
                                         const shared_ptr<pit::Entry>& pitEntry)
 {
+
+  /*
   if (hasPendingOutRecords(*pitEntry)) {
     // not a new Interest, don't forward
     return;
   }
+  */
 
   const fib::Entry& fibEntry = this->lookupFib(*pitEntry);
   const fib::NextHopList& nexthops = fibEntry.getNextHops();
@@ -56,8 +59,8 @@ BestRouteStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
       this->sendInterest(pitEntry, outFace, interest);
       return;
     }
+    this->sendInterest(pitEntry, outFace, interest);
   }
-
   this->rejectPendingInterest(pitEntry);
 }
 

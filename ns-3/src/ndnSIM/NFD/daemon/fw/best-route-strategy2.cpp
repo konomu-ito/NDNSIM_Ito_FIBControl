@@ -144,6 +144,7 @@ BestRouteStrategy2::afterReceiveInterest(const Face& inFace, const Interest& int
     return;
   }
 
+
   // find an unused upstream with lowest cost except downstream
   it = std::find_if(nexthops.begin(), nexthops.end(),
                     bind(&isNextHopEligible, cref(inFace), interest, _1, pitEntry,

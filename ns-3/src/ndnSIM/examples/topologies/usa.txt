@@ -1,0 +1,152 @@
+# topo-grid-3x3.txt
+
+#   /--------\	    /-\	        /-\
+#   |Consumer|<---->| |<------->| |
+#   \--------/	    \-/	        \-/
+#       ^   	     ^ 	         ^
+#       |            |           |   1Mbps/10ms delay
+#       v            v           v
+#      /-\          /-\         /-\
+#      | |<-------->| |<------->| |
+#      \-/          \-/         \-/
+#       ^   	     ^ 	         ^
+#       |            |           |
+#       v            v           v
+#      /-\	    /-\	     /--------\
+#      | |<-------->| |<---->|Producer|
+#      \-/          \-/      \--------/
+
+# any empty lines and lines starting with '#' symbol is ignored
+#
+# The file should contain exactly two sections: router and link, each starting with the corresponding keyword
+#
+# router section defines topology nodes and their relative positions (e.g., to use in visualizer)
+router
+
+# each line in this section represents one router and should have the following data
+# node  comment     yPos    xPos
+Consumer1  NA        0       0
+Node1    NA          5       0
+Node2    NA          4       0
+Node3    NA          3       0
+Node4    NA          2       1
+Node5    NA          1       0
+Node6    NA          4       2
+Node7    NA          3       2
+Node8    NA          1       2
+Node9    NA          3       3
+Node10   NA          1       3
+Node11   NA          4       4
+Node12   NA          3       4
+Node13   NA          1       4
+Node14   NA          0       4
+Node15   NA          4       5
+Node16   NA          3       5
+Node17   NA          1       5
+Node18   NA          0       5
+Node19   NA          5       7
+Node20   NA          4       7
+Node21   NA          3       7
+Node22   NA          2       6
+Node23   NA          1       7
+Node24   NA          0       7
+Producer1  NA        5       2
+F1a      NA          3       -1
+F1b      NA          1       2.5
+F1c      NA          3       6
+F2a      NA          3       1
+F2b      NA          1       3.5
+F2c      NA          1       8
+F3a      NA          2       1.5
+F3b      NA          3       3.5
+F3c      NA          1       4.5
+F4a      NA          4       1
+F4b      NA          3       2.5
+F4c      NA          4       4.5
+F5a      NA          4       -1
+F5b      NA          4       3
+F5c      NA          4       6
+Consumer2  NA        0       2
+Consumer3  NA        0       8
+Consumer4  NA        0       6
+Producer2  NA        5       -1
+Producer3  NA        5       6
+Producer4  NA        5       8
+
+# Note that `node` can be any string. It is possible to access to the node by name using Names::Find, see examples.
+
+# link section defines point-to-point links between nodes and characteristics of these links
+link
+
+# Each line should be in the following format (only first two are required, the rest can be omitted)
+# srcNode   dstNode     bandwidth   metric  delay   queue
+# bandwidth: link bandwidth
+# metric: routing metric
+# delay:  link delay
+# queue:  MaxPackets for transmission queue on the link (both directions)
+Producer1   Node1       1Mbps       1       0ms     2000
+Producer2   Node1       1Mbps       1       0ms     2000
+Node19       Producer3   1Mbps       1       0ms     2000
+Node19       Producer4   1Mbps       1       0ms     2000
+Node1       Node2       1Mbps       1       4ms     2000
+Node1       Node6       1Mbps       1       5ms     2000
+Node2       Node3       1Mbps       1       5.5ms   2000
+Node2       Node6       1Mbps       1       4.75ms  2000
+Node3       Node4       1Mbps       1       1.25ms  2000
+Node3       Node5       1Mbps       1       5ms     2000
+Node3       Node7       1Mbps       1       5ms     2000
+Node4       Node5       1Mbps       1       4ms     2000
+Node4       Node7       1Mbps       1       4.25ms  2000
+Node5       Node8       1Mbps       1       6ms     2000
+Node6       Node7       1Mbps       1       5ms     2000
+Node6       Node9       1Mbps       1       6ms     2000
+Node6       Node11      1Mbps       1       9.5ms   2000
+Node7       Node8       1Mbps       1       5.75ms  2000
+Node8       Node10      1Mbps       1       4.5ms   2000
+Node9       Node10      1Mbps       1       5ms     2000
+Node9       Node11      1Mbps       1       7ms     2000
+Node9       Node12      1Mbps       1       5ms     2000
+Node10      Node13      1Mbps       1       4.75ms  2000
+Node10      Node14      1Mbps       1       4.25ms  2000
+Node11      Node12      1Mbps       1       4.5ms   2000
+Node11      Node15      1Mbps       1       6.5ms   2000
+Node11      Node19      1Mbps       1       14ms    2000
+Node12      Node13      1Mbps       1       4.5ms   2000
+Node12      Node16      1Mbps       1       5ms     2000
+Node13      Node14      1Mbps       1       3.25ms  2000
+Node13      Node17      1Mbps       1       5.5ms   2000
+Node14      Node18      1Mbps       1       6ms     2000
+Node15      Node16      1Mbps       1       4ms     2000
+Node15      Node20      1Mbps       1       6.5ms   2000
+Node16      Node17      1Mbps       1       5ms     2000
+Node16      Node21      1Mbps       1       5ms     2000
+Node16      Node22      1Mbps       1       4ms     2000
+Node17      Node18      1Mbps       1       4ms     2000
+Node17      Node22      1Mbps       1       4.25ms  2000
+Node17      Node23      1Mbps       1       5ms     2000
+Node18      Node24      1Mbps       1       4.5ms   2000
+Node19      Node20      1Mbps       1       6ms     2000
+Node20      Node21      1Mbps       1       3.5ms   2000
+Node21      Node22      1Mbps       1       1.5ms   2000
+Node22      Node23      1Mbps       1       3ms     2000
+Node23      Node24      1Mbps       1       4.5ms   2000
+F1a         Node3       0.2Mbps       1       0ms    2000
+F1b         Node10      0.2Mbps       1       0ms    2000
+F1c         Node21      0.2Mbps       1       0ms    2000
+F2a         Node7       0.2Mbps       1       0ms    2000
+F2b         Node13      0.2Mbps       1       0ms    2000
+F2c         Node23      0.2Mbps       1       0ms    2000
+F3a         Node4       0.2Mbps       1       0ms    2000
+F3b         Node12      0.2Mbps       1       0ms    2000
+F3c         Node17      0.2Mbps       1       0ms    2000
+F4a         Node6       0.2Mbps       1       0ms    2000
+F4b         Node9       0.2Mbps       1       0ms    2000
+F4c         Node15      0.2Mbps       1       0ms    2000
+F5a         Node2       0.2Mbps       1       0ms    2000
+F5b         Node11      0.2Mbps       1       0ms    2000
+F5c         Node20      0.2Mbps       1       0ms    2000
+Consumer1   Node5       1Mbps       1       0ms    2000
+Consumer2   Node8       1Mbps       1       0ms    2000
+Consumer3   Node24      1Mbps       1       0ms    2000
+Consumer4   Node18      1Mbps       1       0ms    2000
+
