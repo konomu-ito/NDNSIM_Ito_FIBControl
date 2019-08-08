@@ -3990,6 +3990,472 @@ double dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumerNod
 
 }
 
+int rr[6] = {0,1,1,1,1,1};
+
+std::string
+roundRobin(int func){
+	if(func == 1){
+		if(rr[func] == 1){
+			rr[func] = 2;
+			return "/F1a";
+		}else if(rr[func] == 2){
+			rr[func] = 3;
+			return "/F1b";
+		}else if(rr[func] == 3){
+			rr[func] = 1;
+			return "/F1c";
+		}
+	}
+	if(func == 2){
+		if(rr[func] == 1){
+			rr[func] = 2;
+			return "/F2a";
+	    }else if(rr[func] == 2){
+			rr[func] = 3;
+			return "/F2b";
+		}else if(rr[func] == 3){
+			rr[func] = 1;
+			return "/F2c";
+		}
+	}
+	if(func == 3){
+		if(rr[func] == 1){
+			rr[func] = 2;
+			return "/F3a";
+		}else if(rr[func] == 2){
+			rr[func] = 3;
+			return "/F3b";
+		}else if(rr[func] == 3){
+			rr[func] = 1;
+			return "/F3c";
+		}
+	}
+	if(func == 4){
+		if(rr[func] == 1){
+			rr[func] = 2;
+			return "/F4a";
+		}else if(rr[func] == 2){
+			rr[func] = 3;
+			return "/F4b";
+		}else if(rr[func] == 3){
+			rr[func] = 1;
+			return "/F4c";
+		}
+   }
+   if(func == 5){
+		if(rr[func] == 1){
+			rr[func] = 2;
+			return "/F5a";
+		}else if(rr[func] == 2){
+			rr[func] = 3;
+			return "/F5b";
+		}else if(rr[func] == 3){
+			rr[func] = 1;
+			return "/F5c";
+		}
+	}
+
+	return "";
+}
+
+shared_ptr<Name>
+sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight){
+	shared_ptr<Name> functionName;
+	std::string funcName;
+	int distance;
+	switch(getChoiceType()){
+		case 0:
+
+			  distance = dijkstra(0, 25, sRoute, functionType, currentNode, weight, 0);
+			  //int distance = dijkstra(0, 25, sRoute, 1, currentNode, weight, 0);
+			  //std::cout << "distance: " << distance << std::endl;
+
+			  /*
+			  for(int i = 4; i >= 0; i--)
+			    printf("%d,",sRoute[i]);
+			  std::cout << "" << std::endl;
+			  */
+
+
+			  /*
+			  //for us
+			  switch (sRoute[3]) {
+			    case 2:
+			      funcName = "/F1a";
+			      break;
+			    case 11:
+			      funcName = "/F1b";
+			      break;
+			    case 18:
+			      funcName = "/F1c";
+			      break;
+			    case 7:
+			      funcName = "/F2a";
+			      break;
+			    case 10:
+			      funcName = "/F2b";
+			      break;
+			    case 16:
+			      funcName = "/F2c";
+			      break;
+			    case 8:
+			      funcName = "/F3a";
+			      break;
+			    case 13:
+			      funcName = "/F3b";
+			      break;
+			    case 15:
+			      funcName = "/F3c";
+			      break;
+			    case 5:
+			      funcName = "/F4a";
+			      break;
+			    case 12:
+			      funcName = "/F4b";
+			      break;
+			    case 21:
+			      funcName = "/F4c";
+			      break;
+			    case 3:
+			      funcName = "/F5a";
+			      break;
+			    case 9:
+			      funcName = "/F5b";
+			      break;
+			    case 23:
+			      funcName = "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+
+			  switch (sRoute[2]) {
+			    case 2:
+			      funcName += "/F1a";
+			      break;
+			    case 11:
+			      funcName += "/F1b";
+			      break;
+			    case 18:
+			      funcName += "/F1c";
+			      break;
+			    case 7:
+			      funcName += "/F2a";
+			      break;
+			    case 10:
+			      funcName += "/F2b";
+			      break;
+			    case 16:
+			      funcName += "/F2c";
+			      break;
+			    case 8:
+			      funcName += "/F3a";
+			      break;
+			    case 13:
+			      funcName += "/F3b";
+			      break;
+			    case 15:
+			      funcName += "/F3c";
+			      break;
+			    case 5:
+			      funcName += "/F4a";
+			      break;
+			    case 12:
+			      funcName += "/F4b";
+			      break;
+			    case 21:
+			      funcName += "/F4c";
+			      break;
+			    case 3:
+			      funcName += "/F5a";
+			      break;
+			    case 9:
+			      funcName += "/F5b";
+			      break;
+			    case 23:
+			      funcName += "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+
+			  switch (sRoute[1]) {
+			    case 2:
+			      funcName += "/F1a";
+			      break;
+			    case 11:
+			      funcName += "/F1b";
+			      break;
+			    case 18:
+			      funcName += "/F1c";
+			      break;
+			    case 7:
+			      funcName += "/F2a";
+			      break;
+			    case 10:
+			      funcName += "/F2b";
+			      break;
+			    case 16:
+			      funcName += "/F2c";
+			      break;
+			    case 8:
+			      funcName += "/F3a";
+			      break;
+			    case 13:
+			      funcName += "/F3b";
+			      break;
+			    case 15:
+			      funcName += "/F3c";
+			      break;
+			    case 5:
+			      funcName += "/F4a";
+			      break;
+			    case 12:
+			      funcName += "/F4b";
+			      break;
+			    case 21:
+			      funcName += "/F4c";
+			      break;
+			    case 3:
+			      funcName += "/F5a";
+			      break;
+			    case 9:
+			      funcName += "/F5b";
+			      break;
+			    case 23:
+			      funcName += "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+			  */
+
+			  //for us1
+			  switch (sRoute[3]) {
+			    case 3:
+			      funcName = "/F1a";
+			      break;
+			    case 10:
+			      funcName = "/F1b";
+			      break;
+			    case 21:
+			      funcName = "/F1c";
+			      break;
+			    case 7:
+			      funcName = "/F2a";
+			      break;
+			    case 13:
+			      funcName = "/F2b";
+			      break;
+			    case 23:
+			      funcName = "/F2c";
+			      break;
+			    case 4:
+			      funcName = "/F3a";
+			      break;
+			    case 12:
+			      funcName = "/F3b";
+			      break;
+			    case 17:
+			      funcName = "/F3c";
+			      break;
+			    case 6:
+			      funcName = "/F4a";
+			      break;
+			    case 9:
+			      funcName = "/F4b";
+			      break;
+			    case 15:
+			      funcName = "/F4c";
+			      break;
+			    case 2:
+			      funcName = "/F5a";
+			      break;
+			    case 11:
+			      funcName = "/F5b";
+			      break;
+			    case 20:
+			      funcName = "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+
+			  switch (sRoute[2]) {
+			    case 3:
+			      funcName += "/F1a";
+			      break;
+			    case 10:
+			      funcName += "/F1b";
+			      break;
+			    case 21:
+			      funcName += "/F1c";
+			      break;
+			    case 7:
+			      funcName += "/F2a";
+			      break;
+			    case 13:
+			      funcName += "/F2b";
+			      break;
+			    case 23:
+			      funcName += "/F2c";
+			      break;
+			    case 4:
+			      funcName += "/F3a";
+			      break;
+			    case 12:
+			      funcName += "/F3b";
+			      break;
+			    case 17:
+			      funcName += "/F3c";
+			      break;
+			    case 6:
+			      funcName += "/F4a";
+			      break;
+			    case 9:
+			      funcName += "/F4b";
+			      break;
+			    case 15:
+			      funcName += "/F4c";
+			      break;
+			    case 2:
+			      funcName += "/F5a";
+			      break;
+			    case 11:
+			      funcName += "/F5b";
+			      break;
+			    case 20:
+			      funcName += "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+
+			  switch (sRoute[1]) {
+			    case 3:
+			      funcName += "/F1a";
+			      break;
+			    case 10:
+			      funcName += "/F1b";
+			      break;
+			    case 21:
+			      funcName += "/F1c";
+			      break;
+			    case 7:
+			      funcName += "/F2a";
+			      break;
+			    case 13:
+			      funcName += "/F2b";
+			      break;
+			    case 23:
+			      funcName += "/F2c";
+			      break;
+			    case 4:
+			      funcName += "/F3a";
+			      break;
+			    case 12:
+			      funcName += "/F3b";
+			      break;
+			    case 17:
+			      funcName += "/F3c";
+			      break;
+			    case 6:
+			      funcName += "/F4a";
+			      break;
+			    case 9:
+			      funcName += "/F4b";
+			      break;
+			    case 15:
+			      funcName += "/F4c";
+			      break;
+			    case 2:
+			      funcName += "/F5a";
+			      break;
+			    case 11:
+			      funcName += "/F5b";
+			      break;
+			    case 20:
+			      funcName += "/F5c";
+			      break;
+			    default:
+			      break;
+			  }
+
+
+			  increaseTotalHops(distance);
+			  functionName = make_shared<Name>(funcName);
+
+			break;  // end siraiwaNDN
+		case 1: //roundRobin
+     		switch(functionType){// firstType
+     		case 1:
+     		case 2:
+     		case 5:
+     		case 6:
+     			funcName += roundRobin(1);
+     			break;
+     		case 3:
+     		case 4:
+     		case 9:
+     		case 10:
+     			funcName += roundRobin(2);
+     			break;
+     		case 7:
+     		case 8:
+     		case 11:
+     		case 12:
+     			funcName += roundRobin(3);
+     			break;
+     		default:
+     			break;
+     		}
+     		switch(functionType){// secondType
+     		case 1:
+     	    case 2:
+     		case 11:
+     		case 12:
+     		    funcName += roundRobin(2);
+     		    break;
+     		case 3:
+     		case 4:
+     		case 7:
+     		case 8:
+     		    funcName += roundRobin(1);
+     	        break;
+     		case 5:
+     		case 6:
+     		case 9:
+     		case 10:
+     		    funcName += roundRobin(3);
+     		    break;
+     		default:
+     			break;
+     		}
+     		switch(functionType){// firstType
+     		case 1:
+     		case 3:
+     		case 5:
+     		case 7:
+     		case 9:
+     		case 11:
+     			funcName += roundRobin(4);
+     			break;
+     		case 2:
+     		case 4:
+     		case 6:
+     		case 8:
+     		case 10:
+     		case 12:
+     			funcName += roundRobin(5);
+     			break;
+     		default:
+     			break;
+     		}
+			functionName = make_shared<Name>(funcName);
+			break;
+	}
+	return functionName;
+}
 
 void
 Consumer::SendPacket()
@@ -4028,332 +4494,12 @@ Consumer::SendPacket()
   int currentNode = ns3::Simulator::GetContext();
   //std::cout << "Consumer Node: " <<  currentNode << std::endl;
   //std::cout << "function type:"  <<  functionType << std::endl;
-  
+
   //dijkstra
   int sRoute[N];
   //need to change
   double weight = 0;
-
-  int distance = dijkstra(0, 25, sRoute, functionType, currentNode, weight, 0);
-  //int distance = dijkstra(0, 25, sRoute, 1, currentNode, weight, 0);
-  //std::cout << "distance: " << distance << std::endl;
-  
-  /*
-  for(int i = 4; i >= 0; i--)
-    printf("%d,",sRoute[i]);
-  std::cout << "" << std::endl;
-  */
-
-  std::string funcName;
-
-  /*
-  //for us
-  switch (sRoute[3]) {
-    case 2:
-      funcName = "/F1a";
-      break;
-    case 11:
-      funcName = "/F1b";
-      break;
-    case 18:
-      funcName = "/F1c";
-      break;
-    case 7:
-      funcName = "/F2a";
-      break;
-    case 10:
-      funcName = "/F2b";
-      break;
-    case 16:
-      funcName = "/F2c";
-      break;
-    case 8:
-      funcName = "/F3a";
-      break;
-    case 13:
-      funcName = "/F3b";
-      break;
-    case 15:
-      funcName = "/F3c";
-      break;
-    case 5:
-      funcName = "/F4a";
-      break;
-    case 12:
-      funcName = "/F4b";
-      break;
-    case 21:
-      funcName = "/F4c";
-      break;
-    case 3:
-      funcName = "/F5a";
-      break;
-    case 9:
-      funcName = "/F5b";
-      break;
-    case 23:
-      funcName = "/F5c";
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[2]) {
-    case 2:
-      funcName += "/F1a";
-      break;
-    case 11:
-      funcName += "/F1b";
-      break;
-    case 18:
-      funcName += "/F1c";
-      break;
-    case 7:
-      funcName += "/F2a";
-      break;
-    case 10:
-      funcName += "/F2b";
-      break;
-    case 16:
-      funcName += "/F2c";
-      break;
-    case 8:
-      funcName += "/F3a";
-      break;
-    case 13:
-      funcName += "/F3b";
-      break;
-    case 15:
-      funcName += "/F3c";
-      break;
-    case 5:
-      funcName += "/F4a";
-      break;
-    case 12:
-      funcName += "/F4b";
-      break;
-    case 21:
-      funcName += "/F4c";
-      break;
-    case 3:
-      funcName += "/F5a";
-      break;
-    case 9:
-      funcName += "/F5b";
-      break;
-    case 23:
-      funcName += "/F5c";
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[1]) {
-    case 2:
-      funcName += "/F1a";
-      break;
-    case 11:
-      funcName += "/F1b";
-      break;
-    case 18:
-      funcName += "/F1c";
-      break;
-    case 7:
-      funcName += "/F2a";
-      break;
-    case 10:
-      funcName += "/F2b";
-      break;
-    case 16:
-      funcName += "/F2c";
-      break;
-    case 8:
-      funcName += "/F3a";
-      break;
-    case 13:
-      funcName += "/F3b";
-      break;
-    case 15:
-      funcName += "/F3c";
-      break;
-    case 5:
-      funcName += "/F4a";
-      break;
-    case 12:
-      funcName += "/F4b";
-      break;
-    case 21:
-      funcName += "/F4c";
-      break;
-    case 3:
-      funcName += "/F5a";
-      break;
-    case 9:
-      funcName += "/F5b";
-      break;
-    case 23:
-      funcName += "/F5c";
-      break;
-    default:
-      break;
-  }
-  */
-
-  //for us1
-  switch (sRoute[3]) {
-    case 3:
-      funcName = "/F1a";
-      break;
-    case 10:
-      funcName = "/F1b";
-      break;
-    case 21:
-      funcName = "/F1c";
-      break;
-    case 7:
-      funcName = "/F2a";
-      break;
-    case 13:
-      funcName = "/F2b";
-      break;
-    case 23:
-      funcName = "/F2c";
-      break;
-    case 4:
-      funcName = "/F3a";
-      break;
-    case 12:
-      funcName = "/F3b";
-      break;
-    case 17:
-      funcName = "/F3c";
-      break;
-    case 6:
-      funcName = "/F4a";
-      break;
-    case 9:
-      funcName = "/F4b";
-      break;
-    case 15:
-      funcName = "/F4c";
-      break;
-    case 2:
-      funcName = "/F5a";
-      break;
-    case 11:
-      funcName = "/F5b";
-      break;
-    case 20:
-      funcName = "/F5c";
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[2]) {
-    case 3:
-      funcName += "/F1a";
-      break;
-    case 10:
-      funcName += "/F1b";
-      break;
-    case 21:
-      funcName += "/F1c";
-      break;
-    case 7:
-      funcName += "/F2a";
-      break;
-    case 13:
-      funcName += "/F2b";
-      break;
-    case 23:
-      funcName += "/F2c";
-      break;
-    case 4:
-      funcName += "/F3a";
-      break;
-    case 12:
-      funcName += "/F3b";
-      break;
-    case 17:
-      funcName += "/F3c";
-      break;
-    case 6:
-      funcName += "/F4a";
-      break;
-    case 9:
-      funcName += "/F4b";
-      break;
-    case 15:
-      funcName += "/F4c";
-      break;
-    case 2:
-      funcName += "/F5a";
-      break;
-    case 11:
-      funcName += "/F5b";
-      break;
-    case 20:
-      funcName += "/F5c";
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[1]) {
-    case 3:
-      funcName += "/F1a";
-      break;
-    case 10:
-      funcName += "/F1b";
-      break;
-    case 21:
-      funcName += "/F1c";
-      break;
-    case 7:
-      funcName += "/F2a";
-      break;
-    case 13:
-      funcName += "/F2b";
-      break;
-    case 23:
-      funcName += "/F2c";
-      break;
-    case 4:
-      funcName += "/F3a";
-      break;
-    case 12:
-      funcName += "/F3b";
-      break;
-    case 17:
-      funcName += "/F3c";
-      break;
-    case 6:
-      funcName += "/F4a";
-      break;
-    case 9:
-      funcName += "/F4b";
-      break;
-    case 15:
-      funcName += "/F4c";
-      break;
-    case 2:
-      funcName += "/F5a";
-      break;
-    case 11:
-      funcName += "/F5b";
-      break;
-    case 20:
-      funcName += "/F5c";
-      break;
-    default:
-      break;
-  }
-
-
-  increaseTotalHops(distance);
-
-  shared_ptr<Name> functionName = make_shared<Name>(funcName);
+  shared_ptr<Name> functionName = sourceRouting(functionType, currentNode, sRoute, weight);
 
   /* for gid
   std::cout << "AllFC: " << getAllFcc() << std::endl;
@@ -4484,6 +4630,8 @@ Consumer::SendPacket()
 
   ScheduleNextPacket();
 }
+
+
 
 ///////////////////////////////////////////////////
 //          Process incoming packets             //

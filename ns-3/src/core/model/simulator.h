@@ -1608,6 +1608,10 @@ void increaseTotalServiceTime(int i);
 
 int getTotalServiceTime();
 
+void setChoiceType(const char* type);
+
+int getChoiceType();
+
 } // namespace ns3
 
 #endif /* SIMULATOR_H */

@@ -56,7 +56,9 @@ main(int argc, char* argv[])
 
   CommandLine cmd;
   cmd.Parse(argc, argv);
-
+  //choose siraiwaNDN or roundRobin
+  const char* type = "roundRobin";
+  setChoiceType(type);
   AnnotatedTopologyReader topologyReader("", 25);
   topologyReader.SetFileName("src/ndnSIM/examples/topologies/usa.txt");
   topologyReader.Read();

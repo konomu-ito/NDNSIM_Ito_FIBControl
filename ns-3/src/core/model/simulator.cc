@@ -469,6 +469,7 @@ int serviceNum = 0;
 
 int totalServiceTime = 0;
 
+int choiceType = 0;
 
 int getFunctionCallCount(int i){
   switch(i) {
@@ -930,6 +931,18 @@ int getTotalServiceTime(){
   return totalServiceTime;
 }
 
+void setChoiceType(const char* type){
+	std::string strType = type;
+	if(strType == "siraiwaNDN"){
+		choiceType = 0;
+	}else if(strType == "roundRobin"){
+		choiceType = 1;
+	}
+}
+
+int getChoiceType(){
+	return choiceType;
+}
 
 } // namespace ns3
 
