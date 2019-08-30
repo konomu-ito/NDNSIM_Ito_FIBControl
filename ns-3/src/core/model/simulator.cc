@@ -937,6 +937,8 @@ void setChoiceType(const char* type){
 		choiceType = 0;
 	}else if(strType == "roundRobin"){
 		choiceType = 1;
+	}else if(strType == "duration"){
+		choiceType = 2;
 	}
 }
 

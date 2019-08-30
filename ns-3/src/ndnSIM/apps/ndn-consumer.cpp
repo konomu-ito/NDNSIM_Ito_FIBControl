@@ -4058,13 +4058,89 @@ roundRobin(int func){
 	return "";
 }
 
+int countA[4]={0,0,0,0};
+int hopA[4]={0,0,0,0};
+int countB[4]={0,0,0,0};
+int hopB[4]={0,0,0,0};
+int countC[4]={0,0,0,0};
+int hopC[4]={0,0,0,0};
+
+int
+funcJudge(int fn){
+	int function;
+	if(countA[fn]+hopA[fn] > countB[fn]+hopB[fn]){
+		if(countA[fn]+hopA[fn] > countC[fn]+hopC[fn]){
+			function = 1;
+		}
+	}else if(countB[fn]+hopB[fn] > countC[fn]+hopC[fn]){
+		function = 2;
+	}else{
+		function = 3;
+	}
+	return function;
+}
+
+shared_ptr<std::string>
+duration(int f1, int f2, int f3){
+	shared_ptr<std::string> ptr;
+	if(f1 == 1){
+		if(funcJudge(f1) == 1){
+			ptr = make_shared<std::string>("/F1a");
+		}
+		if(funcJudge(f1) == 2){
+			ptr = make_shared<std::string>("/F1b");
+		}
+		if(funcJudge(f1) == 3){
+			ptr = make_shared<std::string>("/F1c");
+		}
+	}
+	if(f1 == 2){
+		if(funcJudge(f1) == 1){
+			ptr = make_shared<std::string>("/F2a");
+		}
+		if(funcJudge(f1) == 2){
+			ptr = make_shared<std::string>("/F2b");
+		}
+		if(funcJudge(f1) == 3){
+			ptr = make_shared<std::string>("/F2c");
+		}
+	}
+	if(f1 == 3){
+		if(funcJudge(f1) == 1){
+			ptr = make_shared<std::string>("/F3a");
+		}
+		if(funcJudge(f1) == 2){
+			ptr = make_shared<std::string>("/F3b");
+		}
+		if(funcJudge(f1) == 3){
+			ptr = make_shared<std::string>("/F3c");
+		}
+	}
+
+	if(f2 == 1){
+		*ptr += "/F1";
+	}else if(f2 == 2){
+		*ptr += "/F2";
+	}else if(f2 == 3){
+		*ptr += "/F3";
+	}
+
+	if(f3 == 4){
+		*ptr += "/F4";
+	}else if(f3 == 5){
+		*ptr += "/F5";
+	}
+
+	return ptr;
+}
+
 shared_ptr<Name>
 sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight){
 	shared_ptr<Name> functionName;
-	std::string funcName;
+	shared_ptr<std::string> funcName = make_shared<std::string>("");
 	int distance;
 	switch(getChoiceType()){
-		case 0:
+		case 0: //siraiwaNDN
 
 			  distance = dijkstra(0, 25, sRoute, functionType, currentNode, weight, 0);
 			  //int distance = dijkstra(0, 25, sRoute, 1, currentNode, weight, 0);
@@ -4081,49 +4157,49 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 			  //for us
 			  switch (sRoute[3]) {
 			    case 2:
-			      funcName = "/F1a";
+			      *funcName = "/F1a";
 			      break;
 			    case 11:
-			      funcName = "/F1b";
+			      *funcName = "/F1b";
 			      break;
 			    case 18:
-			      funcName = "/F1c";
+			      *funcName = "/F1c";
 			      break;
 			    case 7:
-			      funcName = "/F2a";
+			      *funcName = "/F2a";
 			      break;
 			    case 10:
-			      funcName = "/F2b";
+			      *funcName = "/F2b";
 			      break;
 			    case 16:
-			      funcName = "/F2c";
+			      *funcName = "/F2c";
 			      break;
 			    case 8:
-			      funcName = "/F3a";
+			      *funcName = "/F3a";
 			      break;
 			    case 13:
-			      funcName = "/F3b";
+			      *funcName = "/F3b";
 			      break;
 			    case 15:
-			      funcName = "/F3c";
+			      *funcName = "/F3c";
 			      break;
 			    case 5:
-			      funcName = "/F4a";
+			      *funcName = "/F4a";
 			      break;
 			    case 12:
-			      funcName = "/F4b";
+			      *funcName = "/F4b";
 			      break;
 			    case 21:
-			      funcName = "/F4c";
+			      *funcName = "/F4c";
 			      break;
 			    case 3:
-			      funcName = "/F5a";
+			      *funcName = "/F5a";
 			      break;
 			    case 9:
-			      funcName = "/F5b";
+			      *funcName = "/F5b";
 			      break;
 			    case 23:
-			      funcName = "/F5c";
+			      *funcName = "/F5c";
 			      break;
 			    default:
 			      break;
@@ -4131,49 +4207,49 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 
 			  switch (sRoute[2]) {
 			    case 2:
-			      funcName += "/F1a";
+			      *funcName += "/F1a";
 			      break;
 			    case 11:
-			      funcName += "/F1b";
+			      *funcName += "/F1b";
 			      break;
 			    case 18:
-			      funcName += "/F1c";
+			      *funcName += "/F1c";
 			      break;
 			    case 7:
-			      funcName += "/F2a";
+			      *funcName += "/F2a";
 			      break;
 			    case 10:
-			      funcName += "/F2b";
+			      *funcName += "/F2b";
 			      break;
 			    case 16:
-			      funcName += "/F2c";
+			      *funcName += "/F2c";
 			      break;
 			    case 8:
-			      funcName += "/F3a";
+			      *funcName += "/F3a";
 			      break;
 			    case 13:
-			      funcName += "/F3b";
+			      *funcName += "/F3b";
 			      break;
 			    case 15:
-			      funcName += "/F3c";
+			      *funcName += "/F3c";
 			      break;
 			    case 5:
-			      funcName += "/F4a";
+			      *funcName += "/F4a";
 			      break;
 			    case 12:
-			      funcName += "/F4b";
+			      *funcName += "/F4b";
 			      break;
 			    case 21:
-			      funcName += "/F4c";
+			      *funcName += "/F4c";
 			      break;
 			    case 3:
-			      funcName += "/F5a";
+			      *funcName += "/F5a";
 			      break;
 			    case 9:
-			      funcName += "/F5b";
+			      *funcName += "/F5b";
 			      break;
 			    case 23:
-			      funcName += "/F5c";
+			      *funcName += "/F5c";
 			      break;
 			    default:
 			      break;
@@ -4181,49 +4257,49 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 
 			  switch (sRoute[1]) {
 			    case 2:
-			      funcName += "/F1a";
+			      *funcName += "/F1a";
 			      break;
 			    case 11:
-			      funcName += "/F1b";
+			      *funcName += "/F1b";
 			      break;
 			    case 18:
-			      funcName += "/F1c";
+			      *funcName += "/F1c";
 			      break;
 			    case 7:
-			      funcName += "/F2a";
+			      *funcName += "/F2a";
 			      break;
 			    case 10:
-			      funcName += "/F2b";
+			      *funcName += "/F2b";
 			      break;
 			    case 16:
-			      funcName += "/F2c";
+			      *funcName += "/F2c";
 			      break;
 			    case 8:
-			      funcName += "/F3a";
+			      *funcName += "/F3a";
 			      break;
 			    case 13:
-			      funcName += "/F3b";
+			      *funcName += "/F3b";
 			      break;
 			    case 15:
-			      funcName += "/F3c";
+			      *funcName += "/F3c";
 			      break;
 			    case 5:
-			      funcName += "/F4a";
+			      *funcName += "/F4a";
 			      break;
 			    case 12:
-			      funcName += "/F4b";
+			      *funcName += "/F4b";
 			      break;
 			    case 21:
-			      funcName += "/F4c";
+			      *funcName += "/F4c";
 			      break;
 			    case 3:
-			      funcName += "/F5a";
+			      *funcName += "/F5a";
 			      break;
 			    case 9:
-			      funcName += "/F5b";
+			      *funcName += "/F5b";
 			      break;
 			    case 23:
-			      funcName += "/F5c";
+			      *funcName += "/F5c";
 			      break;
 			    default:
 			      break;
@@ -4233,49 +4309,49 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 			  //for us1
 			  switch (sRoute[3]) {
 			    case 3:
-			      funcName = "/F1a";
+			      *funcName = "/F1a";
 			      break;
 			    case 10:
-			      funcName = "/F1b";
+			      *funcName = "/F1b";
 			      break;
 			    case 21:
-			      funcName = "/F1c";
+			      *funcName = "/F1c";
 			      break;
 			    case 7:
-			      funcName = "/F2a";
+			      *funcName = "/F2a";
 			      break;
 			    case 13:
-			      funcName = "/F2b";
+			      *funcName = "/F2b";
 			      break;
 			    case 23:
-			      funcName = "/F2c";
+			      *funcName = "/F2c";
 			      break;
 			    case 4:
-			      funcName = "/F3a";
+			      *funcName = "/F3a";
 			      break;
 			    case 12:
-			      funcName = "/F3b";
+			      *funcName = "/F3b";
 			      break;
 			    case 17:
-			      funcName = "/F3c";
+			      *funcName = "/F3c";
 			      break;
 			    case 6:
-			      funcName = "/F4a";
+			      *funcName = "/F4a";
 			      break;
 			    case 9:
-			      funcName = "/F4b";
+			      *funcName = "/F4b";
 			      break;
 			    case 15:
-			      funcName = "/F4c";
+			      *funcName = "/F4c";
 			      break;
 			    case 2:
-			      funcName = "/F5a";
+			      *funcName = "/F5a";
 			      break;
 			    case 11:
-			      funcName = "/F5b";
+			      *funcName = "/F5b";
 			      break;
 			    case 20:
-			      funcName = "/F5c";
+			      *funcName = "/F5c";
 			      break;
 			    default:
 			      break;
@@ -4283,49 +4359,49 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 
 			  switch (sRoute[2]) {
 			    case 3:
-			      funcName += "/F1a";
+			      *funcName += "/F1a";
 			      break;
 			    case 10:
-			      funcName += "/F1b";
+			      *funcName += "/F1b";
 			      break;
 			    case 21:
-			      funcName += "/F1c";
+			      *funcName += "/F1c";
 			      break;
 			    case 7:
-			      funcName += "/F2a";
+			      *funcName += "/F2a";
 			      break;
 			    case 13:
-			      funcName += "/F2b";
+			      *funcName += "/F2b";
 			      break;
 			    case 23:
-			      funcName += "/F2c";
+			      *funcName += "/F2c";
 			      break;
 			    case 4:
-			      funcName += "/F3a";
+			      *funcName += "/F3a";
 			      break;
 			    case 12:
-			      funcName += "/F3b";
+			      *funcName += "/F3b";
 			      break;
 			    case 17:
-			      funcName += "/F3c";
+			      *funcName += "/F3c";
 			      break;
 			    case 6:
-			      funcName += "/F4a";
+			      *funcName += "/F4a";
 			      break;
 			    case 9:
-			      funcName += "/F4b";
+			      *funcName += "/F4b";
 			      break;
 			    case 15:
-			      funcName += "/F4c";
+			      *funcName += "/F4c";
 			      break;
 			    case 2:
-			      funcName += "/F5a";
+			      *funcName += "/F5a";
 			      break;
 			    case 11:
-			      funcName += "/F5b";
+			      *funcName += "/F5b";
 			      break;
 			    case 20:
-			      funcName += "/F5c";
+			      *funcName += "/F5c";
 			      break;
 			    default:
 			      break;
@@ -4333,57 +4409,54 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
 
 			  switch (sRoute[1]) {
 			    case 3:
-			      funcName += "/F1a";
+			      *funcName += "/F1a";
 			      break;
 			    case 10:
-			      funcName += "/F1b";
+			      *funcName += "/F1b";
 			      break;
 			    case 21:
-			      funcName += "/F1c";
+			      *funcName += "/F1c";
 			      break;
 			    case 7:
-			      funcName += "/F2a";
+			      *funcName += "/F2a";
 			      break;
 			    case 13:
-			      funcName += "/F2b";
+			      *funcName += "/F2b";
 			      break;
 			    case 23:
-			      funcName += "/F2c";
+			      *funcName += "/F2c";
 			      break;
 			    case 4:
-			      funcName += "/F3a";
+			      *funcName += "/F3a";
 			      break;
 			    case 12:
-			      funcName += "/F3b";
+			      *funcName += "/F3b";
 			      break;
 			    case 17:
-			      funcName += "/F3c";
+			      *funcName += "/F3c";
 			      break;
 			    case 6:
-			      funcName += "/F4a";
+			      *funcName += "/F4a";
 			      break;
 			    case 9:
-			      funcName += "/F4b";
+			      *funcName += "/F4b";
 			      break;
 			    case 15:
-			      funcName += "/F4c";
+			      *funcName += "/F4c";
 			      break;
 			    case 2:
-			      funcName += "/F5a";
+			      *funcName += "/F5a";
 			      break;
 			    case 11:
-			      funcName += "/F5b";
+			      *funcName += "/F5b";
 			      break;
 			    case 20:
-			      funcName += "/F5c";
+			      *funcName += "/F5c";
 			      break;
 			    default:
 			      break;
 			  }
-
-
 			  increaseTotalHops(distance);
-			  functionName = make_shared<Name>(funcName);
 
 			break;  // end siraiwaNDN
 		case 1: //roundRobin
@@ -4392,19 +4465,19 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
      		case 2:
      		case 5:
      		case 6:
-     			funcName += roundRobin(1);
+     			*funcName += roundRobin(1);
      			break;
      		case 3:
      		case 4:
      		case 9:
      		case 10:
-     			funcName += roundRobin(2);
+     			*funcName += roundRobin(2);
      			break;
      		case 7:
      		case 8:
      		case 11:
      		case 12:
-     			funcName += roundRobin(3);
+     			*funcName += roundRobin(3);
      			break;
      		default:
      			break;
@@ -4414,19 +4487,19 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
      	    case 2:
      		case 11:
      		case 12:
-     		    funcName += roundRobin(2);
+     		    *funcName += roundRobin(2);
      		    break;
      		case 3:
      		case 4:
      		case 7:
      		case 8:
-     		    funcName += roundRobin(1);
+     		    *funcName += roundRobin(1);
      	        break;
      		case 5:
      		case 6:
      		case 9:
      		case 10:
-     		    funcName += roundRobin(3);
+     		    *funcName += roundRobin(3);
      		    break;
      		default:
      			break;
@@ -4438,7 +4511,7 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
      		case 7:
      		case 9:
      		case 11:
-     			funcName += roundRobin(4);
+     			*funcName += roundRobin(4);
      			break;
      		case 2:
      		case 4:
@@ -4446,14 +4519,61 @@ sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight
      		case 8:
      		case 10:
      		case 12:
-     			funcName += roundRobin(5);
+     			*funcName += roundRobin(5);
      			break;
      		default:
      			break;
      		}
-			functionName = make_shared<Name>(funcName);
+			break;//end roundRobin
+		case 2://duration
+			switch(functionType){
+			case 1:
+				funcName = duration(1,2,4);
+				break;
+			case 2:
+				funcName = duration(1,2,5);
+				break;
+			case 5:
+				funcName = duration(1,3,4);
+				break;
+			case 6:
+			    funcName = duration(1,3,5);
+			    break;
+			case 3:
+				funcName = duration(2,1,4);
+				break;
+			case 4:
+				funcName = duration(2,1,5);
+				break;
+			case 9:
+				funcName = duration(2,3,4);
+				break;
+			case 10:
+				funcName = duration(2,3,5);
+				break;
+			case 7:
+				funcName = duration(3,1,4);
+				break;
+			case 8:
+				funcName = duration(3,1,5);
+				break;
+			case 11:
+				funcName = duration(3,2,4);
+				break;
+			case 12:
+				funcName = duration(3,2,5);
+				break;
+			default:
+				break;
+			}
+
 			break;
+     	default:
+     		std::cerr << "choice method not found" << std::endl;
+     		break;
 	}
+	std::string str = *funcName;
+	functionName = make_shared<Name>(str);
 	return functionName;
 }
 
