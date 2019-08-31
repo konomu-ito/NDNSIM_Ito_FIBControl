@@ -4065,6 +4065,7 @@ int hopB[4]={0,0,0,0};
 int countC[4]={0,0,0,0};
 int hopC[4]={0,0,0,0};
 
+//defined by yamaguchi
 int
 funcJudge(int fn){
 	int function;
@@ -4080,6 +4081,7 @@ funcJudge(int fn){
 	return function;
 }
 
+//defined by yamaguchi
 shared_ptr<std::string>
 duration(int f1, int f2, int f3){
 	shared_ptr<std::string> ptr;
@@ -4134,6 +4136,7 @@ duration(int f1, int f2, int f3){
 	return ptr;
 }
 
+//defined by yamaguchi
 shared_ptr<Name>
 sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight){
 	shared_ptr<Name> functionName;

@@ -261,6 +261,27 @@ public: // Name and guiders
     }
   }
 
+  //defined by yamaguchi
+  void
+  replaceHeadFunction(const Interest& interest, shared_ptr<std::string> str)
+  const
+  {
+	std::string funcStr = interest.getFunction().toUri();
+	int pos = funcStr.find("/", 1);
+	if(pos == -1 && funcStr.size() > 1){
+		funcStr.erase(1, funcStr.size()-1);
+		Name newFunc(funcStr);
+		interest.setFunction(newFunc);
+	}
+	else if(pos != -1){
+		std::string headFunc = *str;
+		funcStr.erase(1,pos);
+		headFunc += funcStr;
+		Name newFunc(headFunc);
+		interest.setFunction(newFunc);
+	}
+  }
+
   const time::milliseconds&
   getInterestLifetime() const
   {
