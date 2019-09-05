@@ -329,6 +329,37 @@ private:
 
   ns3::Ptr<ns3::ndn::ContentStore> m_csFromNdnSim;
 
+  int fcc1a =0;
+  int fcc1b =0;
+  int fcc1c =0;
+  int fcc2a =0;
+  int fcc2b =0;
+  int fcc2c =0;
+  int fcc3a =0;
+  int fcc3b =0;
+  int fcc3c =0;
+  int fcc4a =0;
+  int fcc4b =0;
+  int fcc4c =0;
+  int fcc5a =0;
+  int fcc5b =0;
+  int fcc5c =0;
+  int hop1a =1;
+  int hop1b =2;
+  int hop1c =3;
+  int hop2a =1;
+  int hop2b =2;
+  int hop2c =3;
+  int hop3a =1;
+  int hop3b =2;
+  int hop3c =3;
+  int hop4a =1;
+  int hop4b =2;
+  int hop4c =3;
+  int hop5a =1;
+  int hop5b =2;
+  int hop5c =3;
+
   // allow Strategy (base class) to enter pipelines
   friend class fw::Strategy;
 };

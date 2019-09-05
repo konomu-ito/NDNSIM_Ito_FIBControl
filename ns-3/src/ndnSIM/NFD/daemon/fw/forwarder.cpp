@@ -608,10 +608,66 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
   if (list[1] == currentNodeName){
     interest.removeHeadFunction(interest);
     interest.setFunctionFlag(1);
-    ns3::increaseTotalFcc(funcNum);
-    ns3::increaseAllFcc();
-    if(ns3::getAllFcc() == 30){
-      ns3::resetFcc();
+    if(ns3::getChoiceType() == 0){
+    	ns3::increaseTotalFcc(funcNum);
+    	ns3::increaseAllFcc();
+    	if(ns3::getAllFcc() == 30){
+    		ns3::resetFcc();
+    	}
+    }else if(ns3::getChoiceType() == 2){
+    	std::string funcStr;
+    	if(list[2].compare("F1")==0){
+    		if(fcc1a+hop1a<fcc1b+hop1b){
+    			if(fcc1a+hop1a<fcc1c+hop1c){
+    				funcStr = "/F1a";
+    			}
+    		}else if(fcc1b+hop1b<fcc1c+hop1c){
+    			funcStr = "/F1b";
+    		}else{
+    			funcStr = "/F1c";
+    		}
+    	}else if(list[2].compare("F2")==0){
+    		if(fcc2a+hop2a<fcc2b+hop2b){
+    			if(fcc2a+hop2a<fcc2c+hop2c){
+    				funcStr = "/F2a";
+    			}
+    		}else if(fcc2b+hop2b<fcc2c+hop2c){
+    	        funcStr = "/F2b";
+    		}else{
+    			funcStr = "/F2c";
+    		}
+    	}else if(list[2].compare("F3")==0){
+    		if(fcc3a+hop3a<fcc3b+hop3b){
+    			if(fcc3a+hop3a<fcc3c+hop3c){
+    				funcStr = "/F3a";
+    			}
+    		}else if(fcc1b+hop1b<fcc1c+hop1c){
+    			funcStr = "/F3b";
+    		}else{
+    			funcStr = "/F3c";
+    		}
+    	}else if(list[2].compare("F4")==0){
+    		if(fcc4a+hop4a<fcc4b+hop4b){
+    			if(fcc4a+hop4a<fcc4c+hop4c){
+    				funcStr = "/F4a";
+    			}
+    		}else if(fcc4b+hop4b<fcc4c+hop4c){
+    			funcStr = "/F4b";
+    		}else{
+    			funcStr = "/F4c";
+    		}
+    	}else if(list[2].compare("F5")==0){
+    		if(fcc5a+hop5a<fcc5b+hop5b){
+    			if(fcc5a+hop5a<fcc5c+hop5c){
+    				funcStr = "/F5a";
+    			}
+    		}else if(fcc5b+hop5b<fcc5c+hop5c){
+    			funcStr = "/F5b";
+    		}else{
+    			funcStr = "/F5c";
+    		}
+    	}
+    	interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
     }
   }
 
