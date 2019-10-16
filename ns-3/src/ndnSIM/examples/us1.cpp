@@ -898,7 +898,7 @@ main(int argc, char* argv[])
   // Calculate and install FIBs
   ndn::GlobalRoutingHelper::CalculateRoutes();
 
-  Simulator::Stop(Seconds(100.0));
+  Simulator::Stop(Seconds(200.0));
 
   Simulator::Run();
   Simulator::Destroy();

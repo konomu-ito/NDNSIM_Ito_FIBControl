@@ -328,7 +328,11 @@ private:
   shared_ptr<Face>   m_csFace;
 
   ns3::Ptr<ns3::ndn::ContentStore> m_csFromNdnSim;
-
+  int table[2][6][3]={
+		  {{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}},
+		  {{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0},{0,0,0}},
+  };
+/*
   int fcc1a =0;
   int fcc1b =0;
   int fcc1c =0;
@@ -359,7 +363,7 @@ private:
   int hop5a =1;
   int hop5b =2;
   int hop5c =3;
-
+*/
   // allow Strategy (base class) to enter pipelines
   friend class fw::Strategy;
 };

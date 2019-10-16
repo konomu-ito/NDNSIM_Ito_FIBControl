@@ -616,58 +616,59 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
     	}
     }else if(ns3::getChoiceType() == 2){
     	std::string funcStr;
+    	/*table index
+    	 * 1st hop or count
+    	 *  0:hop
+    	 *  1:count
+    	 * 2nd function number 1 to 5
+    	 * 3rd function character 0 to 2
+    	 */
     	if(list[2].compare("F1")==0){
-    		if(fcc1a+hop1a<fcc1b+hop1b){
-    			if(fcc1a+hop1a<fcc1c+hop1c){
-    				funcStr = "/F1a";
-    			}
-    		}else if(fcc1b+hop1b<fcc1c+hop1c){
+    		if(table[0][1][0]+table[1][1][0]<=table[0][1][1]+table[1][1][1] && table[0][1][0]+table[1][1][0]<=table[0][1][2]+table[1][1][2]){
+    			funcStr = "/F1a";
+    		}else if(table[0][1][1]+table[1][1][1]<=table[0][1][2]+table[1][1][2]){
     			funcStr = "/F1b";
     		}else{
     			funcStr = "/F1c";
     		}
     	}else if(list[2].compare("F2")==0){
-    		if(fcc2a+hop2a<fcc2b+hop2b){
-    			if(fcc2a+hop2a<fcc2c+hop2c){
-    				funcStr = "/F2a";
-    			}
-    		}else if(fcc2b+hop2b<fcc2c+hop2c){
-    	        funcStr = "/F2b";
+    		if(table[0][2][0]+table[1][2][0]<=table[0][2][1]+table[1][2][1] && table[0][2][0]+table[1][2][0]<=table[0][2][2]+table[1][2][2]){
+    		    funcStr = "/F2a";
+    		}else if(table[0][2][1]+table[1][2][1]<=table[0][2][2]+table[1][2][2]){
+    			funcStr = "/F2b";
     		}else{
     			funcStr = "/F2c";
     		}
     	}else if(list[2].compare("F3")==0){
-    		if(fcc3a+hop3a<fcc3b+hop3b){
-    			if(fcc3a+hop3a<fcc3c+hop3c){
+    		if(table[0][3][0]+table[1][3][0]<=table[0][3][1]+table[1][3][1] && table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
+    			if(table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
     				funcStr = "/F3a";
     			}
-    		}else if(fcc1b+hop1b<fcc1c+hop1c){
+    		}else if(table[0][3][1]+table[1][3][1]<=table[0][3][2]+table[1][3][2]){
     			funcStr = "/F3b";
     		}else{
     			funcStr = "/F3c";
     		}
     	}else if(list[2].compare("F4")==0){
-    		if(fcc4a+hop4a<fcc4b+hop4b){
-    			if(fcc4a+hop4a<fcc4c+hop4c){
-    				funcStr = "/F4a";
-    			}
-    		}else if(fcc4b+hop4b<fcc4c+hop4c){
+    		if(table[0][4][0]+table[1][4][0]<table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
+    			funcStr = "/F4a";
+    		}else if(table[0][4][1]+table[1][4][1]<table[0][4][2]+table[1][4][2]){
     			funcStr = "/F4b";
     		}else{
     			funcStr = "/F4c";
     		}
     	}else if(list[2].compare("F5")==0){
-    		if(fcc5a+hop5a<fcc5b+hop5b){
-    			if(fcc5a+hop5a<fcc5c+hop5c){
-    				funcStr = "/F5a";
-    			}
-    		}else if(fcc5b+hop5b<fcc5c+hop5c){
+    		if(table[0][5][0]+table[1][5][0]<table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
+    			funcStr = "/F5a";
+    		}else if(table[0][5][1]+table[1][5][1]<table[0][5][2]+table[1][5][2]){
     			funcStr = "/F5b";
     		}else{
     			funcStr = "/F5c";
     		}
     	}
     	interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+    	interest.addFunctionFullName(Name(funcStr));
+    	//std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
     }
   }
 
@@ -902,6 +903,30 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   int currentNode = getNode()->GetId();
   std::string currentNodeName;
 
+  Name functionName = data.getFunction();
+
+  auto string = functionName.toUri();
+  std::cout << "Function Name:" << string << std::endl;
+  auto separator = std::string("/");
+  auto separator_length = separator.length();
+
+  auto list = std::vector<std::string>();
+
+  if (separator_length == 0) {
+	  list.push_back(string);
+  } else {
+	  auto offset = std::string::size_type(0);
+	  while (1) {
+		  auto pos = string.find(separator, offset);
+		  if (pos == std::string::npos) {
+			  list.push_back(string.substr(offset));
+			  break;
+		  }
+		  list.push_back(string.substr(offset, pos - offset));
+		  offset = pos + separator_length;
+	  }
+  }
+
   // for us
   switch(currentNode) {
     case 0:
@@ -1124,6 +1149,256 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
   std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
 
+  if(list[3] == currentNodeName){
+	  if(currentNodeName.compare("F1a") == 0){
+		  table[1][1][0]++;
+		  data.resetHop();
+		  data.setCount(table[1][1][0]);
+	  }else if(currentNodeName.compare("F1b") == 0){
+		  table[1][1][1]++;
+		  data.resetHop();
+		  data.setCount(table[1][1][1]);
+	  }else if(currentNodeName.compare("F1c") == 0){
+		  table[1][1][2]++;
+		  data.resetHop();
+		  data.setCount(table[1][1][2]);
+	  }else if(currentNodeName.compare("F2a") == 0){
+		  table[1][2][0]++;
+		  data.resetHop();
+		  data.setCount(table[1][2][0]);
+	  }else if(currentNodeName.compare("F2b") == 0){
+		  table[1][2][1]++;
+		  data.resetHop();
+		  data.setCount(table[1][2][1]);
+	  }else if(currentNodeName.compare("F2c") == 0){
+		  table[1][2][2]++;
+		  data.resetHop();
+		  data.setCount(table[1][2][2]);
+	  }else if(currentNodeName.compare("F3a") == 0){
+		  table[1][3][0]++;
+		  data.resetHop();
+		  data.setCount(table[1][3][0]);
+	  }else if(currentNodeName.compare("F3b") == 0){
+		  table[1][3][1]++;
+		  data.resetHop();
+		  data.setCount(table[1][3][1]);
+	  }else if(currentNodeName.compare("F3c") == 0){
+		  table[1][3][2]++;
+		  data.resetHop();
+		  data.setCount(table[1][3][2]);
+	  }else if(currentNodeName.compare("F4a") == 0){
+		  table[1][4][0]++;
+		  data.resetHop();
+		  data.setCount(table[1][4][0]);
+	  }else if(currentNodeName.compare("F4b") == 0){
+		  table[1][4][1]++;
+		  data.resetHop();
+		  data.setCount(table[1][4][1]);
+	  }else if(currentNodeName.compare("F4c") == 0){
+		  table[1][4][2]++;
+		  data.resetHop();
+		  data.setCount(table[1][4][2]);
+	  }else if(currentNodeName.compare("F5a") == 0){
+		  table[1][5][0]++;
+		  data.resetHop();
+		  data.setCount(table[1][5][0]);
+	  }else if(currentNodeName.compare("F5b") == 0){
+		  table[1][5][1]++;
+		  data.resetHop();
+		  data.setCount(table[1][5][1]);
+	  }else if(currentNodeName.compare("F5c") == 0){
+		  table[1][5][2]++;
+		  data.resetHop();
+		  data.setCount(table[1][5][2]);
+	  }
+  }else if(list[2] == currentNodeName){
+	  int number;
+	  int character;
+	  if(currentNodeName.compare("F1a") == 0){
+		  table[1][1][0]++;
+		  number = 1;
+		  character = 0;
+	  }else if(currentNodeName.compare("F1b") == 0){
+		  table[1][1][1]++;
+		  number = 1;
+		  character = 1;
+	  }else if(currentNodeName.compare("F1c") == 0){
+		  table[1][1][2]++;
+		  number = 1;
+		  character = 2;
+	  }else if(currentNodeName.compare("F2a") == 0){
+		  table[1][2][0]++;
+		  number = 2;
+		  character = 0;
+	  }else if(currentNodeName.compare("F2b") == 0){
+		  table[1][2][1]++;
+		  number = 2;
+		  character = 1;
+	  }else if(currentNodeName.compare("F2c") == 0){
+		  table[1][2][2]++;
+		  number = 2;
+		  character = 2;
+	  }else if(currentNodeName.compare("F3a") == 0){
+		  table[1][3][0]++;
+		  number = 3;
+		  character = 0;
+	  }else if(currentNodeName.compare("F3b") == 0){
+		  table[1][3][1]++;
+		  number = 3;
+		  character = 1;
+	  }else if(currentNodeName.compare("F3c") == 0){
+		  table[1][3][2]++;
+		  number = 3;
+		  character = 2;
+	  }else if(currentNodeName.compare("F4a") == 0){
+		  table[1][4][0]++;
+		  number = 4;
+		  character = 0;
+	  }else if(currentNodeName.compare("F4b") == 0){
+		  table[1][4][1]++;
+		  number = 4;
+		  character = 1;
+	  }else if(currentNodeName.compare("F4c") == 0){
+		  table[1][4][2]++;
+		  number = 4;
+		  character = 2;
+	  }else if(currentNodeName.compare("F5a") == 0){
+		  table[1][5][0]++;
+		  number = 5;
+		  character = 0;
+	  }else if(currentNodeName.compare("F5b") == 0){
+		  table[1][5][1]++;
+		  number = 5;
+		  character = 1;
+	  }else if(currentNodeName.compare("F5c") == 0){
+		  table[1][5][2]++;
+		  number = 5;
+		  character = 2;
+	  }
+	  if(list[3].compare("F4a") == 0){
+		  table[0][4][0] = data.getHop();
+		  table[1][4][0] = data.getCount();
+	  }else if(list[3].compare("F4b") == 0){
+		  table[0][4][1] = data.getHop();
+		  table[1][4][1] = data.getCount();
+	  }else if(list[3].compare("F4c") == 0){
+		  table[0][4][2] = data.getHop();
+		  table[1][4][2] = data.getCount();
+	  }else if(list[3].compare("F5a") == 0){
+		  table[0][5][0] = data.getHop();
+		  table[1][5][0] = data.getCount();
+	  }else if(list[3].compare("F5b") == 0){
+		  table[0][5][1] = data.getHop();
+		  table[1][5][1] = data.getCount();
+	  }else if(list[3].compare("F5c") == 0){
+		  table[0][5][2] = data.getHop();
+		  table[1][5][2] = data.getCount();
+	  }else{
+		  std::cout << "Error:forwarder::onIncomingInterest()" << std::endl;
+	  }
+	  data.resetHop();
+	  data.setCount(table[1][number][character]);
+  }else if(list[1] == currentNodeName){
+	  int number;
+	  int character;
+	  if(currentNodeName.compare("F1a") == 0){
+		  table[1][1][0]++;
+		  number = 1;
+		  character = 0;
+	  }else if(currentNodeName.compare("F1b") == 0){
+		  table[1][1][1]++;
+		  number = 1;
+		  character = 1;
+	  }else if(currentNodeName.compare("F1c") == 0){
+		  table[1][1][2]++;
+		  number = 1;
+		  character = 2;
+	  }else if(currentNodeName.compare("F2a") == 0){
+		  table[1][2][0]++;
+		  number = 2;
+		  character = 0;
+	  }else if(currentNodeName.compare("F2b") == 0){
+		  table[1][2][1]++;
+		  number = 2;
+		  character = 1;
+	  }else if(currentNodeName.compare("F2c") == 0){
+		  table[1][2][2]++;
+		  number = 2;
+		  character = 2;
+	  }else if(currentNodeName.compare("F3a") == 0){
+		  table[1][3][0]++;
+		  number = 3;
+		  character = 0;
+	  }else if(currentNodeName.compare("F3b") == 0){
+		  table[1][3][1]++;
+		  number = 3;
+		  character = 1;
+	  }else if(currentNodeName.compare("F3c") == 0){
+		  table[1][3][2]++;
+		  number = 3;
+		  character = 2;
+	  }else if(currentNodeName.compare("F4a") == 0){
+		  table[1][4][0]++;
+		  number = 4;
+		  character = 0;
+	  }else if(currentNodeName.compare("F4b") == 0){
+		  table[1][4][1]++;
+		  number = 4;
+		  character = 1;
+	  }else if(currentNodeName.compare("F4c") == 0){
+		  table[1][4][2]++;
+		  number = 4;
+		  character = 2;
+	  }else if(currentNodeName.compare("F5a") == 0){
+		  table[1][5][0]++;
+		  number = 5;
+		  character = 0;
+	  }else if(currentNodeName.compare("F5b") == 0){
+		  table[1][5][1]++;
+		  number = 5;
+		  character = 1;
+	  }else if(currentNodeName.compare("F5c") == 0){
+		  table[1][5][2]++;
+		  number = 5;
+		  character = 2;
+	  }
+	  if(list[2].compare("F1a") == 0){
+		  table[0][1][0] = data.getHop();
+		  table[1][1][0] = data.getCount();
+	  }else if(list[2].compare("F1b") == 0){
+		  table[0][1][1] = data.getHop();
+		  table[1][1][1] = data.getCount();
+	  }else if(list[2].compare("F1c") == 0){
+		  table[0][1][2] = data.getHop();
+		  table[1][1][2] = data.getCount();
+	  }else if(list[2].compare("F2a") == 0){
+		  table[0][2][0] = data.getHop();
+		  table[1][2][0] = data.getCount();
+	  }else if(list[2].compare("F2b") == 0){
+		  table[0][2][1] = data.getHop();
+		  table[1][2][1] = data.getCount();
+	  }else if(list[2].compare("F2c") == 0){
+		  table[0][2][2] = data.getHop();
+		  table[1][2][2] = data.getCount();
+	  }else if(list[2].compare("F3a") == 0){
+		  table[0][3][0] = data.getHop();
+		  table[1][3][0] = data.getCount();
+	  }else if(list[2].compare("F3b") == 0){
+		  table[0][3][1] = data.getHop();
+		  table[1][3][1] = data.getCount();
+	  }else if(list[2].compare("F3c") == 0){
+		  table[0][3][2] = data.getHop();
+		  table[1][3][2] = data.getCount();
+	  }else{
+		  std::cout << "Error:forwarder::onIncomingInterest()" << std::endl;
+	  }
+	  data.resetHop();
+	  data.setCount(table[1][number][character]);
+  }else if(m_csFromNdnSim != nullptr){
+	  data.increaseHop();
+  }
+
+  //std::cout << currentNodeName << ": hop " << data.getHop() << ": count " << data.getCount() <<std::endl;
   // PIT match
   pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
   if (pitMatches.begin() == pitMatches.end()) {

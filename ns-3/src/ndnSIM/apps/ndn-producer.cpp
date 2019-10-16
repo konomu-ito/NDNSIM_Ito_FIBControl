@@ -102,14 +102,16 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
     return;
 
   Name dataName(interest->getName());
+  Name funcName(interest->getFunctionFullName());
   // dataName.append(m_postfix);
   // dataName.appendVersion();
-
+  auto string = funcName.toUri();
   increaseDataNum();
   std::cout << "Data Num:" << getDataNum() << std::endl;
-
+  std::cout << "string:" << string << std::endl;
   auto data = make_shared<Data>();
   data->setName(dataName);
+  data->setFunction(funcName);
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
   //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;
   data->setServiceTime(interest->getServiceTime());

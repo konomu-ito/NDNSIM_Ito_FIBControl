@@ -88,6 +88,13 @@ Consumer::Consumer()
   , m_seqMax(0) // don't request anything
 {
   NS_LOG_FUNCTION_NOARGS();
+  for(int i=0;i<2;i++){
+	  for(int j=1;j<6;j++){
+		  for(int k=0;k<3;k++){
+			  table[i][j][k]=0;
+		  }
+	  }
+  }
 
   m_rtt = CreateObject<RttMeanDeviation>();
 }
@@ -4058,63 +4065,60 @@ roundRobin(int func){
 	return "";
 }
 
-int countA[4]={0,0,0,0};
-int hopA[4]={0,0,0,0};
-int countB[4]={0,0,0,0};
-int hopB[4]={0,0,0,0};
-int countC[4]={0,0,0,0};
-int hopC[4]={0,0,0,0};
-
 //defined by yamaguchi
 int
-funcJudge(int fn){
+Consumer::funcJudge(int fn){
 	int function;
-	if(countA[fn]+hopA[fn] > countB[fn]+hopB[fn]){
-		if(countA[fn]+hopA[fn] > countC[fn]+hopC[fn]){
-			function = 1;
+	/*if(table[0][fn][0]+table[1][fn][0] <= table[0][fn][1]+table[1][fn][1]){
+		if(table[0][fn][0]+table[1][fn][0] <= table[0][fn][2]+table[1][fn][2]){
+			function = 0;
 		}
-	}else if(countB[fn]+hopB[fn] > countC[fn]+hopC[fn]){
+	}else if(table[0][fn][1]+table[1][fn][1] <= table[0][fn][2]+table[1][fn][2]){
+		function = 1;
+	}else{
+		function = 2;
+	}*/
+	if(table[0][fn][0]+table[1][fn][0] <= table[0][fn][1]+table[1][fn][1] && table[0][fn][0]+table[1][fn][0] <= table[0][fn][2]+table[1][fn][2]){
+		function = 0;
+	}else if(table[0][fn][1]+table[1][fn][1] <= table[0][fn][0]+table[1][fn][0] && table[0][fn][1]+table[1][fn][1] <= table[0][fn][2]+table[1][fn][2]){
+		function = 1;
+	}else if(table[0][fn][2]+table[1][fn][2] <= table[0][fn][0]+table[1][fn][0] && table[0][fn][2]+table[1][fn][2] <= table[0][fn][0]+table[1][fn][0]){
 		function = 2;
 	}else{
-		function = 3;
+		std::cout <<  "error" << std::endl;
 	}
+	table[1][fn][function]++;
 	return function;
 }
 
 //defined by yamaguchi
 shared_ptr<std::string>
-duration(int f1, int f2, int f3){
+Consumer::duration(int f1, int f2, int f3){
 	shared_ptr<std::string> ptr;
+
+	int charactor = funcJudge(f1);
 	if(f1 == 1){
-		if(funcJudge(f1) == 1){
+		if(charactor == 0){
 			ptr = make_shared<std::string>("/F1a");
-		}
-		if(funcJudge(f1) == 2){
+		}else if(charactor == 1){
 			ptr = make_shared<std::string>("/F1b");
-		}
-		if(funcJudge(f1) == 3){
+		}else if(charactor == 2){
 			ptr = make_shared<std::string>("/F1c");
 		}
-	}
-	if(f1 == 2){
-		if(funcJudge(f1) == 1){
+	}else if(f1 == 2){
+		if(charactor == 0){
 			ptr = make_shared<std::string>("/F2a");
-		}
-		if(funcJudge(f1) == 2){
+		}else if(charactor == 1){
 			ptr = make_shared<std::string>("/F2b");
-		}
-		if(funcJudge(f1) == 3){
+		}else if(charactor == 2){
 			ptr = make_shared<std::string>("/F2c");
 		}
-	}
-	if(f1 == 3){
-		if(funcJudge(f1) == 1){
+	}else if(f1 == 3){
+		if(charactor == 0){
 			ptr = make_shared<std::string>("/F3a");
-		}
-		if(funcJudge(f1) == 2){
+		}else if(charactor == 1){
 			ptr = make_shared<std::string>("/F3b");
-		}
-		if(funcJudge(f1) == 3){
+		}else if(charactor == 2){
 			ptr = make_shared<std::string>("/F3c");
 		}
 	}
@@ -4138,7 +4142,7 @@ duration(int f1, int f2, int f3){
 
 //defined by yamaguchi
 shared_ptr<Name>
-sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight){
+Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight){
 	shared_ptr<Name> functionName;
 	shared_ptr<std::string> funcName = make_shared<std::string>("");
 	int distance;
@@ -4729,12 +4733,17 @@ Consumer::SendPacket()
   std::cout << getTotalFcc(14) << std::endl;
   std::cout << getTotalFcc(15) << std::endl;
   */
-
   // shared_ptr<Interest> interest = make_shared<Interest> ();
   shared_ptr<Interest> interest = make_shared<Interest>();
   interest->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
   interest->setName(*nameWithSequence);
   interest->setFunction(*functionName);
+  std::string headFunc = functionName->toUri();
+  int pos = headFunc.find("/",1);
+  headFunc.erase(pos, headFunc.size()-1);
+  Name headFuncName(headFunc);
+  shared_ptr<Name> headFuncNamePtr = make_shared<Name>(headFuncName);
+  interest->setFunctionFullName(*headFuncNamePtr);
   //interest->setFunction("F1b/F2c/F4c");
   time::milliseconds interestLifeTime(m_interestLifeTime.GetMilliSeconds());
   //time::milliseconds interestLifeTime(1000);
@@ -4841,6 +4850,46 @@ Consumer::OnData(shared_ptr<const Data> data)
   std::cout << "Temp  : " << getTotalFccTemp(15) << std::endl;
   std::cout << "Total: " << getTotalFcc(15) << std::endl;
   */
+  //added 2019/9/28
+  Name functionName = data->getFunction();
+  auto string = functionName.toUri();
+  auto separator = std::string("/");
+  auto separator_length = separator.length();
+
+  auto list = std::vector<std::string>();
+
+  std::cout << string << std::endl;
+  if(string.compare(separator)!=0){
+	  if (separator_length == 0) {
+		  list.push_back(string);
+	  } else {
+		  auto offset = std::string::size_type(0);
+		  while (1) {
+			  auto pos = string.find(separator, offset);
+			  if (pos == std::string::npos) {
+				  list.push_back(string.substr(offset));
+				  break;
+			  }
+			  list.push_back(string.substr(offset, pos - offset));
+			  offset = pos + separator_length;
+		  }
+	  }
+	  if(list[3].compare("F4a") == 0){
+		  table[0][4][0] = data->getHop();
+	  }else if(list[3].compare("F4b") == 0){
+		  table[0][4][1] = data->getHop();
+	  }else if(list[3].compare("F4c") == 0){
+		  table[0][4][2] = data->getHop();
+	  }else if(list[3].compare("F5a") == 0){
+		  table[0][5][0] = data->getHop();
+	  }else if(list[3].compare("F5b") == 0){
+		  table[0][5][1] = data->getHop();
+	  }else if(list[3].compare("F5c") == 0){
+		  table[0][5][2] = data->getHop();
+	  }
+  }
+
+
 
   int totalFcc = 0;
   for(int i = 1; i < 16; i++){

@@ -122,8 +122,18 @@ protected:
    * \brief Modifies the frequency of checking the retransmission timeouts
    * \param retxTimer Timeout defining how frequent retransmission timeouts should be checked
    */
+
   void
   SetRetxTimer(Time retxTimer);
+
+  int
+  funcJudge(int fn);
+
+  shared_ptr<std::string>
+  duration(int f1, int f2, int f3);
+
+  shared_ptr<Name>
+  sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight);
 
   /**
    * \brief Returns the frequency of checking the retransmission timeouts
@@ -146,7 +156,7 @@ protected:
   Time m_offTime;          ///< \brief Time interval between packets
   Name m_interestName;     ///< \brief NDN Name of the Interest (use Name)
   Time m_interestLifeTime; ///< \brief LifeTime for interest packet
-
+  int table[2][6][3];
 
   /// @cond include_hidden
   /**

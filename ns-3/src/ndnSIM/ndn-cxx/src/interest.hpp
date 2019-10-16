@@ -229,6 +229,37 @@ public: // Name and guiders
   }
 
   const Name&
+  getFunctionFullName() const
+  {
+	  return m_functionFullName;
+  }
+
+  void
+  setFunctionFullName(const Name& name)
+  {
+	  m_functionFullName = name;
+	  m_wire.reset();
+  }
+
+  void
+  setFunctionFullName(const Name& name) const
+    {
+  	  m_functionFullName = name;
+  	  m_wire.reset();
+    }
+
+  void
+  addFunctionFullName(Name name) const
+  {
+	  std::string newFunc = m_functionFullName.toUri();
+	  newFunc += name.toUri();
+	  //std::cout << "newFunc: " << newFunc << ", name: " << name.toUri() <<std::endl;
+	  shared_ptr<Name> addFunc = make_shared<Name>(Name(newFunc));
+	  this->setFunctionFullName(*addFunc);
+	  m_wire.reset();
+  }
+
+  const Name&
   getFunction() const
   {
     return m_functionName;
@@ -259,6 +290,7 @@ public: // Name and guiders
       Name newFunc(funcStr);
       interest.setFunction(newFunc);
     }
+    m_wire.reset();
   }
 
   //defined by yamaguchi
@@ -280,6 +312,7 @@ public: // Name and guiders
 		Name newFunc(headFunc);
 		interest.setFunction(newFunc);
 	}
+	m_wire.reset();
   }
 
   const time::milliseconds&
@@ -494,6 +527,7 @@ public: // EqualityComparable concept
 
 private:
   Name m_name;
+  mutable Name m_functionFullName;
   mutable Name m_functionName;
   Selectors m_selectors;
   mutable Block m_nonce;

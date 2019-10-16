@@ -131,7 +131,11 @@ public:
 
   const Block&
   wireEncodeFunc() const;
-/**************************************/
+/***Const Function Name Encode*********/
+  template<encoding::Tag TAG>
+  size_t
+  wireEncodeFuncFullName(EncodingImpl<TAG>& encoder) const;
+
 
   void
   wireDecode(const Block& wire);
@@ -140,6 +144,9 @@ public:
   void
   wireDecodeFunc(const Block& wire);
 /**************************************/
+  void
+  wireDecodeFuncFullName(const Block& wire);
+
   /**
    * @brief Check if already has wire
    */

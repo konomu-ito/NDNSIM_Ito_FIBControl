@@ -163,6 +163,18 @@ public:
    * @throws Error if Data packet doesn't have a full name yet (wire encoding has not been
    *         yet created)
    */
+  //defined by naoki
+  const Name&
+  getFunction() const;
+
+  void
+  setFunction(const Name& functionName);
+
+  void
+  removeHeadFunction(Data& data);
+
+  //
+
   const Name&
   getFullName() const;
 
@@ -215,6 +227,21 @@ public:
 
   Data&
   setFinalBlockId(const name::Component& finalBlockId);
+
+  int
+  getHop() const;
+
+  int
+  getCount() const;
+
+  void
+  increaseHop() const;
+
+  void
+  resetHop() const;
+
+  void
+  setCount(int count) const;
 
   //
   ///////////////////////////////////////////////////////////////
@@ -304,9 +331,12 @@ protected:
 
 private:
   Name m_name;
+  Name m_functionName;
   MetaInfo m_metaInfo;
   mutable Block m_content;
   Signature m_signature;
+  mutable int m_hop;
+  mutable int m_count;
 
   mutable Block m_wire;
   mutable Name m_fullName;
@@ -325,6 +355,12 @@ inline const Name&
 Data::getName() const
 {
   return m_name;
+}
+
+inline const Name&
+Data::getFunction() const
+{
+	return m_functionName;
 }
 
 inline const MetaInfo&
@@ -362,6 +398,20 @@ inline const Signature&
 Data::getSignature() const
 {
   return m_signature;
+}
+
+inline int
+Data::getHop()
+const
+{
+	return m_hop;
+}
+
+inline int
+Data::getCount()
+const
+{
+	return m_count;
 }
 
 } // namespace ndn

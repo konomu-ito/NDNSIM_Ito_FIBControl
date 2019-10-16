@@ -91,6 +91,9 @@ enum {
   FunctionFlag = 34,
   ServiceTime = 35,
   FunctionTime = 36,
+  FunctionFullName = 37,
+  Hop = 38,
+  Count = 39,
 
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767
