@@ -63,6 +63,15 @@ typedef SimpleTag<uint64_t, 13> CongestionMarkTag;
  */
 typedef SimpleTag<uint64_t, 0x60000000> HopCountTag;
 
+typedef SimpleTag<uint64_t,14> PartialHopTag;
+
+typedef SimpleTag<uint64_t,15> CountTag;
+/**PartialHopTag & CountTag
+ * added 2019/10/26
+ * This tag can be attached to Data
+ *
+ */
+
 } // namespace lp
 } // namespace ndn
 

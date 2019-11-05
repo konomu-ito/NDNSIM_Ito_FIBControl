@@ -35,22 +35,15 @@ static_assert(std::is_base_of<tlv::Error, Data::Error>::value,
 Data::Data()
   : m_content(tlv::Content) // empty content
 {
-	m_hop = 0;
-	m_count = 0;
-
 }
 
 Data::Data(const Name& name)
   : m_name(name)
 {
-	m_hop = 0;
-	m_count = 0;
 }
 
 Data::Data(const Block& wire)
 {
-	m_hop = 0;
-	m_count = 0;
 	wireDecode(wire);
 }
 
@@ -95,29 +88,17 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool unsignedPortion/* = false*/) c
   totalLength += getFunction().wireEncodeFunc(encoder);
 
   // Hop
+  /*
   if(&m_hop != nullptr){
-	  /*
-	  size_t hopLength = 0;
-	  hopLength += encoder.prependNonNegativeInteger(getHop());
-	  hopLength += encoder.prependVarNumber(hopLength);
-	  hopLength += encoder.prependVarNumber(tlv::Hop);
-	  totalLength += hopLength;
-	  */
 	  totalLength += prependNonNegativeIntegerBlock(encoder, tlv::Hop, m_hop);
   }
-
+*/
   // Count
+  /*
   if(&m_count != nullptr){
-	  /*
-	  size_t countLength = 0;
-	  countLength += encoder.prependNonNegativeInteger(getCount());
-	  countLength += encoder.prependVarNumber(countLength);
-	  countLength += encoder.prependVarNumber(tlv::Count);
-	  totalLength += countLength;
-	   */
 	  totalLength += prependNonNegativeIntegerBlock(encoder, tlv::Count, m_count);
   }
-
+*/
   if (!unsignedPortion)
     {
       totalLength += encoder.prependVarNumber(totalLength);
@@ -193,14 +174,16 @@ Data::wireDecode(const Block& wire)
   Block::element_const_iterator val = m_wire.find(tlv::Hop);
 
   //hop
+  /*
   if (val != m_wire.elements_end()) {
 	  m_hop = readNonNegativeInteger(*val);
   }
   else {
 	  m_hop = 0;
   }
-
+*/
   //count
+  /*
   val = m_wire.find(tlv::Count);
   if (val != m_wire.elements_end()) {
 	  m_count = readNonNegativeInteger(*val);
@@ -208,7 +191,7 @@ Data::wireDecode(const Block& wire)
   else {
 	  m_count = 0;
   }
-
+*/
   ///////////////
   // Signature //
   ///////////////
@@ -235,6 +218,7 @@ Data::setFunction(const Name& functionName)
 {
 	m_functionName = functionName;
 }
+/*
 void
 Data::removeHeadFunction(Data& data)
 {
@@ -251,7 +235,7 @@ Data::removeHeadFunction(Data& data)
 		data.setFunction(newFunc);
 	}
 }
-
+*/
 const Name&
 Data::getFullName() const
 {
@@ -387,28 +371,44 @@ Data::onChanged()
   m_wire.reset();
   m_fullName.clear();
 }
-
+/*
 void
 Data::increaseHop()
 const
 {
-	m_hop++;
+	this->setTag(make_shared<lp::PartialHopTag>(this->get<lp::PartialHopTagField>() + 1));
 }
 
 void
 Data::resetHop()
 const
 {
-	m_hop = 0;
+	this->setTag(make_shared<lp::PartialHopTag>(0));
 }
 
 void
 Data::setCount(int count)
 const
 {
-	m_count = count;
+	this->setTag(make_shared<lp::CountTag>(count));
 }
 
+int
+Data::getHop()
+const
+{
+	return this->getTag<lp::PartialHopTagField>();
+	return 0;
+}
+
+int
+Data::getCount()
+const
+{
+	return this->getTag<lp::CountTagField>();
+	return 0;
+}
+*/
 bool
 Data::operator==(const Data& other) const
 {

@@ -4851,6 +4851,7 @@ Consumer::OnData(shared_ptr<const Data> data)
   std::cout << "Total: " << getTotalFcc(15) << std::endl;
   */
   //added 2019/9/28
+  /*
   Name functionName = data->getFunction();
   auto string = functionName.toUri();
   auto separator = std::string("/");
@@ -4888,7 +4889,7 @@ Consumer::OnData(shared_ptr<const Data> data)
 		  table[0][5][2] = data->getHop();
 	  }
   }
-
+*/
 
 
   int totalFcc = 0;

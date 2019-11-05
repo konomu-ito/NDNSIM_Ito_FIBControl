@@ -56,7 +56,7 @@ main(int argc, char* argv[])
 
   CommandLine cmd;
   cmd.Parse(argc, argv);
-  //choose siraiwaNDN or roundRobin
+  //choose siraiwaNDN or roundRobin or duration
   const char* type = "duration";
   setChoiceType(type);
   AnnotatedTopologyReader topologyReader("", 25);

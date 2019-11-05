@@ -118,6 +118,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
   data->setContent(make_shared< ::ndn::Buffer>(m_virtualPayloadSize));
 
+
   Signature signature;
   SignatureInfo signatureInfo(static_cast< ::ndn::tlv::SignatureTypeValue>(255));
 

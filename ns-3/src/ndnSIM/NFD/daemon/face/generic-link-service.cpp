@@ -106,6 +106,24 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
   else {
     lpPacket.add<lp::HopCountTagField>(0);
   }
+
+  shared_ptr<lp::PartialHopTag> partialHopTag = netPkt.getTag<lp::PartialHopTag>();
+  if (partialHopTag != nullptr) {
+	  lpPacket.add<lp::PartialHopTagField>(*partialHopTag);
+  }
+  else {
+	  lpPacket.add<lp::PartialHopTagField>(0);
+  }
+
+  shared_ptr<lp::CountTag> countTag = netPkt.getTag<lp::CountTag>();
+  if (countTag != nullptr) {
+	  lpPacket.add<lp::CountTagField>(*countTag);
+  }
+  else {
+	  lpPacket.add<lp::CountTagField>(0);
+  }
+
+
 }
 
 void
@@ -272,6 +290,14 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
 
   if (firstPkt.has<lp::HopCountTagField>()) {
     data->setTag(make_shared<lp::HopCountTag>(firstPkt.get<lp::HopCountTagField>() + 1));
+  }
+
+  if (firstPkt.has<lp::PartialHopTagField>()) {
+	  data->setTag(make_shared<lp::PartialHopTag>(firstPkt.get<lp::PartialHopTagField>() + 1));
+  }
+
+  if (firstPkt.has<lp::CountTagField>()) {
+	  data->setTag(make_shared<lp::CountTag>(firstPkt.get<lp::CountTagField>()));
   }
 
   if (firstPkt.has<lp::NackField>()) {

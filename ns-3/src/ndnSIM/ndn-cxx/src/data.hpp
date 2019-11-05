@@ -227,7 +227,7 @@ public:
 
   Data&
   setFinalBlockId(const name::Component& finalBlockId);
-
+/*
   int
   getHop() const;
 
@@ -242,7 +242,7 @@ public:
 
   void
   setCount(int count) const;
-
+*/
   //
   ///////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////
@@ -335,8 +335,6 @@ private:
   MetaInfo m_metaInfo;
   mutable Block m_content;
   Signature m_signature;
-  mutable int m_hop;
-  mutable int m_count;
 
   mutable Block m_wire;
   mutable Name m_fullName;
@@ -398,20 +396,6 @@ inline const Signature&
 Data::getSignature() const
 {
   return m_signature;
-}
-
-inline int
-Data::getHop()
-const
-{
-	return m_hop;
-}
-
-inline int
-Data::getCount()
-const
-{
-	return m_count;
 }
 
 } // namespace ndn

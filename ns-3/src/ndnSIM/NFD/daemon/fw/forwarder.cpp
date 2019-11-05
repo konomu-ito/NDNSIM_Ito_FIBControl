@@ -1148,7 +1148,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   std::cout << "Content  Name : " << data.getName() << std::endl;
 
   std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
-
+/*
   if(list[3] == currentNodeName){
 	  if(currentNodeName.compare("F1a") == 0){
 		  table[1][1][0]++;
@@ -1397,7 +1397,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   }else if(m_csFromNdnSim != nullptr){
 	  data.increaseHop();
   }
-
+*/
   //std::cout << currentNodeName << ": hop " << data.getHop() << ": count " << data.getCount() <<std::endl;
   // PIT match
   pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
