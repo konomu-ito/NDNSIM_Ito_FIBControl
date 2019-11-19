@@ -27,6 +27,7 @@
 #include "sequence.hpp"
 #include "cache-policy.hpp"
 #include "nack-header.hpp"
+#include "name.hpp"
 
 #include <boost/mpl/set.hpp>
 
@@ -79,6 +80,7 @@ typedef detail::FieldDecl<field_location_tags::Header,
 BOOST_CONCEPT_ASSERT((Field<HopCountTagField>));
 
 //added 2019/10/26
+
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
                           tlv::PartialHopTag> PartialHopTagField;
@@ -88,6 +90,16 @@ typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
                           tlv::CountTag> CountTagField;
 BOOST_CONCEPT_ASSERT((Field<CountTagField>));
+
+typedef detail::FieldDecl<field_location_tags::Header,
+                          Name,
+                          tlv::FunctionNameTag> FunctionNameTagField;
+BOOST_CONCEPT_ASSERT((Field<FunctionNameTagField>));
+
+typedef detail::FieldDecl<field_location_tags::Header,
+                          Name,
+                          tlv::PreviousFunctionTag> PreviousFunctionTagField;
+BOOST_CONCEPT_ASSERT((Field<PreviousFunctionTagField>));
 //
 
 
@@ -115,7 +127,9 @@ typedef boost::mpl::set<
   CongestionMarkField,
   HopCountTagField,
   PartialHopTagField,
-  CountTagField
+  CountTagField,
+  FunctionNameTagField,
+  PreviousFunctionTagField
   > FieldSet;
 
 } // namespace lp

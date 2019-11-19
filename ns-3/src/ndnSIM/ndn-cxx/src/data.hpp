@@ -164,19 +164,20 @@ public:
    *         yet created)
    */
   //defined by naoki
+  /*
   const Name&
   getFunction() const;
 
   void
   setFunction(const Name& functionName);
 
-  void
-  removeHeadFunction(Data& data);
-
-  //
+  Name
+  removeHeadFunction(std::string& funcStr);
+*/
 
   const Name&
   getFullName() const;
+
 
   /**
    * @brief Get MetaInfo block from Data packet
@@ -355,11 +356,13 @@ Data::getName() const
   return m_name;
 }
 
+/*
 inline const Name&
 Data::getFunction() const
 {
 	return m_functionName;
 }
+*/
 
 inline const MetaInfo&
 Data::getMetaInfo() const

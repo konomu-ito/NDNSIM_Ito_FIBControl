@@ -85,16 +85,16 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool unsignedPortion/* = false*/) c
   totalLength += getName().wireEncode(encoder);
 
   // Function Name
-  totalLength += getFunction().wireEncodeFunc(encoder);
+  //totalLength += getFunction().wireEncodeFunc(encoder);
 
   // Hop
-  /*
+/*
   if(&m_hop != nullptr){
 	  totalLength += prependNonNegativeIntegerBlock(encoder, tlv::Hop, m_hop);
   }
 */
   // Count
-  /*
+/*
   if(&m_count != nullptr){
 	  totalLength += prependNonNegativeIntegerBlock(encoder, tlv::Count, m_count);
   }
@@ -163,7 +163,7 @@ Data::wireDecode(const Block& wire)
   m_name.wireDecode(m_wire.get(tlv::Name));
 
   // Function Name
-  m_functionName.wireDecode(m_wire.get(tlv::FunctionName));
+  //m_functionName.wireDecode(m_wire.get(tlv::FunctionName));
 
   // MetaInfo
   m_metaInfo.wireDecode(m_wire.get(tlv::MetaInfo));
@@ -174,7 +174,7 @@ Data::wireDecode(const Block& wire)
   Block::element_const_iterator val = m_wire.find(tlv::Hop);
 
   //hop
-  /*
+/*
   if (val != m_wire.elements_end()) {
 	  m_hop = readNonNegativeInteger(*val);
   }
@@ -183,7 +183,7 @@ Data::wireDecode(const Block& wire)
   }
 */
   //count
-  /*
+/*
   val = m_wire.find(tlv::Count);
   if (val != m_wire.elements_end()) {
 	  m_count = readNonNegativeInteger(*val);
@@ -213,26 +213,24 @@ Data::setName(const Name& name)
   return *this;
 }
 
+/*
 void
 Data::setFunction(const Name& functionName)
 {
 	m_functionName = functionName;
 }
-/*
-void
-Data::removeHeadFunction(Data& data)
+
+Name
+Data::removeHeadFunction(std::string& funcStr)
 {
-	std::string funcStr = data.getFunction().toUri();
 	int pos = funcStr.find("/", 1);
 	if(pos == -1 && funcStr.size() > 1){
 		funcStr.erase(1, funcStr.size()-1);
-		Name newFunc(funcStr);
-		data.setFunction(newFunc);
+		return Name(funcStr);
 	}
 	else if(pos != -1){
 		funcStr.erase(1, pos);
-		Name newFunc(funcStr);
-		data.setFunction(newFunc);
+		return Name(funcStr);
 	}
 }
 */

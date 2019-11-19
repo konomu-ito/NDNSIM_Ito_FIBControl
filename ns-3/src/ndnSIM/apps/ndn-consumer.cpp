@@ -4068,7 +4068,7 @@ roundRobin(int func){
 //defined by yamaguchi
 int
 Consumer::funcJudge(int fn){
-	int function;
+	int function = 4;
 	/*if(table[0][fn][0]+table[1][fn][0] <= table[0][fn][1]+table[1][fn][1]){
 		if(table[0][fn][0]+table[1][fn][0] <= table[0][fn][2]+table[1][fn][2]){
 			function = 0;
@@ -4788,6 +4788,44 @@ Consumer::OnData(shared_ptr<const Data> data)
   ns3::increaseServiceNum();
   std::cout << "Service Num: " << ns3::getServiceNum() << std::endl;
 
+  //added 2019/11/12
+  if(data->getTag<lp::PreviousFunctionTag>() != nullptr){
+	  Name PreviousFuncName = *(data->getTag<lp::PreviousFunctionTag>());
+	  std::string PFuncName = PreviousFuncName.toUri();
+
+	  if(PFuncName.compare("/F1a") == 0){
+		  table[0][1][0] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][1][0] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F1b") == 0){
+		  table[0][1][1] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][1][1] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F1c") == 0){
+		  table[0][1][2] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][1][2] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F2a") == 0){
+		  table[0][2][0] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][2][0] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F2b") == 0){
+		  table[0][2][1] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][2][1] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F2c") == 0){
+		  table[0][2][2] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][2][2] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F3a") == 0){
+		  table[0][3][0] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][3][0] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F3b") == 0){
+		  table[0][3][1] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][3][1] = *(data->getTag<lp::HopCountTag>());
+	  }else if(PFuncName.compare("/F3c") == 0){
+		  table[0][3][2] = *(data->getTag<lp::PartialHopTag>());
+		  table[1][3][2] = *(data->getTag<lp::HopCountTag>());
+	  }else {
+
+	  }
+  }
+
+
   time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
   int serviceTime = nowTime.count() - data->getServiceTime().count() - 180;
   increaseTotalServiceTime(serviceTime);
@@ -4850,46 +4888,6 @@ Consumer::OnData(shared_ptr<const Data> data)
   std::cout << "Temp  : " << getTotalFccTemp(15) << std::endl;
   std::cout << "Total: " << getTotalFcc(15) << std::endl;
   */
-  //added 2019/9/28
-  /*
-  Name functionName = data->getFunction();
-  auto string = functionName.toUri();
-  auto separator = std::string("/");
-  auto separator_length = separator.length();
-
-  auto list = std::vector<std::string>();
-
-  std::cout << string << std::endl;
-  if(string.compare(separator)!=0){
-	  if (separator_length == 0) {
-		  list.push_back(string);
-	  } else {
-		  auto offset = std::string::size_type(0);
-		  while (1) {
-			  auto pos = string.find(separator, offset);
-			  if (pos == std::string::npos) {
-				  list.push_back(string.substr(offset));
-				  break;
-			  }
-			  list.push_back(string.substr(offset, pos - offset));
-			  offset = pos + separator_length;
-		  }
-	  }
-	  if(list[3].compare("F4a") == 0){
-		  table[0][4][0] = data->getHop();
-	  }else if(list[3].compare("F4b") == 0){
-		  table[0][4][1] = data->getHop();
-	  }else if(list[3].compare("F4c") == 0){
-		  table[0][4][2] = data->getHop();
-	  }else if(list[3].compare("F5a") == 0){
-		  table[0][5][0] = data->getHop();
-	  }else if(list[3].compare("F5b") == 0){
-		  table[0][5][1] = data->getHop();
-	  }else if(list[3].compare("F5c") == 0){
-		  table[0][5][2] = data->getHop();
-	  }
-  }
-*/
 
 
   int totalFcc = 0;

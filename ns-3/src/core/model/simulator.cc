@@ -469,7 +469,7 @@ int serviceNum = 0;
 
 int totalServiceTime = 0;
 
-int choiceType = 0;
+static int choiceType = 0;
 
 int getFunctionCallCount(int i){
   switch(i) {

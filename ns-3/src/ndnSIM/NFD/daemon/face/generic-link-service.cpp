@@ -111,18 +111,22 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
   if (partialHopTag != nullptr) {
 	  lpPacket.add<lp::PartialHopTagField>(*partialHopTag);
   }
-  else {
+  /*else {
 	  lpPacket.add<lp::PartialHopTagField>(0);
-  }
+  }*/
 
   shared_ptr<lp::CountTag> countTag = netPkt.getTag<lp::CountTag>();
   if (countTag != nullptr) {
 	  lpPacket.add<lp::CountTagField>(*countTag);
   }
-  else {
+  /*else {
 	  lpPacket.add<lp::CountTagField>(0);
-  }
+  }*/
 
+  shared_ptr<lp::FunctionNameTag> functionNameTag = netPkt.getTag<lp::FunctionNameTag>();
+    if (functionNameTag != nullptr) {
+  	  lpPacket.add<lp::FunctionNameTagField>(*functionNameTag);
+    }
 
 }
 
@@ -293,12 +297,17 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
   }
 
   if (firstPkt.has<lp::PartialHopTagField>()) {
-	  data->setTag(make_shared<lp::PartialHopTag>(firstPkt.get<lp::PartialHopTagField>() + 1));
+	  data->setTag(make_shared<lp::PartialHopTag>(firstPkt.get<lp::PartialHopTagField>()));
   }
 
   if (firstPkt.has<lp::CountTagField>()) {
 	  data->setTag(make_shared<lp::CountTag>(firstPkt.get<lp::CountTagField>()));
   }
+
+  if (firstPkt.has<lp::FunctionNameTagField>()) {
+  	  data->setTag(make_shared<lp::FunctionNameTag>(firstPkt.get<lp::FunctionNameTagField>()));
+    }
+
 
   if (firstPkt.has<lp::NackField>()) {
     ++this->nInNetInvalid;

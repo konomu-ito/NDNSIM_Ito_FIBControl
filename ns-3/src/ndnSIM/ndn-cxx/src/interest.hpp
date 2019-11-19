@@ -251,8 +251,9 @@ public: // Name and guiders
   void
   addFunctionFullName(Name name) const
   {
-	  std::string newFunc = m_functionFullName.toUri();
-	  newFunc += name.toUri();
+	  std::string oldFunc = m_functionFullName.toUri();
+	  std::string newFunc = name.toUri();
+	  newFunc += oldFunc;
 	  //std::cout << "newFunc: " << newFunc << ", name: " << name.toUri() <<std::endl;
 	  shared_ptr<Name> addFunc = make_shared<Name>(Name(newFunc));
 	  this->setFunctionFullName(*addFunc);

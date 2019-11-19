@@ -66,6 +66,10 @@ typedef SimpleTag<uint64_t, 0x60000000> HopCountTag;
 typedef SimpleTag<uint64_t,14> PartialHopTag;
 
 typedef SimpleTag<uint64_t,15> CountTag;
+
+typedef SimpleTag<Name,16> FunctionNameTag;
+
+typedef SimpleTag<Name, 17> PreviousFunctionTag;
 /**PartialHopTag & CountTag
  * added 2019/10/26
  * This tag can be attached to Data

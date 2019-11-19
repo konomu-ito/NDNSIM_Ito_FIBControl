@@ -28,7 +28,7 @@
 #include "helper/ndn-fib-helper.hpp"
 
 #include <memory>
-
+#include <ndn-cxx/lp/tags.hpp>
 
 NS_LOG_COMPONENT_DEFINE("ndn.Producer");
 
@@ -111,7 +111,9 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   std::cout << "string:" << string << std::endl;
   auto data = make_shared<Data>();
   data->setName(dataName);
-  data->setFunction(funcName);
+  data->setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(funcName));
+  data->setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
+  data->setTag<lp::CountTag>(make_shared<lp::CountTag>(0));
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
   //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;
   data->setServiceTime(interest->getServiceTime());
