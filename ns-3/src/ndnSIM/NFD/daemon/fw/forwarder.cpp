@@ -1300,7 +1300,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 			data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
 			data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 			data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
-
+			std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
 		}else if(data.getTag<lp::PartialHopTag>() != nullptr){
 			data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
 			std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;

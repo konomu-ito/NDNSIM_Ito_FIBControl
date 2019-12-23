@@ -461,7 +461,7 @@ extractLpLocalFields(NetPkt& netPacket, const lp::Packet& lpPacket)
   if (lpPacket.has<lp::HopCountTagField>()) {
     netPacket.setTag(make_shared<lp::HopCountTag>(lpPacket.get<lp::HopCountTagField>() + 1));
   }
-/*
+
   if (lpPacket.has<lp::PartialHopTagField>()) {
       netPacket.setTag(make_shared<lp::PartialHopTag>(lpPacket.get<lp::PartialHopTagField>() + 1));
     }
@@ -469,7 +469,10 @@ extractLpLocalFields(NetPkt& netPacket, const lp::Packet& lpPacket)
   if (lpPacket.has<lp::CountTagField>()) {
       netPacket.setTag(make_shared<lp::CountTag>(lpPacket.get<lp::CountTagField>()));
     }
-    */
+
+  if(lpPacket.has<lp::FunctionNameTagField>()) {
+	  netPacket.setTag(make_shared<lp::FunctionNameTag>(lpPacket.get<lp::FunctionNameTagField>()));
+  }
 }
 
 void

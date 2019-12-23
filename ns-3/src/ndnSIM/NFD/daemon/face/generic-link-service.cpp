@@ -124,9 +124,9 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
   }*/
 
   shared_ptr<lp::FunctionNameTag> functionNameTag = netPkt.getTag<lp::FunctionNameTag>();
-    if (functionNameTag != nullptr) {
-  	  lpPacket.add<lp::FunctionNameTagField>(*functionNameTag);
-    }
+  if (functionNameTag != nullptr) {
+	  lpPacket.add<lp::FunctionNameTagField>(*functionNameTag);
+  }
 
 }
 

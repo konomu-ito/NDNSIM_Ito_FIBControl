@@ -4795,31 +4795,31 @@ Consumer::OnData(shared_ptr<const Data> data)
 
 	  if(PFuncName.compare("/F1a") == 0){
 		  table[0][1][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][0] = *(data->getTag<lp::HopCountTag>());
+		  table[1][1][0] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F1b") == 0){
 		  table[0][1][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][1] = *(data->getTag<lp::HopCountTag>());
+		  table[1][1][1] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F1c") == 0){
 		  table[0][1][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][2] = *(data->getTag<lp::HopCountTag>());
+		  table[1][1][2] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F2a") == 0){
 		  table[0][2][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][0] = *(data->getTag<lp::HopCountTag>());
+		  table[1][2][0] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F2b") == 0){
 		  table[0][2][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][1] = *(data->getTag<lp::HopCountTag>());
+		  table[1][2][1] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F2c") == 0){
 		  table[0][2][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][2] = *(data->getTag<lp::HopCountTag>());
+		  table[1][2][2] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F3a") == 0){
 		  table[0][3][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][0] = *(data->getTag<lp::HopCountTag>());
+		  table[1][3][0] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F3b") == 0){
 		  table[0][3][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][1] = *(data->getTag<lp::HopCountTag>());
+		  table[1][3][1] = *(data->getTag<lp::CountTag>());
 	  }else if(PFuncName.compare("/F3c") == 0){
 		  table[0][3][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][2] = *(data->getTag<lp::HopCountTag>());
+		  table[1][3][2] = *(data->getTag<lp::CountTag>());
 	  }else {
 
 	  }
