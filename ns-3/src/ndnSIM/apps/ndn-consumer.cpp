@@ -4744,6 +4744,7 @@ Consumer::SendPacket()
   Name headFuncName(headFunc);
   shared_ptr<Name> headFuncNamePtr = make_shared<Name>(headFuncName);
   interest->setFunctionFullName(*headFuncNamePtr);
+
   //interest->setFunction("F1b/F2c/F4c");
   time::milliseconds interestLifeTime(m_interestLifeTime.GetMilliSeconds());
   //time::milliseconds interestLifeTime(1000);
@@ -4789,42 +4790,43 @@ Consumer::OnData(shared_ptr<const Data> data)
   std::cout << "Service Num: " << ns3::getServiceNum() << std::endl;
 
   //added 2019/11/12
-  if(data->getTag<lp::PreviousFunctionTag>() != nullptr){
-	  Name PreviousFuncName = *(data->getTag<lp::PreviousFunctionTag>());
-	  std::string PFuncName = PreviousFuncName.toUri();
+  if(getChoiceType() == 2){
+	  if(data->getTag<lp::PreviousFunctionTag>() != nullptr){
+		  Name PreviousFuncName = *(data->getTag<lp::PreviousFunctionTag>());
+		  std::string PFuncName = PreviousFuncName.toUri();
 
-	  if(PFuncName.compare("/F1a") == 0){
-		  table[0][1][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][0] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F1b") == 0){
-		  table[0][1][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][1] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F1c") == 0){
-		  table[0][1][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][1][2] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F2a") == 0){
-		  table[0][2][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][0] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F2b") == 0){
-		  table[0][2][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][1] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F2c") == 0){
-		  table[0][2][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][2][2] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F3a") == 0){
-		  table[0][3][0] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][0] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F3b") == 0){
-		  table[0][3][1] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][1] = *(data->getTag<lp::CountTag>());
-	  }else if(PFuncName.compare("/F3c") == 0){
-		  table[0][3][2] = *(data->getTag<lp::PartialHopTag>());
-		  table[1][3][2] = *(data->getTag<lp::CountTag>());
-	  }else {
+		  if(PFuncName.compare("/F1a") == 0){
+			  table[0][1][0] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][1][0] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F1b") == 0){
+			  table[0][1][1] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][1][1] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F1c") == 0){
+			  table[0][1][2] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][1][2] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F2a") == 0){
+			  table[0][2][0] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][2][0] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F2b") == 0){
+			  table[0][2][1] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][2][1] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F2c") == 0){
+			  table[0][2][2] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][2][2] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F3a") == 0){
+			  table[0][3][0] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][3][0] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F3b") == 0){
+			  table[0][3][1] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][3][1] = *(data->getTag<lp::CountTag>());
+		  }else if(PFuncName.compare("/F3c") == 0){
+			  table[0][3][2] = *(data->getTag<lp::PartialHopTag>());
+			  table[1][3][2] = *(data->getTag<lp::CountTag>());
+		  }else {
 
+		  }
 	  }
   }
-
 
   time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
   int serviceTime = nowTime.count() - data->getServiceTime().count() - 180;

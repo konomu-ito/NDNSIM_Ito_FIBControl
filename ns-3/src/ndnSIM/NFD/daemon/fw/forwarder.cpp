@@ -1129,184 +1129,189 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	//std::string st = "test";
 	//Name name = Name(st);
 	//data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(name));
-	if(data.getTag<lp::FunctionNameTag>() != nullptr){
-		auto functionNameTag = data.getTag<lp::FunctionNameTag>();
 
-		Name funcName = *functionNameTag;
-		std::string string = funcName.toUri();
-		std::cout << "Data Function Name:" << string << std::endl;
+	if(ns3::getChoiceType() == 2){
+		if(data.getTag<lp::FunctionNameTag>() != nullptr){
+			if(currentNodeName.compare("Producer1") != 0 && currentNodeName.compare("Producer2") != 0 && currentNodeName.compare("Producer3") != 0 && currentNodeName.compare("Producer4") != 0 &&
+					currentNodeName.compare("Consumer1") != 0 && currentNodeName.compare("Consumer2") != 0 && currentNodeName.compare("Consumer3") != 0 && currentNodeName.compare("Consumer4") != 0){
+				auto functionNameTag = data.getTag<lp::FunctionNameTag>();
 
-		auto separator = std::string("/");
-		auto separator_length = separator.length();
+				Name funcName = *functionNameTag;
+				std::string string = funcName.toUri();
+				std::cout << "Data Function Name:" << string << std::endl;
 
-		auto list = std::vector<std::string>();
+				auto separator = std::string("/");
+				auto separator_length = separator.length();
+
+				auto list = std::vector<std::string>();
 
 
-		if (separator_length == 0) {
-			list.push_back(string);
-		} else {
-			auto offset = std::string::size_type(0);
-			while (1) {
-				auto pos = string.find(separator, offset);
-				if (pos == std::string::npos) {
-					list.push_back(string.substr(offset));
-					break;
+				if (separator_length == 0) {//separatorを区切りにlistに格納
+					list.push_back(string);
+				} else {
+					auto offset = std::string::size_type(0);
+					while (1) {
+						auto pos = string.find(separator, offset);
+						if (pos == std::string::npos) {
+							list.push_back(string.substr(offset));
+							break;
+						}
+						list.push_back(string.substr(offset, pos - offset));
+						offset = pos + separator_length;
+					}
 				}
-				list.push_back(string.substr(offset, pos - offset));
-				offset = pos + separator_length;
-			}
-		}
-		if(list[1] == currentNodeName){//ファンクションをinterestと前後逆にして扱う
-			int number;
-			int character;
+				if(list[1] == currentNodeName){//ファンクションをinterestと前後逆にして扱う
+					int number;
+					int character;
 
-			if(data.getTag<lp::PreviousFunctionTag>() != nullptr){
-				auto previousFunctionTag = data.getTag<lp::PreviousFunctionTag>();
-				Name previousFunction = *previousFunctionTag;
-				std::string preFuncStr = previousFunction.toUri();
-				if(preFuncStr.compare("/F1a") == 0){
-					table[0][1][0] = *(data.getTag<lp::PartialHopTag>());
-					table[1][1][0] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F1b") == 0){
-					table[0][1][1] = *(data.getTag<lp::PartialHopTag>());
-					table[1][1][1] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F1c") == 0){
-					table[0][1][2] = *(data.getTag<lp::PartialHopTag>());
-					table[1][1][2] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F2a") == 0){
-					table[0][2][0] = *(data.getTag<lp::PartialHopTag>());
-					table[1][2][0] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F2b") == 0){
-					table[0][2][1] = *(data.getTag<lp::PartialHopTag>());
-					table[1][2][1] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F2c") == 0){
-					table[0][2][2] = *(data.getTag<lp::PartialHopTag>());
-					table[1][2][2] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F3a") == 0){
-					table[0][3][0] = *(data.getTag<lp::PartialHopTag>());
-					table[1][3][0] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F3b") == 0){
-					table[0][3][1] = *(data.getTag<lp::PartialHopTag>());
-					table[1][3][1] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F3c") == 0){
-					table[0][3][2] = *(data.getTag<lp::PartialHopTag>());
-					table[1][3][2] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F4a") == 0){
-					table[0][4][0] = *(data.getTag<lp::PartialHopTag>());
-					table[1][4][0] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F4b") == 0){
-					table[0][4][1] = *(data.getTag<lp::PartialHopTag>());
-					table[1][4][1] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F4c") == 0){
-					table[0][4][2] = *(data.getTag<lp::PartialHopTag>());
-					table[1][4][2] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F5a") == 0){
-					table[0][5][0] = *(data.getTag<lp::PartialHopTag>());
-					table[1][5][0] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F5b") == 0){
-					table[0][5][1] = *(data.getTag<lp::PartialHopTag>());
-					table[1][5][1] = *(data.getTag<lp::CountTag>());
-				}else if(preFuncStr.compare("/F5c") == 0){
-					table[0][5][2] = *(data.getTag<lp::PartialHopTag>());
-					table[1][5][2] = *(data.getTag<lp::CountTag>());
-				}else {
+					if(data.getTag<lp::PreviousFunctionTag>() != nullptr){
+						auto previousFunctionTag = data.getTag<lp::PreviousFunctionTag>();
+						Name previousFunction = *previousFunctionTag;
+						std::string preFuncStr = previousFunction.toUri();
+						if(preFuncStr.compare("/F1a") == 0){
+							table[0][1][0] = *(data.getTag<lp::PartialHopTag>());
+							table[1][1][0] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F1b") == 0){
+							table[0][1][1] = *(data.getTag<lp::PartialHopTag>());
+							table[1][1][1] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F1c") == 0){
+							table[0][1][2] = *(data.getTag<lp::PartialHopTag>());
+							table[1][1][2] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F2a") == 0){
+							table[0][2][0] = *(data.getTag<lp::PartialHopTag>());
+							table[1][2][0] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F2b") == 0){
+							table[0][2][1] = *(data.getTag<lp::PartialHopTag>());
+							table[1][2][1] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F2c") == 0){
+							table[0][2][2] = *(data.getTag<lp::PartialHopTag>());
+							table[1][2][2] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F3a") == 0){
+							table[0][3][0] = *(data.getTag<lp::PartialHopTag>());
+							table[1][3][0] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F3b") == 0){
+							table[0][3][1] = *(data.getTag<lp::PartialHopTag>());
+							table[1][3][1] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F3c") == 0){
+							table[0][3][2] = *(data.getTag<lp::PartialHopTag>());
+							table[1][3][2] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F4a") == 0){
+							table[0][4][0] = *(data.getTag<lp::PartialHopTag>());
+							table[1][4][0] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F4b") == 0){
+							table[0][4][1] = *(data.getTag<lp::PartialHopTag>());
+							table[1][4][1] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F4c") == 0){
+							table[0][4][2] = *(data.getTag<lp::PartialHopTag>());
+							table[1][4][2] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F5a") == 0){
+							table[0][5][0] = *(data.getTag<lp::PartialHopTag>());
+							table[1][5][0] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F5b") == 0){
+							table[0][5][1] = *(data.getTag<lp::PartialHopTag>());
+							table[1][5][1] = *(data.getTag<lp::CountTag>());
+						}else if(preFuncStr.compare("/F5c") == 0){
+							table[0][5][2] = *(data.getTag<lp::PartialHopTag>());
+							table[1][5][2] = *(data.getTag<lp::CountTag>());
+						}else {
 
+						}
+					}
+
+					if(currentNodeName.compare("F1a") == 0){
+						table[1][1][0]++;
+						number = 1;
+						character = 0;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1a"));
+					}else if(currentNodeName.compare("F1b") == 0){
+						table[1][1][1]++;
+						number = 1;
+						character = 1;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1b"));
+					}else if(currentNodeName.compare("F1c") == 0){
+						table[1][1][2]++;
+						number = 1;
+						character = 2;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1c"));
+					}else if(currentNodeName.compare("F2a") == 0){
+						table[1][2][0]++;
+						number = 2;
+						character = 0;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2a"));
+					}else if(currentNodeName.compare("F2b") == 0){
+						table[1][2][1]++;
+						number = 2;
+						character = 1;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2b"));
+					}else if(currentNodeName.compare("F2c") == 0){
+						table[1][2][2]++;
+						number = 2;
+						character = 2;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2c"));
+					}else if(currentNodeName.compare("F3a") == 0){
+						table[1][3][0]++;
+						number = 3;
+						character = 0;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3a"));
+					}else if(currentNodeName.compare("F3b") == 0){
+						table[1][3][1]++;
+						number = 3;
+						character = 1;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3b"));
+					}else if(currentNodeName.compare("F3c") == 0){
+						table[1][3][2]++;
+						number = 3;
+						character = 2;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3c"));
+					}else if(currentNodeName.compare("F4a") == 0){
+						table[1][4][0]++;
+						number = 4;
+						character = 0;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4a"));
+					}else if(currentNodeName.compare("F4b") == 0){
+						table[1][4][1]++;
+						number = 4;
+						character = 1;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4b"));
+					}else if(currentNodeName.compare("F4c") == 0){
+						table[1][4][2]++;
+						number = 4;
+						character = 2;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4c"));
+					}else if(currentNodeName.compare("F5a") == 0){
+						table[1][5][0]++;
+						number = 5;
+						character = 0;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5a"));
+					}else if(currentNodeName.compare("F5b") == 0){
+						table[1][5][1]++;
+						number = 5;
+						character = 1;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5b"));
+					}else if(currentNodeName.compare("F5c") == 0){
+						table[1][5][2]++;
+						number = 5;
+						character = 2;
+						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5c"));
+					}
+					int pos = string.find("/", 1);
+					if(pos == -1 && string.size() > 1){
+						string.erase(1, string.size()-1);
+					}
+					else if(pos != -1){
+						string.erase(1, pos);
+					}
+					data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
+					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
+					data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
+					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
+				}else if(data.getTag<lp::PartialHopTag>() != nullptr){
+					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
+					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
 				}
 			}
-
-			if(currentNodeName.compare("F1a") == 0){
-				table[1][1][0]++;
-				number = 1;
-				character = 0;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1a"));
-			}else if(currentNodeName.compare("F1b") == 0){
-				table[1][1][1]++;
-				number = 1;
-				character = 1;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1b"));
-			}else if(currentNodeName.compare("F1c") == 0){
-				table[1][1][2]++;
-				number = 1;
-				character = 2;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1c"));
-			}else if(currentNodeName.compare("F2a") == 0){
-				table[1][2][0]++;
-				number = 2;
-				character = 0;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2a"));
-			}else if(currentNodeName.compare("F2b") == 0){
-				table[1][2][1]++;
-				number = 2;
-				character = 1;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2b"));
-			}else if(currentNodeName.compare("F2c") == 0){
-				table[1][2][2]++;
-				number = 2;
-				character = 2;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2c"));
-			}else if(currentNodeName.compare("F3a") == 0){
-				table[1][3][0]++;
-				number = 3;
-				character = 0;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3a"));
-			}else if(currentNodeName.compare("F3b") == 0){
-				table[1][3][1]++;
-				number = 3;
-				character = 1;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3b"));
-			}else if(currentNodeName.compare("F3c") == 0){
-				table[1][3][2]++;
-				number = 3;
-				character = 2;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3c"));
-			}else if(currentNodeName.compare("F4a") == 0){
-				table[1][4][0]++;
-				number = 4;
-				character = 0;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4a"));
-			}else if(currentNodeName.compare("F4b") == 0){
-				table[1][4][1]++;
-				number = 4;
-				character = 1;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4b"));
-			}else if(currentNodeName.compare("F4c") == 0){
-				table[1][4][2]++;
-				number = 4;
-				character = 2;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4c"));
-			}else if(currentNodeName.compare("F5a") == 0){
-				table[1][5][0]++;
-				number = 5;
-				character = 0;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5a"));
-			}else if(currentNodeName.compare("F5b") == 0){
-				table[1][5][1]++;
-				number = 5;
-				character = 1;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5b"));
-			}else if(currentNodeName.compare("F5c") == 0){
-				table[1][5][2]++;
-				number = 5;
-				character = 2;
-				data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5c"));
-			}
-			int pos = string.find("/", 1);
-			if(pos == -1 && string.size() > 1){
-				string.erase(1, string.size()-1);
-			}
-			else if(pos != -1){
-				string.erase(1, pos);
-			}
-			data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
-			data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
-			data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
-			std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
-		}else if(data.getTag<lp::PartialHopTag>() != nullptr){
-			data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
-			std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
 		}
 	}
-
 	// PIT match
 	pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
 	if (pitMatches.begin() == pitMatches.end()) {
