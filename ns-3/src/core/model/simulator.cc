@@ -938,7 +938,9 @@ void setChoiceType(const char* type){
 	}else if(strType == "roundRobin"){
 		choiceType = 1;
 	}else if(strType == "duration"){
-		choiceType = 2;
+		choiceType = 2;//"Dataパケットが送出されないバグにより保留"
+	}else if(strType == "interestDuration"){
+		choiceType = 3;
 	}
 }
 

@@ -885,7 +885,9 @@ void
 Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
 	if(data.getTag<lp::FunctionNameTag>() != nullptr){
-	std::cout << "Data packet in " << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
+	Name funcName = *(data.getTag<lp::FunctionNameTag>());
+	std::string funcString = funcName.toUri();
+	std::cout << "Data packet in "<< funcString << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
 	}
 	// receive Data
 	NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());

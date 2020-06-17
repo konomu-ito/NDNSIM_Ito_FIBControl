@@ -99,6 +99,28 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
     lpPacket.add<lp::CongestionMarkField>(*congestionMarkTag);
   }
 
+
+  shared_ptr<lp::FunctionNameTag> functionNameTag = netPkt.getTag<lp::FunctionNameTag>();
+  if (functionNameTag != nullptr) {
+	  lpPacket.add<lp::FunctionNameTagField>(*functionNameTag);
+  }
+
+  shared_ptr<lp::CountTag> countTag = netPkt.getTag<lp::CountTag>();
+  if (countTag != nullptr) {
+	  lpPacket.add<lp::CountTagField>(*countTag);
+  }
+  /*else {
+    	  lpPacket.add<lp::CountTagField>(0);
+  }*/
+
+  shared_ptr<lp::PartialHopTag> partialHopTag = netPkt.getTag<lp::PartialHopTag>();
+  if (partialHopTag != nullptr) {
+	  lpPacket.add<lp::PartialHopTagField>(*partialHopTag);
+  }
+  /*else {
+ 	  lpPacket.add<lp::PartialHopTagField>(0);
+  }*/
+
   shared_ptr<lp::HopCountTag> hopCountTag = netPkt.getTag<lp::HopCountTag>();
   if (hopCountTag != nullptr) {
     lpPacket.add<lp::HopCountTagField>(*hopCountTag);
@@ -107,27 +129,10 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
     lpPacket.add<lp::HopCountTagField>(0);
   }
 
-  shared_ptr<lp::PartialHopTag> partialHopTag = netPkt.getTag<lp::PartialHopTag>();
-  if (partialHopTag != nullptr) {
-	  lpPacket.add<lp::PartialHopTagField>(*partialHopTag);
+  shared_ptr<lp::PreviousFunctionTag> previousFunctionTag = netPkt.getTag<lp::PreviousFunctionTag>();
+  if (previousFunctionTag != nullptr) {
+	  lpPacket.add<lp::PreviousFunctionTagField>(*previousFunctionTag);
   }
-  /*else {
-	  lpPacket.add<lp::PartialHopTagField>(0);
-  }*/
-
-  shared_ptr<lp::CountTag> countTag = netPkt.getTag<lp::CountTag>();
-  if (countTag != nullptr) {
-	  lpPacket.add<lp::CountTagField>(*countTag);
-  }
-  /*else {
-	  lpPacket.add<lp::CountTagField>(0);
-  }*/
-
-  shared_ptr<lp::FunctionNameTag> functionNameTag = netPkt.getTag<lp::FunctionNameTag>();
-  if (functionNameTag != nullptr) {
-	  lpPacket.add<lp::FunctionNameTagField>(*functionNameTag);
-  }
-
 }
 
 void
@@ -292,8 +297,12 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
   // forwarding expects Data to be created with make_shared
   auto data = make_shared<Data>(netPkt);
 
+  if (firstPkt.has<lp::PreviousFunctionTagField>()) {
+	  data->setTag(make_shared<lp::PreviousFunctionTag>(firstPkt.get<lp::PreviousFunctionTagField>()));
+  }
+
   if (firstPkt.has<lp::HopCountTagField>()) {
-    data->setTag(make_shared<lp::HopCountTag>(firstPkt.get<lp::HopCountTagField>() + 1));
+    data->setTag(make_shared<lp::HopCountTag>(firstPkt.get<lp::HopCountTagField>()));
   }
 
   if (firstPkt.has<lp::PartialHopTagField>()) {

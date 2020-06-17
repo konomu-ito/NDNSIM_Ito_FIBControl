@@ -27,6 +27,7 @@
 
 #include "../../encoding/block-helpers.hpp"
 #include "../../util/concepts.hpp"
+#include "../../name.hpp"
 #include <boost/concept/requires.hpp>
 
 namespace ndn {
@@ -55,6 +56,30 @@ struct DecodeHelper<TlvType, uint64_t>
     return readNonNegativeInteger(wire);
   }
 };
+
+template<typename TlvType, typename T>
+struct TagDecodeHelper
+{
+  static
+  BOOST_CONCEPT_REQUIRES(((WireDecodable<T>)), (T))
+  tagDecode(const Block& wire)
+  {
+    T type;
+    type.wireDecode(wire.parse());
+    return type;
+  }
+};
+
+template<typename TlvType>
+struct TagDecodeHelper<TlvType, uint64_t>
+{
+  static uint64_t
+  tagDecode(const Block& wire)
+  {
+    return readNonNegativeInteger(wire);
+  }
+};
+
 
 template<typename TlvType>
 struct DecodeHelper<TlvType, std::pair<Buffer::const_iterator, Buffer::const_iterator>>
@@ -91,6 +116,36 @@ struct EncodeHelper<TAG, TlvType, uint64_t>
   }
 };
 
+template<typename encoding::Tag TAG, typename TlvType,typename T>
+struct TagEncodeHelper{
+	static size_t
+	tagEncode(EncodingImpl<TAG>& encoder, const T& value)
+	{
+		std::cerr << "tagEncode Error" << std::endl;
+		return 0;
+	}
+};
+
+template<typename encoding::Tag TAG, typename TlvType>
+struct TagEncodeHelper<TAG, TlvType, uint64_t>
+{
+  static size_t
+  tagEncode(EncodingImpl<TAG>& encoder, const uint64_t value)
+  {
+    return prependNonNegativeIntegerBlock(encoder, TlvType::value, value);
+  }
+};
+/*
+template<typename encoding::Tag TAG, typename TlvType>
+struct TagEncodeHelper<TAG, TlvType, Name>
+{
+  static size_t
+  tagEncode(EncodingImpl<TAG>& encoder, const Name value)
+  {
+    return Name::prependNameBlock(encoder, TlvType::value, value);
+  }
+};
+*/
 template<typename encoding::Tag TAG, typename TlvType>
 struct EncodeHelper<TAG, TlvType, std::pair<Buffer::const_iterator, Buffer::const_iterator>>
 {
@@ -105,7 +160,7 @@ struct EncodeHelper<TAG, TlvType, std::pair<Buffer::const_iterator, Buffer::cons
   }
 };
 
-template<typename LOCATION, typename VALUE, uint64_t TYPE, bool REPEATABLE = false>
+template<typename LOCATION, typename VALUE, uint64_t TYPE,  bool ISTAG, bool REPEATABLE = false>
 class FieldDecl
 {
 public:
@@ -114,10 +169,16 @@ public:
   typedef std::integral_constant<uint64_t, TYPE> TlvType;
   typedef std::integral_constant<bool, REPEATABLE> IsRepeatable;
 
+  static bool
+  isTag(void){
+	  return ISTAG;
+  }
+
   /** \brief decodes a field
    *  \param wire a Block with top-level type \p TYPE
    *  \return value of the field
    */
+
   static ValueType
   decode(const Block& wire)
   {
@@ -128,6 +189,17 @@ public:
     return DecodeHelper<TlvType, ValueType>::decode(wire);
   }
 
+  static ValueType
+  tagDecode(const Block& wire)
+  {
+    if (wire.type() != TlvType::value) {
+      BOOST_THROW_EXCEPTION(ndn::tlv::Error("Unexpected TLV type " + to_string(wire.type())));
+    }
+
+    return TagDecodeHelper<TlvType, ValueType>::tagDecode(wire);
+  }
+
+
   /** \brief encodes a field and prepends to \p encoder its Block with top-level type \p TYPE
    *  \param encoder Instance of the buffer encoder or buffer estimator
    *  \param value value of the field
@@ -137,6 +209,13 @@ public:
   encode(EncodingImpl<TAG>& encoder, const T& value)
   {
     return EncodeHelper<TAG, TlvType, T>::encode(encoder, value);
+  }
+
+  template<typename encoding::Tag TAG, typename T>
+  static size_t
+  tagEncode(EncodingImpl<TAG>& encoder, const T& value)
+  {
+	  return TagEncodeHelper<TAG, TlvType, T>::tagEncode(encoder, value);
   }
 };
 

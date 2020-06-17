@@ -250,6 +250,7 @@ PointToPointNetDevice::TransmitStart (Ptr<Packet> p)
   Time txTime = m_bps.CalculateBytesTxTime (p->GetSize ());
   Time txCompleteTime = txTime + m_tInterframeGap;
 
+  std::cout << "txCompleteTime: " << txCompleteTime.GetSeconds() << std::endl;
   NS_LOG_LOGIC ("Schedule TransmitCompleteEvent in " << txCompleteTime.GetSeconds () << "sec");
   Simulator::Schedule (txCompleteTime, &PointToPointNetDevice::TransmitComplete, this);
 

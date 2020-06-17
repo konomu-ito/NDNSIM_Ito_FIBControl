@@ -120,6 +120,10 @@ public:
   size_t
   wireEncode(EncodingImpl<TAG>& encoder) const;
 
+  template<encoding::Tag TAG>
+  size_t
+  prependNameBlock(EncodingImpl<TAG>& encoder, uint32_t type, Name value) const;
+
   const Block&
   wireEncode() const;
 

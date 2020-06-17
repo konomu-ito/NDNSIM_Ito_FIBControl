@@ -1,0 +1,9 @@
+編集したファイル
+src/ndnSIM/ndn-cxx/src/lp/tags.hpp
+src/ndnSIM/ndn-cxx/src/lp/fields.hpp
+src/ndnSIM/ndn-cxx/src/lp/tlv.hpp
+src/ndnSIM/ndn-cxx/src/face.cpp　l.451 extractLpLocalFields()
+src/ndnSIM/NFD/daemon/face/generic-link-service.cpp l.88 encodeLpFields(), l.292 decodeData()
+src/ndnSIM/apps/ndn-producer.cpp l.114 if文内
+src/ndnSIM/NFD/daemon/fw/forwarder.cpp　l.1133 if文内
+

@@ -107,7 +107,12 @@ public: // field access
         continue;
       }
       if (count++ == index) {
-        return FIELD::decode(element);
+    	return FIELD::decode(element);
+    	/*if(FIELD::isTag()){
+    		return FIELD::tagDecode(element);
+    	}else{
+    		return FIELD::decode(element);
+    	}*/
       }
     }
 
@@ -159,10 +164,19 @@ public: // field access
       BOOST_THROW_EXCEPTION(std::length_error("Field cannot be repeated"));
     }
 
+    size_t estimatedSize;
     EncodingEstimator estimator;
-    size_t estimatedSize = FIELD::encode(estimator, value);
+    if(FIELD::isTag()){
+    	estimatedSize = FIELD::tagEncode(estimator,value);
+    }else{
+    	estimatedSize = FIELD::encode(estimator, value);
+    }
     EncodingBuffer buffer(estimatedSize, 0);
-    FIELD::encode(buffer, value);
+    if(typeid(lp::FunctionNameTagField) == typeid(FIELD)){
+    	estimatedSize = FIELD::tagEncode(buffer,value);
+    }else{
+    	estimatedSize = FIELD::encode(buffer, value);
+    }
     Block block = buffer.block();
 
     Block::element_const_iterator pos = std::lower_bound(m_wire.elements_begin(),

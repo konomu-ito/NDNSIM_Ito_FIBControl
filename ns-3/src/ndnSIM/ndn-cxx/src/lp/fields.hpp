@@ -33,72 +33,74 @@
 
 namespace ndn {
 namespace lp {
+constexpr bool isTag = true;
+constexpr bool notTag = false;
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           Sequence,
-                          tlv::Sequence> SequenceField;
+                          tlv::Sequence, notTag> SequenceField;
 BOOST_CONCEPT_ASSERT((Field<SequenceField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::FragIndex> FragIndexField;
+                          tlv::FragIndex, notTag> FragIndexField;
 BOOST_CONCEPT_ASSERT((Field<FragIndexField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::FragCount> FragCountField;
+                          tlv::FragCount, notTag> FragCountField;
 BOOST_CONCEPT_ASSERT((Field<FragCountField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           NackHeader,
-                          tlv::Nack> NackField;
+                          tlv::Nack, notTag> NackField;
 BOOST_CONCEPT_ASSERT((Field<NackField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::NextHopFaceId> NextHopFaceIdField;
+                          tlv::NextHopFaceId, notTag> NextHopFaceIdField;
 BOOST_CONCEPT_ASSERT((Field<NextHopFaceIdField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           CachePolicy,
-                          tlv::CachePolicy> CachePolicyField;
+                          tlv::CachePolicy, notTag> CachePolicyField;
 BOOST_CONCEPT_ASSERT((Field<CachePolicyField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::IncomingFaceId> IncomingFaceIdField;
+                          tlv::IncomingFaceId, notTag> IncomingFaceIdField;
 BOOST_CONCEPT_ASSERT((Field<IncomingFaceIdField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::CongestionMark> CongestionMarkField;
+                          tlv::CongestionMark, notTag> CongestionMarkField;
 BOOST_CONCEPT_ASSERT((Field<CongestionMarkField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::HopCountTag> HopCountTagField;
+                          tlv::HopCountTag, isTag> HopCountTagField;
 BOOST_CONCEPT_ASSERT((Field<HopCountTagField>));
 
 //added 2019/10/26
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::PartialHopTag> PartialHopTagField;
+                          tlv::PartialHopTag, isTag> PartialHopTagField;
 BOOST_CONCEPT_ASSERT((Field<PartialHopTagField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           uint64_t,
-                          tlv::CountTag> CountTagField;
+                          tlv::CountTag, isTag> CountTagField;
 BOOST_CONCEPT_ASSERT((Field<CountTagField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           Name,
-                          tlv::FunctionNameTag> FunctionNameTagField;
+                          tlv::FunctionNameTag, isTag> FunctionNameTagField;
 BOOST_CONCEPT_ASSERT((Field<FunctionNameTagField>));
 
 typedef detail::FieldDecl<field_location_tags::Header,
                           Name,
-                          tlv::PreviousFunctionTag> PreviousFunctionTagField;
+                          tlv::PreviousFunctionTag, isTag> PreviousFunctionTagField;
 BOOST_CONCEPT_ASSERT((Field<PreviousFunctionTagField>));
 //
 
@@ -109,7 +111,7 @@ BOOST_CONCEPT_ASSERT((Field<PreviousFunctionTagField>));
  */
 typedef detail::FieldDecl<field_location_tags::Fragment,
                           std::pair<Buffer::const_iterator, Buffer::const_iterator>,
-                          tlv::Fragment> FragmentField;
+                          tlv::Fragment, notTag> FragmentField;
 BOOST_CONCEPT_ASSERT((Field<FragmentField>));
 
 /**

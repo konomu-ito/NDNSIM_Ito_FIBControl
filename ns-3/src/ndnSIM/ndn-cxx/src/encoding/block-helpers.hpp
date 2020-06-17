@@ -43,6 +43,7 @@ prependNonNegativeIntegerBlock(EncodingImpl<TAG>& encoder, uint32_t type, uint64
  * @brief Create a TLV block type @p type containing non-negative integer @p value
  * @see prependNonNegativeIntegerBlock, readNonNegativeInteger
  */
+
 Block
 makeNonNegativeIntegerBlock(uint32_t type, uint64_t value);
 
