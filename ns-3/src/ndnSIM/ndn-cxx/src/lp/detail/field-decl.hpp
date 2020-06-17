@@ -135,7 +135,7 @@ struct TagEncodeHelper<TAG, TlvType, uint64_t>
     return prependNonNegativeIntegerBlock(encoder, TlvType::value, value);
   }
 };
-/*
+
 template<typename encoding::Tag TAG, typename TlvType>
 struct TagEncodeHelper<TAG, TlvType, Name>
 {
@@ -145,7 +145,7 @@ struct TagEncodeHelper<TAG, TlvType, Name>
     return Name::prependNameBlock(encoder, TlvType::value, value);
   }
 };
-*/
+
 template<typename encoding::Tag TAG, typename TlvType>
 struct EncodeHelper<TAG, TlvType, std::pair<Buffer::const_iterator, Buffer::const_iterator>>
 {
