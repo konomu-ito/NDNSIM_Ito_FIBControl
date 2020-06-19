@@ -142,7 +142,7 @@ struct TagEncodeHelper<TAG, TlvType, Name>
   static size_t
   tagEncode(EncodingImpl<TAG>& encoder, const Name value)
   {
-    return Name::prependNameBlock(encoder, TlvType::value, value);
+    return value.prependNameBlock(encoder, TlvType::value);
   }
 };
 

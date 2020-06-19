@@ -133,16 +133,6 @@ Name::wireEncode(EncodingImpl<TAG>& encoder) const
   return totalLength;
 }
 
-template<encoding::Tag TAG>
-size_t
-Name::prependNameBlock(EncodingImpl<TAG>& encoder, uint32_t type, Name value) const
-{
-	size_t valueLength = encoder.wireEncode(value);
-	size_t totalLength = valueLength;
-	totalLength += encoder.prependVarNumber(totalLength);
-	totalLength += encoder.prependVarNumber(type);
-	return totalLength;
-}
 
 template size_t
 Name::wireEncode<encoding::EncoderTag>(EncodingImpl<encoding::EncoderTag>& encoder) const;

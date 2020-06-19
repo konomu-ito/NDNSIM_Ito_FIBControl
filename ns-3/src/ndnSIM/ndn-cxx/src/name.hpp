@@ -119,10 +119,22 @@ public:
   template<encoding::Tag TAG>
   size_t
   wireEncode(EncodingImpl<TAG>& encoder) const;
+/*
+  template<encoding::Tag TAG>
+  size_t
+  prependNameBlock(EncodingImpl<TAG>& encoder, uint32_t type) const;
+*/
 
   template<encoding::Tag TAG>
   size_t
-  prependNameBlock(EncodingImpl<TAG>& encoder, uint32_t type, Name value) const;
+  prependNameBlock(EncodingImpl<TAG>& encoder, uint32_t type) const
+  {
+  	size_t valueLength = this->wireEncode(encoder);
+  	size_t totalLength = valueLength;
+  	totalLength += encoder.prependVarNumber(totalLength);
+  	totalLength += encoder.prependVarNumber(type);
+  	return totalLength;
+  }
 
   const Block&
   wireEncode() const;
