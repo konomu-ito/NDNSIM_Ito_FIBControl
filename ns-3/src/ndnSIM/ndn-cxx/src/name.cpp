@@ -29,6 +29,7 @@
 #include "util/string-helper.hpp"
 #include "encoding/block.hpp"
 #include "encoding/encoding-buffer.hpp"
+#include "lp/tlv.hpp"
 
 #include <boost/functional/hash.hpp>
 
@@ -39,98 +40,98 @@ BOOST_CONCEPT_ASSERT((WireEncodable<Name>));
 BOOST_CONCEPT_ASSERT((WireEncodableWithEncodingBuffer<Name>));
 BOOST_CONCEPT_ASSERT((WireDecodable<Name>));
 static_assert(std::is_base_of<tlv::Error, Name::Error>::value,
-              "Name::Error must inherit from tlv::Error");
+		"Name::Error must inherit from tlv::Error");
 
 const size_t Name::npos = std::numeric_limits<size_t>::max();
 
 Name::Name()
-  : m_nameBlock(tlv::Name)
+: m_nameBlock(tlv::Name)
 {
 }
 
 Name::Name(const Block& wire)
 {
-  m_nameBlock = wire;
-  m_nameBlock.parse();
+	m_nameBlock = wire;
+	m_nameBlock.parse();
 }
 
 Name::Name(const char* uri)
-  : Name(std::string(uri))
+: Name(std::string(uri))
 {
 }
 
 Name::Name(std::string uri)
 {
-  trim(uri);
-  if (uri.empty())
-    return;
+	trim(uri);
+	if (uri.empty())
+		return;
 
-  size_t iColon = uri.find(':');
-  if (iColon != std::string::npos) {
-    // Make sure the colon came before a '/'.
-    size_t iFirstSlash = uri.find('/');
-    if (iFirstSlash == std::string::npos || iColon < iFirstSlash) {
-      // Omit the leading protocol such as ndn:
-      uri.erase(0, iColon + 1);
-      trim(uri);
-    }
-  }
+	size_t iColon = uri.find(':');
+	if (iColon != std::string::npos) {
+		// Make sure the colon came before a '/'.
+		size_t iFirstSlash = uri.find('/');
+		if (iFirstSlash == std::string::npos || iColon < iFirstSlash) {
+			// Omit the leading protocol such as ndn:
+			uri.erase(0, iColon + 1);
+			trim(uri);
+		}
+	}
 
-  // Trim the leading slash and possibly the authority.
-  if (uri[0] == '/') {
-    if (uri.size() >= 2 && uri[1] == '/') {
-      // Strip the authority following "//".
-      size_t iAfterAuthority = uri.find('/', 2);
-      if (iAfterAuthority == std::string::npos)
-        // Unusual case: there was only an authority.
-        return;
-      else {
-        uri.erase(0, iAfterAuthority + 1);
-        trim(uri);
-      }
-    }
-    else {
-      uri.erase(0, 1);
-      trim(uri);
-    }
-  }
+	// Trim the leading slash and possibly the authority.
+	if (uri[0] == '/') {
+		if (uri.size() >= 2 && uri[1] == '/') {
+			// Strip the authority following "//".
+			size_t iAfterAuthority = uri.find('/', 2);
+			if (iAfterAuthority == std::string::npos)
+				// Unusual case: there was only an authority.
+				return;
+			else {
+				uri.erase(0, iAfterAuthority + 1);
+				trim(uri);
+			}
+		}
+		else {
+			uri.erase(0, 1);
+			trim(uri);
+		}
+	}
 
-  size_t iComponentStart = 0;
+	size_t iComponentStart = 0;
 
-  // Unescape the components.
-  while (iComponentStart < uri.size()) {
-    size_t iComponentEnd = uri.find("/", iComponentStart);
-    if (iComponentEnd == std::string::npos)
-      iComponentEnd = uri.size();
+	// Unescape the components.
+	while (iComponentStart < uri.size()) {
+		size_t iComponentEnd = uri.find("/", iComponentStart);
+		if (iComponentEnd == std::string::npos)
+			iComponentEnd = uri.size();
 
-    append(Component::fromEscapedString(&uri[0], iComponentStart, iComponentEnd));
-    iComponentStart = iComponentEnd + 1;
-  }
+		append(Component::fromEscapedString(&uri[0], iComponentStart, iComponentEnd));
+		iComponentStart = iComponentEnd + 1;
+	}
 }
 
 Name
 Name::deepCopy() const
 {
-  Name copiedName(*this);
-  copiedName.m_nameBlock.resetWire();
-  copiedName.wireEncode(); // "compress" the underlying buffer
-  return copiedName;
+	Name copiedName(*this);
+	copiedName.m_nameBlock.resetWire();
+	copiedName.wireEncode(); // "compress" the underlying buffer
+	return copiedName;
 }
 
 template<encoding::Tag TAG>
 size_t
 Name::wireEncode(EncodingImpl<TAG>& encoder) const
 {
-  size_t totalLength = 0;
+	size_t totalLength = 0;
 
-  for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
-    {
-      totalLength += i->wireEncode(encoder);
-    }
+	for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
+	{
+		totalLength += i->wireEncode(encoder);
+	}
 
-  totalLength += encoder.prependVarNumber(totalLength);
-  totalLength += encoder.prependVarNumber(tlv::Name);
-  return totalLength;
+	totalLength += encoder.prependVarNumber(totalLength);
+	totalLength += encoder.prependVarNumber(tlv::Name);
+	return totalLength;
 }
 
 
@@ -143,19 +144,19 @@ Name::wireEncode<encoding::EstimatorTag>(EncodingImpl<encoding::EstimatorTag>& e
 const Block&
 Name::wireEncode() const
 {
-  if (m_nameBlock.hasWire())
-    return m_nameBlock;
+	if (m_nameBlock.hasWire())
+		return m_nameBlock;
 
-  EncodingEstimator estimator;
-  size_t estimatedSize = wireEncode(estimator);
+	EncodingEstimator estimator;
+	size_t estimatedSize = wireEncode(estimator);
 
-  EncodingBuffer buffer(estimatedSize, 0);
-  wireEncode(buffer);
+	EncodingBuffer buffer(estimatedSize, 0);
+	wireEncode(buffer);
 
-  m_nameBlock = buffer.block();
-  m_nameBlock.parse();
+	m_nameBlock = buffer.block();
+	m_nameBlock.parse();
 
-  return m_nameBlock;
+	return m_nameBlock;
 }
 
 /**********Function NAME Encode******************/
@@ -163,16 +164,16 @@ template<encoding::Tag TAG>
 size_t
 Name::wireEncodeFunc(EncodingImpl<TAG>& encoder) const
 {
-  size_t totalLength = 0;
+	size_t totalLength = 0;
 
-  for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
-    {
-      totalLength += i->wireEncode(encoder);
-    }
+	for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
+	{
+		totalLength += i->wireEncode(encoder);
+	}
 
-  totalLength += encoder.prependVarNumber(totalLength);
-  totalLength += encoder.prependVarNumber(tlv::FunctionName);
-  return totalLength;
+	totalLength += encoder.prependVarNumber(totalLength);
+	totalLength += encoder.prependVarNumber(tlv::FunctionName);
+	return totalLength;
 }
 
 template size_t
@@ -184,35 +185,35 @@ Name::wireEncodeFunc<encoding::EstimatorTag>(EncodingImpl<encoding::EstimatorTag
 const Block&
 Name::wireEncodeFunc() const
 {
-  if (m_nameBlock.hasWire())
-    return m_nameBlock;
+	if (m_nameBlock.hasWire())
+		return m_nameBlock;
 
-  EncodingEstimator estimator;
-  size_t estimatedSize = wireEncode(estimator);
+	EncodingEstimator estimator;
+	size_t estimatedSize = wireEncode(estimator);
 
-  EncodingBuffer buffer(estimatedSize, 0);
-  wireEncode(buffer);
+	EncodingBuffer buffer(estimatedSize, 0);
+	wireEncode(buffer);
 
-  m_nameBlock = buffer.block();
-  m_nameBlock.parse();
+	m_nameBlock = buffer.block();
+	m_nameBlock.parse();
 
-  return m_nameBlock;
+	return m_nameBlock;
 }
 /*************************************************/
 template<encoding::Tag TAG>
 size_t
 Name::wireEncodeFuncFullName(EncodingImpl<TAG>& encoder) const
 {
-  size_t totalLength = 0;
+	size_t totalLength = 0;
 
-  for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
-    {
-      totalLength += i->wireEncode(encoder);
-    }
+	for (const_reverse_iterator i = rbegin(); i != rend(); ++i)
+	{
+		totalLength += i->wireEncode(encoder);
+	}
 
-  totalLength += encoder.prependVarNumber(totalLength);
-  totalLength += encoder.prependVarNumber(tlv::FunctionFullName);
-  return totalLength;
+	totalLength += encoder.prependVarNumber(totalLength);
+	totalLength += encoder.prependVarNumber(tlv::FunctionFullName);
+	return totalLength;
 }
 
 template size_t
@@ -225,230 +226,240 @@ Name::wireEncodeFuncFullName<encoding::EstimatorTag>(EncodingImpl<encoding::Esti
 void
 Name::wireDecode(const Block& wire)
 {
-  if (wire.type() != tlv::Name)
-    BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
+	if (wire.type() != tlv::Name)
+		BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
 
-  m_nameBlock = wire;
-  m_nameBlock.parse();
+	m_nameBlock = wire;
+	m_nameBlock.parse();
+}
+
+void
+Name::readName(const Block& wire)
+{
+	if(!(lp::tlv::FunctionNameTag <= wire.type() && wire.type() <= lp::tlv::PreviousFunctionTag))
+		BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name Tag"));
+
+	m_nameBlock = wire;
+	m_nameBlock.parse();
 }
 
 std::string
 Name::toUri() const
 {
-  std::ostringstream os;
-  os << *this;
-  return os.str();
+	std::ostringstream os;
+	os << *this;
+	return os.str();
 }
 
 /****************Function NAME Decode********************/
 void
 Name::wireDecodeFunc(const Block& wire)
 {
-  if (wire.type() != tlv::FunctionName)
-    BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
+	if (wire.type() != tlv::FunctionName)
+		BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
 
-  m_nameBlock = wire;
-  m_nameBlock.parse();
+	m_nameBlock = wire;
+	m_nameBlock.parse();
 }
 /******************************************************/
 void
 Name::wireDecodeFuncFullName(const Block& wire)
 {
-  if (wire.type() != tlv::FunctionFullName)
-    BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
+	if (wire.type() != tlv::FunctionFullName)
+		BOOST_THROW_EXCEPTION(tlv::Error("Unexpected TLV type when decoding Name"));
 
-  m_nameBlock = wire;
-  m_nameBlock.parse();
+	m_nameBlock = wire;
+	m_nameBlock.parse();
 }
 
 
 Name&
 Name::append(const PartialName& name)
 {
-  if (&name == this)
-    // Copying from this name, so need to make a copy first.
-    return append(PartialName(name));
+	if (&name == this)
+		// Copying from this name, so need to make a copy first.
+		return append(PartialName(name));
 
-  for (size_t i = 0; i < name.size(); ++i)
-    append(name.at(i));
+	for (size_t i = 0; i < name.size(); ++i)
+		append(name.at(i));
 
-  return *this;
+	return *this;
 }
 
 Name&
 Name::appendNumber(uint64_t number)
 {
-  m_nameBlock.push_back(Component::fromNumber(number));
-  return *this;
+	m_nameBlock.push_back(Component::fromNumber(number));
+	return *this;
 }
 
 Name&
 Name::appendNumberWithMarker(uint8_t marker, uint64_t number)
 {
-  m_nameBlock.push_back(Component::fromNumberWithMarker(marker, number));
-  return *this;
+	m_nameBlock.push_back(Component::fromNumberWithMarker(marker, number));
+	return *this;
 }
 
 Name&
 Name::appendVersion(uint64_t version)
 {
-  m_nameBlock.push_back(Component::fromVersion(version));
-  return *this;
+	m_nameBlock.push_back(Component::fromVersion(version));
+	return *this;
 }
 
 Name&
 Name::appendVersion()
 {
-  appendVersion(time::toUnixTimestamp(time::system_clock::now()).count());
-  return *this;
+	appendVersion(time::toUnixTimestamp(time::system_clock::now()).count());
+	return *this;
 }
 
 Name&
 Name::appendSegment(uint64_t segmentNo)
 {
-  m_nameBlock.push_back(Component::fromSegment(segmentNo));
-  return *this;
+	m_nameBlock.push_back(Component::fromSegment(segmentNo));
+	return *this;
 }
 
 Name&
 Name::appendSegmentOffset(uint64_t offset)
 {
-  m_nameBlock.push_back(Component::fromSegmentOffset(offset));
-  return *this;
+	m_nameBlock.push_back(Component::fromSegmentOffset(offset));
+	return *this;
 }
 
 Name&
 Name::appendTimestamp(const time::system_clock::TimePoint& timePoint)
 {
-  m_nameBlock.push_back(Component::fromTimestamp(timePoint));
-  return *this;
+	m_nameBlock.push_back(Component::fromTimestamp(timePoint));
+	return *this;
 }
 
 Name&
 Name::appendSequenceNumber(uint64_t seqNo)
 {
-  m_nameBlock.push_back(Component::fromSequenceNumber(seqNo));
-  return *this;
+	m_nameBlock.push_back(Component::fromSequenceNumber(seqNo));
+	return *this;
 }
 
 Name&
 Name::appendImplicitSha256Digest(const ConstBufferPtr& digest)
 {
-  m_nameBlock.push_back(Component::fromImplicitSha256Digest(digest));
-  return *this;
+	m_nameBlock.push_back(Component::fromImplicitSha256Digest(digest));
+	return *this;
 }
 
 Name&
 Name::appendImplicitSha256Digest(const uint8_t* digest, size_t digestSize)
 {
-  m_nameBlock.push_back(Component::fromImplicitSha256Digest(digest, digestSize));
-  return *this;
+	m_nameBlock.push_back(Component::fromImplicitSha256Digest(digest, digestSize));
+	return *this;
 }
 
 PartialName
 Name::getSubName(ssize_t iStartComponent, size_t nComponents) const
 {
-  PartialName result;
+	PartialName result;
 
-  ssize_t iStart = iStartComponent < 0 ? this->size() + iStartComponent : iStartComponent;
-  size_t iEnd = this->size();
+	ssize_t iStart = iStartComponent < 0 ? this->size() + iStartComponent : iStartComponent;
+	size_t iEnd = this->size();
 
-  iStart = std::max(iStart, static_cast<ssize_t>(0));
+	iStart = std::max(iStart, static_cast<ssize_t>(0));
 
-  if (nComponents != npos)
-    iEnd = std::min(this->size(), iStart + nComponents);
+	if (nComponents != npos)
+		iEnd = std::min(this->size(), iStart + nComponents);
 
-  for (size_t i = iStart; i < iEnd; ++i)
-    result.append(at(i));
+	for (size_t i = iStart; i < iEnd; ++i)
+		result.append(at(i));
 
-  return result;
+	return result;
 }
 
 Name
 Name::getSuccessor() const
 {
-  if (empty()) {
-    static uint8_t firstValue[] = { 0 };
-    Name firstName;
-    firstName.append(firstValue, 1);
-    return firstName;
-  }
+	if (empty()) {
+		static uint8_t firstValue[] = { 0 };
+		Name firstName;
+		firstName.append(firstValue, 1);
+		return firstName;
+	}
 
-  return getPrefix(-1).append(get(-1).getSuccessor());
+	return getPrefix(-1).append(get(-1).getSuccessor());
 }
 
 bool
 Name::equals(const Name& name) const
 {
-  if (size() != name.size())
-    return false;
+	if (size() != name.size())
+		return false;
 
-  for (size_t i = 0; i < size(); ++i) {
-    if (at(i) != name.at(i))
-      return false;
-  }
+	for (size_t i = 0; i < size(); ++i) {
+		if (at(i) != name.at(i))
+			return false;
+	}
 
-  return true;
+	return true;
 }
 
 bool
 Name::isPrefixOf(const Name& name) const
 {
-  // This name is longer than the name we are checking against.
-  if (size() > name.size())
-    return false;
+	// This name is longer than the name we are checking against.
+	if (size() > name.size())
+		return false;
 
-  // Check if at least one of given components doesn't match.
-  for (size_t i = 0; i < size(); ++i) {
-    if (at(i) != name.at(i))
-      return false;
-  }
+	// Check if at least one of given components doesn't match.
+	for (size_t i = 0; i < size(); ++i) {
+		if (at(i) != name.at(i))
+			return false;
+	}
 
-  return true;
+	return true;
 }
 
 int
 Name::compare(size_t pos1, size_t count1, const Name& other, size_t pos2, size_t count2) const
 {
-  count1 = std::min(count1, this->size() - pos1);
-  count2 = std::min(count2, other.size() - pos2);
-  size_t count = std::min(count1, count2);
+	count1 = std::min(count1, this->size() - pos1);
+	count2 = std::min(count2, other.size() - pos2);
+	size_t count = std::min(count1, count2);
 
-  for (size_t i = 0; i < count; ++i) {
-    int comp = this->at(pos1 + i).compare(other.at(pos2 + i));
-    if (comp != 0) { // i-th component differs
-      return comp;
-    }
-  }
-  // [pos1, pos1+count) of this Name equals [pos2, pos2+count) of other Name
-  return count1 - count2;
+	for (size_t i = 0; i < count; ++i) {
+		int comp = this->at(pos1 + i).compare(other.at(pos2 + i));
+		if (comp != 0) { // i-th component differs
+			return comp;
+		}
+	}
+	// [pos1, pos1+count) of this Name equals [pos2, pos2+count) of other Name
+	return count1 - count2;
 }
 
 std::ostream&
 operator<<(std::ostream& os, const Name& name)
 {
-  if (name.empty())
-    {
-      os << "/";
-    }
-  else
-    {
-      for (Name::const_iterator i = name.begin(); i != name.end(); i++) {
-        os << "/";
-        i->toUri(os);
-      }
-    }
-  return os;
+	if (name.empty())
+	{
+		os << "/";
+	}
+	else
+	{
+		for (Name::const_iterator i = name.begin(); i != name.end(); i++) {
+			os << "/";
+			i->toUri(os);
+		}
+	}
+	return os;
 }
 
 std::istream&
 operator>>(std::istream& is, Name& name)
 {
-  std::string inputString;
-  is >> inputString;
-  name = Name(inputString);
+	std::string inputString;
+	is >> inputString;
+	name = Name(inputString);
 
-  return is;
+	return is;
 }
 
 } // namespace ndn
@@ -457,8 +468,8 @@ namespace std {
 size_t
 hash<ndn::Name>::operator()(const ndn::Name& name) const
 {
-  return boost::hash_range(name.wireEncode().wire(),
-                           name.wireEncode().wire() + name.wireEncode().size());
+	return boost::hash_range(name.wireEncode().wire(),
+			name.wireEncode().wire() + name.wireEncode().size());
 }
 
 } // namespace std

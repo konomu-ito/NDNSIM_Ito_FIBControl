@@ -118,9 +118,6 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 	  data->setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>(Name("")));
 	  shared_ptr<lp::PartialHopTag> partialHopTag = data->getTag<lp::PartialHopTag>();
 	  std::cout << "FuncNameTag: " << *(data->getTag<lp::FunctionNameTag>()) << ",the type name is "<< typeid(*(data->getTag<lp::FunctionNameTag>())).name() <<"PartialHopTag: "<< *(data->getTag<lp::PartialHopTag>()) << ", typeName is " << typeid(*(partialHopTag)).name() << ",CountTag: " << *(data->getTag<lp::CountTag>())<< std::endl;
-	  if(typeid(*(partialHopTag)) == typeid(lp::PartialHopTag)){
-		  std::cout << "o" << std::endl;
-	  }
   }
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
   //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;

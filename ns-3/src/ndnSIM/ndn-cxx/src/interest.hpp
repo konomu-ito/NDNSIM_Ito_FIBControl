@@ -302,8 +302,8 @@ public: // Name and guiders
 	std::string funcStr = interest.getFunction().toUri();
 	int pos = funcStr.find("/", 1);
 	if(pos == -1 && funcStr.size() > 1){
-		funcStr.erase(1, funcStr.size()-1);
-		Name newFunc(funcStr);
+		std::string headFunc = *str;
+		Name newFunc(headFunc);
 		interest.setFunction(newFunc);
 	}
 	else if(pos != -1){

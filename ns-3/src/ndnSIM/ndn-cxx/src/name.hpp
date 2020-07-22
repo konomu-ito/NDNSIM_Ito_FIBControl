@@ -156,6 +156,9 @@ public:
   void
   wireDecode(const Block& wire);
 
+  void
+  readName(const Block& wire);
+
 /***Function Name Encode****************/
   void
   wireDecodeFunc(const Block& wire);

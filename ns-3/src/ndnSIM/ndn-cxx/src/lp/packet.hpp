@@ -107,12 +107,12 @@ public: // field access
         continue;
       }
       if (count++ == index) {
-    	return FIELD::decode(element);
-    	/*if(FIELD::isTag()){
+    	//return FIELD::decode(element);
+    	if(FIELD::isTag()){
     		return FIELD::tagDecode(element);
     	}else{
     		return FIELD::decode(element);
-    	}*/
+    	}
       }
     }
 
@@ -172,7 +172,7 @@ public: // field access
     	estimatedSize = FIELD::encode(estimator, value);
     }
     EncodingBuffer buffer(estimatedSize, 0);
-    if(typeid(lp::FunctionNameTagField) == typeid(FIELD)){
+    if(FIELD::isTag()){
     	estimatedSize = FIELD::tagEncode(buffer,value);
     }else{
     	estimatedSize = FIELD::encode(buffer, value);

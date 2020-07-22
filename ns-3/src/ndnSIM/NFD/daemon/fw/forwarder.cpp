@@ -607,68 +607,72 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 
 	if (list[1] == currentNodeName){
 		interest.removeHeadFunction(interest);
-		interest.setFunctionFlag(1);
-		if(ns3::getChoiceType() == 0){
-			ns3::increaseTotalFcc(funcNum);
-			ns3::increaseAllFcc();
-			if(ns3::getAllFcc() == 30){
-				ns3::resetFcc();
-			}
-		}else if(ns3::getChoiceType() == 2){
-			std::string funcStr;
-			/*table index
-			 * 1st hop or count
-			 *  0:hop
-			 *  1:count
-			 * 2nd function number 1 to 5
-			 * 3rd function character 0 to 2
-			 */
-			if(list[2].compare("F1")==0){
-				if(table[0][1][0]+table[1][1][0]<=table[0][1][1]+table[1][1][1] && table[0][1][0]+table[1][1][0]<=table[0][1][2]+table[1][1][2]){
-					funcStr = "/F1a";
-				}else if(table[0][1][1]+table[1][1][1]<=table[0][1][2]+table[1][1][2]){
-					funcStr = "/F1b";
-				}else{
-					funcStr = "/F1c";
+		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
+		if(((interest.getFunction()).toUri()).compare("/") != 0){
+			std::cout << "not empty" << std::endl;
+			interest.setFunctionFlag(1);
+			if(ns3::getChoiceType() == 0){
+				ns3::increaseTotalFcc(funcNum);
+				ns3::increaseAllFcc();
+				if(ns3::getAllFcc() == 30){
+					ns3::resetFcc();
 				}
-			}else if(list[2].compare("F2")==0){
-				if(table[0][2][0]+table[1][2][0]<=table[0][2][1]+table[1][2][1] && table[0][2][0]+table[1][2][0]<=table[0][2][2]+table[1][2][2]){
-					funcStr = "/F2a";
-				}else if(table[0][2][1]+table[1][2][1]<=table[0][2][2]+table[1][2][2]){
-					funcStr = "/F2b";
-				}else{
-					funcStr = "/F2c";
-				}
-			}else if(list[2].compare("F3")==0){
-				if(table[0][3][0]+table[1][3][0]<=table[0][3][1]+table[1][3][1] && table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
-					if(table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
-						funcStr = "/F3a";
+			}else if(ns3::getChoiceType() == 2){
+				std::string funcStr;
+				/*table index
+				 * 1st hop or count
+				 *  0:hop
+				 *  1:count
+				 * 2nd function number 1 to 5
+				 * 3rd function character 0 to 2
+				 */
+				if(list[2].compare("F1")==0){
+					if(table[0][1][0]+table[1][1][0]<=table[0][1][1]+table[1][1][1] && table[0][1][0]+table[1][1][0]<=table[0][1][2]+table[1][1][2]){
+						funcStr = "/F1a";
+					}else if(table[0][1][1]+table[1][1][1]<=table[0][1][2]+table[1][1][2]){
+						funcStr = "/F1b";
+					}else{
+						funcStr = "/F1c";
 					}
-				}else if(table[0][3][1]+table[1][3][1]<=table[0][3][2]+table[1][3][2]){
-					funcStr = "/F3b";
-				}else{
-					funcStr = "/F3c";
+				}else if(list[2].compare("F2")==0){
+					if(table[0][2][0]+table[1][2][0]<=table[0][2][1]+table[1][2][1] && table[0][2][0]+table[1][2][0]<=table[0][2][2]+table[1][2][2]){
+						funcStr = "/F2a";
+					}else if(table[0][2][1]+table[1][2][1]<=table[0][2][2]+table[1][2][2]){
+						funcStr = "/F2b";
+					}else{
+						funcStr = "/F2c";
+					}
+				}else if(list[2].compare("F3")==0){
+					if(table[0][3][0]+table[1][3][0]<=table[0][3][1]+table[1][3][1] && table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
+						if(table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
+							funcStr = "/F3a";
+						}
+					}else if(table[0][3][1]+table[1][3][1]<=table[0][3][2]+table[1][3][2]){
+						funcStr = "/F3b";
+					}else{
+						funcStr = "/F3c";
+					}
+				}else if(list[2].compare("F4")==0){
+					if(table[0][4][0]+table[1][4][0]<table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
+						funcStr = "/F4a";
+					}else if(table[0][4][1]+table[1][4][1]<table[0][4][2]+table[1][4][2]){
+						funcStr = "/F4b";
+					}else{
+						funcStr = "/F4c";
+					}
+				}else if(list[2].compare("F5")==0){
+					if(table[0][5][0]+table[1][5][0]<table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
+						funcStr = "/F5a";
+					}else if(table[0][5][1]+table[1][5][1]<table[0][5][2]+table[1][5][2]){
+						funcStr = "/F5b";
+					}else{
+						funcStr = "/F5c";
+					}
 				}
-			}else if(list[2].compare("F4")==0){
-				if(table[0][4][0]+table[1][4][0]<table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
-					funcStr = "/F4a";
-				}else if(table[0][4][1]+table[1][4][1]<table[0][4][2]+table[1][4][2]){
-					funcStr = "/F4b";
-				}else{
-					funcStr = "/F4c";
-				}
-			}else if(list[2].compare("F5")==0){
-				if(table[0][5][0]+table[1][5][0]<table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
-					funcStr = "/F5a";
-				}else if(table[0][5][1]+table[1][5][1]<table[0][5][2]+table[1][5][2]){
-					funcStr = "/F5b";
-				}else{
-					funcStr = "/F5c";
-				}
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				interest.addFunctionFullName(Name(funcStr));
+				//std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 			}
-			interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
-			interest.addFunctionFullName(Name(funcStr));
-			//std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 		}
 	}
 
@@ -884,11 +888,6 @@ Forwarder::onInterestFinalize(const shared_ptr<pit::Entry>& pitEntry, bool isSat
 void
 Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
-	if(data.getTag<lp::FunctionNameTag>() != nullptr){
-	Name funcName = *(data.getTag<lp::FunctionNameTag>());
-	std::string funcString = funcName.toUri();
-	std::cout << "Data packet in "<< funcString << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
-	}
 	// receive Data
 	NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());
 	data.setTag(make_shared<lp::IncomingFaceIdTag>(inFace.getId()));
@@ -1126,7 +1125,13 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
-
+	if(data.getTag<lp::FunctionNameTag>() != nullptr){
+		Name funcName = *(data.getTag<lp::FunctionNameTag>());
+		std::string funcString = funcName.toUri();
+		std::cout << "Function Name: " << funcString << std::endl;
+		std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+		std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+	}
 	std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
 	//std::string st = "test";
 	//Name name = Name(st);
@@ -1306,10 +1311,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 					data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 					data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
-					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
+					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << std::endl;
 				}else if(data.getTag<lp::PartialHopTag>() != nullptr){
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
-					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << "//////////////////////////////////////////////////////////////" << std::endl;
+					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << std::endl;
 				}
 			}
 		}
@@ -1606,35 +1611,35 @@ Forwarder::insertDeadNonceList(pit::Entry& pitEntry, bool isSatisfied,
 		time::milliseconds dataFreshnessPeriod, Face* upstream)
 {
 	// need Dead Nonce List insert?
-			bool needDnl = false;
-			if (isSatisfied) {
-				bool hasFreshnessPeriod = dataFreshnessPeriod >= time::milliseconds::zero();
-				// Data never becomes stale if it doesn't have FreshnessPeriod field
-				needDnl = static_cast<bool>(pitEntry.getInterest().getMustBeFresh()) &&
-						(hasFreshnessPeriod && dataFreshnessPeriod < m_deadNonceList.getLifetime());
-			}
-			else {
-				needDnl = true;
-			}
+	bool needDnl = false;
+	if (isSatisfied) {
+		bool hasFreshnessPeriod = dataFreshnessPeriod >= time::milliseconds::zero();
+		// Data never becomes stale if it doesn't have FreshnessPeriod field
+		needDnl = static_cast<bool>(pitEntry.getInterest().getMustBeFresh()) &&
+				(hasFreshnessPeriod && dataFreshnessPeriod < m_deadNonceList.getLifetime());
+	}
+	else {
+		needDnl = true;
+	}
 
-			if (!needDnl) {
-				return;
-			}
+	if (!needDnl) {
+		return;
+	}
 
-			// Dead Nonce List insert
-			if (upstream == 0) {
-				// insert all outgoing Nonces
-				const pit::OutRecordCollection& outRecords = pitEntry.getOutRecords();
-				std::for_each(outRecords.begin(), outRecords.end(),
-						bind(&insertNonceToDnl, ref(m_deadNonceList), cref(pitEntry), _1));
-			}
-			else {
-				// insert outgoing Nonce of a specific face
-				pit::OutRecordCollection::iterator outRecord = pitEntry.getOutRecord(*upstream);
-				if (outRecord != pitEntry.getOutRecords().end()) {
-					m_deadNonceList.add(pitEntry.getName(), outRecord->getLastNonce());
-				}
-			}
+	// Dead Nonce List insert
+	if (upstream == 0) {
+		// insert all outgoing Nonces
+		const pit::OutRecordCollection& outRecords = pitEntry.getOutRecords();
+		std::for_each(outRecords.begin(), outRecords.end(),
+				bind(&insertNonceToDnl, ref(m_deadNonceList), cref(pitEntry), _1));
+	}
+	else {
+		// insert outgoing Nonce of a specific face
+		pit::OutRecordCollection::iterator outRecord = pitEntry.getOutRecord(*upstream);
+		if (outRecord != pitEntry.getOutRecords().end()) {
+			m_deadNonceList.add(pitEntry.getName(), outRecord->getLastNonce());
+		}
+	}
 }
 
 } // namespace nfd

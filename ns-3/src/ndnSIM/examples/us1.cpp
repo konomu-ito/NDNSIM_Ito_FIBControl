@@ -815,10 +815,10 @@ main(int argc, char* argv[])
 
   // Getting containers for the consumer/producer
   Ptr<Node> consumer1 = Names::Find<Node>("Consumer1");
-  Ptr<Node> consumer2 = Names::Find<Node>("Consumer2");
+  /*Ptr<Node> consumer2 = Names::Find<Node>("Consumer2");
   Ptr<Node> consumer3 = Names::Find<Node>("Consumer3");
   Ptr<Node> consumer4 = Names::Find<Node>("Consumer4");
-
+*/
   Ptr<Node> producer1 = Names::Find<Node>("Producer1");
   Ptr<Node> producer2 = Names::Find<Node>("Producer2");
   Ptr<Node> producer3 = Names::Find<Node>("Producer3");
@@ -848,11 +848,13 @@ main(int argc, char* argv[])
   
   ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
   consumerHelper.SetPrefix(prefix3);
-  consumerHelper.SetAttribute("Frequency", StringValue("30"));
+  consumerHelper.SetAttribute("Frequency", StringValue("0.1"));
   ApplicationContainer app1 = consumerHelper.Install(consumer1);
   app1.Start(Seconds(0));
   //app1.Stop(Seconds(1.0));
   
+
+  /*
   consumerHelper.SetPrefix(prefix4);
   consumerHelper.SetAttribute("Frequency", StringValue("30"));
   ApplicationContainer app2 = consumerHelper.Install(consumer2);
@@ -872,6 +874,8 @@ main(int argc, char* argv[])
   //app4.Stop(Seconds(1.0));
   
 
+
+  */
   ndn::AppHelper producerHelper("ns3::ndn::Producer");
   producerHelper.SetPrefix(prefix1);
   producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
