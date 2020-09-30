@@ -471,6 +471,11 @@ int totalServiceTime = 0;
 
 static int choiceType = 0;
 
+int totalSend = 0;
+
+double averageServiceTime;
+
+
 int getFunctionCallCount(int i){
   switch(i) {
     case 1:
@@ -938,14 +943,40 @@ void setChoiceType(const char* type){
 	}else if(strType == "roundRobin"){
 		choiceType = 1;
 	}else if(strType == "duration"){
-		choiceType = 2;//"Dataパケットが送出されないバグにより保留"
-	}else if(strType == "interestDuration"){
+		choiceType = 2;
+	}else if(strType == "randChoice"){
 		choiceType = 3;
 	}
 }
 
 int getChoiceType(){
 	return choiceType;
+}
+
+void increaseTotalSend(){
+	totalSend++;
+}
+
+int getTotalSend(){
+	return totalSend;
+}
+
+void setAverageServiceTime(double time){
+	averageServiceTime = time;
+}
+
+double getAverageServiceTime(){
+	return averageServiceTime;
+}
+
+void printResult(){
+	std::cout << "AverageServiceTime: " << averageServiceTime << std::endl;
+	std::cout << "ServiceNum: " << serviceNum << std::endl;
+}
+
+int getWeight(){
+	//LordFirst->100 HopFirst->0
+	return 2;
 }
 
 } // namespace ns3

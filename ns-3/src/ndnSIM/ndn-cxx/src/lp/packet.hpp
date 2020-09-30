@@ -156,6 +156,7 @@ public: // field access
    * \brief add a FIELD with value
    * \throw std::length_error if field already exists and is not repeatable
    */
+
   template<typename FIELD>
   Packet&
   add(const typename FIELD::ValueType& value)

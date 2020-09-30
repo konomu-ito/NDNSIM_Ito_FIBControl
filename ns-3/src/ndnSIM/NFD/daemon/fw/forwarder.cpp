@@ -28,6 +28,7 @@
 #include "core/logger.hpp"
 #include "strategy.hpp"
 #include "table/cleanup.hpp"
+#include "ns3/simulator.h"
 #include <ndn-cxx/lp/tags.hpp>
 #include "face/null-face.hpp"
 #include <boost/random/uniform_int_distribution.hpp>
@@ -46,6 +47,7 @@ Forwarder::Forwarder()
 , m_strategyChoice(m_nameTree, fw::makeDefaultStrategy(*this))
 , m_csFace(face::makeNullFace(FaceUri("contentstore://")))
 {
+	m_resetTime = time::toUnixTimestamp(time::system_clock::now());
 	fw::installStrategies(*this);
 	getFaceTable().addReserved(m_csFace, face::FACEID_CONTENT_STORE);
 
@@ -219,7 +221,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 
 	// insert in-record
 	pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), interest);
-
+	std::cout << "--------------------------------------------" << std::endl;
 	//ADDED Print Interest functionName
 	//std::cout << "Name: " << interest.getName() << std::endl;
 	/*
@@ -595,77 +597,261 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 	std::cout << "Function Name : " << interest.getFunction() << std::endl;
 	std::cout << "Content  Name : " << interest.getName() << std::endl;
 
+	/*
 	if (interest.getFunctionFlag() == 1){
 		interest.setFunctionFlag(0);
 		time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 		time::milliseconds functionTime = nowTime - interest.getFunctionTime();
-		//std::cout << "functionTime: " << functionTime.count() << std::endl;
+		std::cout << "functionTime: " << functionTime.count() << std::endl;
 		time::milliseconds serviceTime = interest.getServiceTime() + functionTime;
 		interest.setServiceTime(serviceTime);
-		//std::cout << "ServiceTime: " << interest.getServiceTime().count() << std::endl;
+		std::cout << "ServiceTime: " << interest.getServiceTime().count() << std::endl;
 	}
+	 */
 
 	if (list[1] == currentNodeName){
-		interest.removeHeadFunction(interest);
 		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
-		if(((interest.getFunction()).toUri()).compare("/") != 0){
-			std::cout << "not empty" << std::endl;
-			interest.setFunctionFlag(1);
-			if(ns3::getChoiceType() == 0){
-				ns3::increaseTotalFcc(funcNum);
-				ns3::increaseAllFcc();
-				if(ns3::getAllFcc() == 30){
-					ns3::resetFcc();
+		interest.removeHeadFunction(interest);
+		interest.setFunctionFlag(1);
+
+		ns3::increaseTotalFcc(funcNum);
+		switch(ns3::getChoiceType()){
+		case 0:
+			ns3::increaseAllFcc();
+			if(ns3::getAllFcc() == 30){
+				ns3::resetFcc();
+			}
+			break;
+		case 2:
+		{
+			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
+			//reset間隔の設定　50ms
+
+			if((nowTime.count() - 50) > m_resetTime.count()){
+				m_resetTime = nowTime;/*
+				switch(funcNum){//一定間隔でreset
+				case 1:
+					table[1][1][0] = table[1][1][0]/2;
+					break;
+				case 2:
+					table[1][1][1] = table[1][1][1]/2;
+					break;
+				case 3:
+					table[1][1][2] = table[1][1][2]/2;
+					break;
+				case 4:
+					table[1][2][0] = table[1][2][0]/2;
+					break;
+				case 5:
+					table[1][2][1] = table[1][2][1]/2;
+					break;
+				case 6:
+					table[1][2][2] = table[1][2][2]/2;
+					break;
+				case 7:
+					table[1][3][0] = table[1][3][0]/2;
+					break;
+				case 8:
+					table[1][3][1] = table[1][3][1]/2;
+					break;
+				case 9:
+					table[1][3][2] = table[1][3][2]/2;
+					break;
+				case 10:
+					table[1][4][0] = table[1][4][0]/2;
+					break;
+				case 11:
+					table[1][4][1] = table[1][4][1]/2;
+					break;
+				case 12:
+					table[1][4][2] = table[1][4][2]/2;
+					break;
+				case 13:
+					table[1][5][0] = table[1][5][0]/2;
+					break;
+				case 14:
+					table[1][5][1] = table[1][5][1]/2;
+					break;
+				case 15:
+					table[1][5][2] = table[1][5][2]/2;
+					break;
+				default:
+					break;
+				}*/
+///* LordFirstの時"//"消してコメントアウト
+				switch(funcNum){//一定間隔でreset
+				case 1:
+					table[1][1][0] = 0;
+					break;
+				case 2:
+					table[1][1][1] = 0;
+					break;
+				case 3:
+					table[1][1][2] = 0;
+					break;
+				case 4:
+					table[1][2][0] = 0;
+					break;
+				case 5:
+					table[1][2][1] = 0;
+					break;
+				case 6:
+					table[1][2][2] = 0;
+					break;
+				case 7:
+					table[1][3][0] = 0;
+					break;
+				case 8:
+					table[1][3][1] = 0;
+					break;
+				case 9:
+					table[1][3][2] = 0;
+					break;
+				case 10:
+					table[1][4][0] = 0;
+					break;
+				case 11:
+					table[1][4][1] = 0;
+					break;
+				case 12:
+					table[1][4][2] = 0;
+					break;
+				case 13:
+					table[1][5][0] = 0;
+					break;
+				case 14:
+					table[1][5][1] = 0;
+					break;
+				case 15:
+					table[1][5][2] = 0;
+					break;
+				default:
+					break;
 				}
-			}else if(ns3::getChoiceType() == 2){
+//*/
+			}
+			int weight = ns3::getWeight();
+			switch(funcNum){//Fccをweight分増やす
+			case 1:
+				table[1][1][0] += weight;
+				break;
+			case 2:
+				table[1][1][1] += weight;
+				break;
+			case 3:
+				table[1][1][2] += weight;
+				break;
+			case 4:
+				table[1][2][0] += weight;
+				break;
+			case 5:
+				table[1][2][1] += weight;
+				break;
+			case 6:
+				table[1][2][2] += weight;
+				break;
+			case 7:
+				table[1][3][0] += weight;
+				break;
+			case 8:
+				table[1][3][1] += weight;
+				break;
+			case 9:
+				table[1][3][2] += weight;
+				break;
+			case 10:
+				table[1][4][0] += weight;
+				break;
+			case 11:
+				table[1][4][1] += weight;
+				break;
+			case 12:
+				table[1][4][2] += weight;
+				break;
+			case 13:
+				table[1][5][0] += weight;
+				break;
+			case 14:
+				table[1][5][1] += weight;
+				break;
+			case 15:
+				table[1][5][2] += weight;
+				break;
+			default:
+				break;
+			}
+		}
+
+		break;
+		default:
+			break;
+		}
+
+		if(((interest.getFunction()).toUri()).compare("/") != 0){
+			if(ns3::getChoiceType() == 2){
 				std::string funcStr;
 				/*table index
 				 * 1st hop or count
 				 *  0:hop
 				 *  1:count
 				 * 2nd function number 1 to 5
-				 * 3rd function character 0 to 2
+				 * 3rd function character 0 to 2 = a to c
+				 *
+				 * ex) table[1][1][0] means f1a count
 				 */
 				if(list[2].compare("F1")==0){
 					if(table[0][1][0]+table[1][1][0]<=table[0][1][1]+table[1][1][1] && table[0][1][0]+table[1][1][0]<=table[0][1][2]+table[1][1][2]){
+						table[1][1][0] += ns3::getWeight();
 						funcStr = "/F1a";
 					}else if(table[0][1][1]+table[1][1][1]<=table[0][1][2]+table[1][1][2]){
+						table[1][1][1] += ns3::getWeight();
 						funcStr = "/F1b";
 					}else{
+						table[1][1][2] += ns3::getWeight();
 						funcStr = "/F1c";
 					}
 				}else if(list[2].compare("F2")==0){
 					if(table[0][2][0]+table[1][2][0]<=table[0][2][1]+table[1][2][1] && table[0][2][0]+table[1][2][0]<=table[0][2][2]+table[1][2][2]){
+						table[1][2][0] += ns3::getWeight();
 						funcStr = "/F2a";
 					}else if(table[0][2][1]+table[1][2][1]<=table[0][2][2]+table[1][2][2]){
+						table[1][2][1] += ns3::getWeight();
 						funcStr = "/F2b";
 					}else{
+						table[1][2][2] += ns3::getWeight();
 						funcStr = "/F2c";
 					}
 				}else if(list[2].compare("F3")==0){
 					if(table[0][3][0]+table[1][3][0]<=table[0][3][1]+table[1][3][1] && table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
-						if(table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
-							funcStr = "/F3a";
-						}
+						table[1][3][0] += ns3::getWeight();
+						funcStr = "/F3a";
 					}else if(table[0][3][1]+table[1][3][1]<=table[0][3][2]+table[1][3][2]){
+						table[1][3][1] += ns3::getWeight();
 						funcStr = "/F3b";
 					}else{
+						table[1][3][2] += ns3::getWeight();
 						funcStr = "/F3c";
 					}
 				}else if(list[2].compare("F4")==0){
-					if(table[0][4][0]+table[1][4][0]<table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
+					if(table[0][4][0]+table[1][4][0]<=table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
+						table[1][4][0] += ns3::getWeight();
 						funcStr = "/F4a";
-					}else if(table[0][4][1]+table[1][4][1]<table[0][4][2]+table[1][4][2]){
+					}else if(table[0][4][1]+table[1][4][1]<=table[0][4][2]+table[1][4][2]){
+						table[1][4][1] += ns3::getWeight();
 						funcStr = "/F4b";
 					}else{
+						table[1][4][2] += ns3::getWeight();
 						funcStr = "/F4c";
 					}
 				}else if(list[2].compare("F5")==0){
-					if(table[0][5][0]+table[1][5][0]<table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
+					if(table[0][5][0]+table[1][5][0]<=table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
+						table[1][5][0] += ns3::getWeight();
 						funcStr = "/F5a";
-					}else if(table[0][5][1]+table[1][5][1]<table[0][5][2]+table[1][5][2]){
+					}else if(table[0][5][1]+table[1][5][1]<=table[0][5][2]+table[1][5][2]){
+						table[1][5][1] += ns3::getWeight();
 						funcStr = "/F5b";
 					}else{
+						table[1][5][2] += ns3::getWeight();
 						funcStr = "/F5c";
 					}
 				}
@@ -684,9 +870,9 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 		fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
 		//std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
 		//std::cout << "Node: " << currentNode << std::endl;
-
+		/*
 		time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
-
+		 */
 		/*
     // for us
     if(currentNode == 2 && fibEntry->getPrefix().toUri() == "/F1a"){
@@ -723,6 +909,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 		 */
 
 		// for us1
+		/*
 		if(currentNode == 3 && fibEntry->getPrefix().toUri() == "/F1a"){
 			interest.setFunctionTime(nowTime);
 		} else if(currentNode == 10 && fibEntry->getPrefix().toUri() == "/F1b"){
@@ -755,7 +942,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 			interest.setFunctionTime(nowTime);
 		}
 
-
+		 */
 		std::cout << "--------------------------------------------" << std::endl;
 
 
@@ -888,6 +1075,7 @@ Forwarder::onInterestFinalize(const shared_ptr<pit::Entry>& pitEntry, bool isSat
 void
 Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
+	std::cout << "--------------------------------------------" << std::endl;
 	// receive Data
 	NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());
 	data.setTag(make_shared<lp::IncomingFaceIdTag>(inFace.getId()));
@@ -1123,6 +1311,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   }
 	 */
 
+	std::cout << "Data Packet" << std::endl;
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
 	if(data.getTag<lp::FunctionNameTag>() != nullptr){
@@ -1145,7 +1334,6 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
 				Name funcName = *functionNameTag;
 				std::string string = funcName.toUri();
-				std::cout << "Data Function Name:" << string << std::endl;
 
 				auto separator = std::string("/");
 				auto separator_length = separator.length();
@@ -1167,58 +1355,59 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 						offset = pos + separator_length;
 					}
 				}
-				if(list[1] == currentNodeName){//ファンクションをinterestと前後逆にして扱う
+				if(list[1] == currentNodeName){//ファンクション列をinterestと前後逆にして扱う
 					int number;
 					int character;
 
+					//functionとrouterの間でカウントされている分のHopCountを-1する
 					if(data.getTag<lp::PreviousFunctionTag>() != nullptr){
 						auto previousFunctionTag = data.getTag<lp::PreviousFunctionTag>();
 						Name previousFunction = *previousFunctionTag;
 						std::string preFuncStr = previousFunction.toUri();
 						if(preFuncStr.compare("/F1a") == 0){
-							table[0][1][0] = *(data.getTag<lp::PartialHopTag>());
+							table[0][1][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][0] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F1b") == 0){
-							table[0][1][1] = *(data.getTag<lp::PartialHopTag>());
+							table[0][1][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][1] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F1c") == 0){
-							table[0][1][2] = *(data.getTag<lp::PartialHopTag>());
+							table[0][1][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][2] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F2a") == 0){
-							table[0][2][0] = *(data.getTag<lp::PartialHopTag>());
+							table[0][2][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][0] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F2b") == 0){
-							table[0][2][1] = *(data.getTag<lp::PartialHopTag>());
+							table[0][2][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][1] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F2c") == 0){
-							table[0][2][2] = *(data.getTag<lp::PartialHopTag>());
+							table[0][2][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][2] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F3a") == 0){
-							table[0][3][0] = *(data.getTag<lp::PartialHopTag>());
+							table[0][3][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][0] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F3b") == 0){
-							table[0][3][1] = *(data.getTag<lp::PartialHopTag>());
+							table[0][3][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][1] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F3c") == 0){
-							table[0][3][2] = *(data.getTag<lp::PartialHopTag>());
+							table[0][3][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][2] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F4a") == 0){
-							table[0][4][0] = *(data.getTag<lp::PartialHopTag>());
+							table[0][4][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][0] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F4b") == 0){
-							table[0][4][1] = *(data.getTag<lp::PartialHopTag>());
+							table[0][4][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][1] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F4c") == 0){
-							table[0][4][2] = *(data.getTag<lp::PartialHopTag>());
+							table[0][4][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][2] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F5a") == 0){
-							table[0][5][0] = *(data.getTag<lp::PartialHopTag>());
+							table[0][5][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][0] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F5b") == 0){
-							table[0][5][1] = *(data.getTag<lp::PartialHopTag>());
+							table[0][5][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][1] = *(data.getTag<lp::CountTag>());
 						}else if(preFuncStr.compare("/F5c") == 0){
-							table[0][5][2] = *(data.getTag<lp::PartialHopTag>());
+							table[0][5][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][2] = *(data.getTag<lp::CountTag>());
 						}else {
 
@@ -1226,77 +1415,77 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 					}
 
 					if(currentNodeName.compare("F1a") == 0){
-						table[1][1][0]++;
+						//table[1][1][0]++;
 						number = 1;
 						character = 0;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1a"));
 					}else if(currentNodeName.compare("F1b") == 0){
-						table[1][1][1]++;
+						//table[1][1][1]++;
 						number = 1;
 						character = 1;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1b"));
 					}else if(currentNodeName.compare("F1c") == 0){
-						table[1][1][2]++;
+						//table[1][1][2]++;
 						number = 1;
 						character = 2;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1c"));
 					}else if(currentNodeName.compare("F2a") == 0){
-						table[1][2][0]++;
+						//table[1][2][0]++;
 						number = 2;
 						character = 0;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2a"));
 					}else if(currentNodeName.compare("F2b") == 0){
-						table[1][2][1]++;
+						//table[1][2][1]++;
 						number = 2;
 						character = 1;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2b"));
 					}else if(currentNodeName.compare("F2c") == 0){
-						table[1][2][2]++;
+						//table[1][2][2]++;
 						number = 2;
 						character = 2;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2c"));
 					}else if(currentNodeName.compare("F3a") == 0){
-						table[1][3][0]++;
+						//table[1][3][0]++;
 						number = 3;
 						character = 0;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3a"));
 					}else if(currentNodeName.compare("F3b") == 0){
-						table[1][3][1]++;
+						//table[1][3][1]++;
 						number = 3;
 						character = 1;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3b"));
 					}else if(currentNodeName.compare("F3c") == 0){
-						table[1][3][2]++;
+						//table[1][3][2]++;
 						number = 3;
 						character = 2;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3c"));
 					}else if(currentNodeName.compare("F4a") == 0){
-						table[1][4][0]++;
+						//table[1][4][0]++;
 						number = 4;
 						character = 0;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4a"));
 					}else if(currentNodeName.compare("F4b") == 0){
-						table[1][4][1]++;
+						//table[1][4][1]++;
 						number = 4;
 						character = 1;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4b"));
 					}else if(currentNodeName.compare("F4c") == 0){
-						table[1][4][2]++;
+						//table[1][4][2]++;
 						number = 4;
 						character = 2;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4c"));
 					}else if(currentNodeName.compare("F5a") == 0){
-						table[1][5][0]++;
+						//table[1][5][0]++;
 						number = 5;
 						character = 0;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5a"));
 					}else if(currentNodeName.compare("F5b") == 0){
-						table[1][5][1]++;
+						//table[1][5][1]++;
 						number = 5;
 						character = 1;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5b"));
 					}else if(currentNodeName.compare("F5c") == 0){
-						table[1][5][2]++;
+						//table[1][5][2]++;
 						number = 5;
 						character = 2;
 						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5c"));
@@ -1311,10 +1500,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 					data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 					data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
-					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << std::endl;
 				}else if(data.getTag<lp::PartialHopTag>() != nullptr){
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
-					std::cout << "Data packet in " << currentNodeName << ", hop: " << *(data.getTag<lp::PartialHopTag>()) << ", count: " << *(data.getTag<lp::CountTag>()) << std::endl;
 				}
 			}
 		}
@@ -1352,7 +1539,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		uint32_t max = 1;
 		Face* savedFace;
 		for(const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-			std::cout << inRecord.getSequenceNumber() << std::endl;
+			std::cout << "sequence number: "<< inRecord.getSequenceNumber() << std::endl;
 			if(inRecord.getSequenceNumber() > max){
 				max = inRecord.getSequenceNumber();
 				savedFace = &inRecord.getFace();
@@ -1396,6 +1583,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	}
 
 	// foreach pending downstream
+	std::cout << "--------------------------------------------" << std::endl;
 	for (Face* pendingDownstream : pendingDownstreams) {
 		/*
     if (pendingDownstream == &inFace) {
@@ -1407,8 +1595,6 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		this->onOutgoingData(data, *pendingDownstream);
 		//std::cout << "bitch" << std::endl;
 	}
-
-	std::cout << "--------------------------------------------" << std::endl;
 
 }
 
@@ -1585,7 +1771,7 @@ void
 Forwarder::setStragglerTimer(const shared_ptr<pit::Entry>& pitEntry, bool isSatisfied,
 		time::milliseconds dataFreshnessPeriod)
 {
-	time::nanoseconds stragglerTime = time::milliseconds(1000);
+	time::nanoseconds stragglerTime = time::milliseconds(500000);
 
 	scheduler::cancel(pitEntry->m_stragglerTimer);
 	pitEntry->m_stragglerTimer = scheduler::schedule(stragglerTime,

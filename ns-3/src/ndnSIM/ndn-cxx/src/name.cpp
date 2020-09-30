@@ -241,6 +241,7 @@ Name::readName(const Block& wire)
 
 	m_nameBlock = wire;
 	m_nameBlock.parse();
+	//this->wireDecode(m_nameBlock);
 }
 
 std::string
