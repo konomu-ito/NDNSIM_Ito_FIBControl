@@ -122,6 +122,18 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 	  data->setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>(Name("")));
 	  shared_ptr<lp::PartialHopTag> partialHopTag = data->getTag<lp::PartialHopTag>();
 	  std::cout << "FuncNameTag: " << *(data->getTag<lp::FunctionNameTag>()) << ",the type name is "<< typeid(*(data->getTag<lp::FunctionNameTag>())).name() <<"PartialHopTag: "<< *(data->getTag<lp::PartialHopTag>()) << ", typeName is " << typeid(*(partialHopTag)).name() << ",CountTag: " << *(data->getTag<lp::CountTag>())<< std::endl;
+  }else if(getChoiceType() == 4){
+	  Name funcName(interest->getFunctionFullName());
+	  auto string = funcName.toUri();
+	  std::cout << "string:" << string << std::endl;
+
+	  data->setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(funcName));
+	  /*
+	  data->setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
+	  data->setTag<lp::CountTag>(make_shared<lp::CountTag>(0));
+	  shared_ptr<lp::PartialHopTag> partialHopTag = data->getTag<lp::PartialHopTag>();
+	  */
+	  //std::cout << "FuncNameTag: " << *(data->getTag<lp::FunctionNameTag>()) << ",the type name is "<< typeid(*(data->getTag<lp::FunctionNameTag>())).name() <<"PartialHopTag: "<< *(data->getTag<lp::PartialHopTag>()) << ", typeName is " << typeid(*(partialHopTag)).name() << ",CountTag: " << *(data->getTag<lp::CountTag>())<< std::endl;
   }
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
   //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;

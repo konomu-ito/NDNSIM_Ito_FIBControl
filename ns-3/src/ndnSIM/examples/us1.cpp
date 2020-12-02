@@ -56,8 +56,8 @@ main(int argc, char* argv[])
 
 	CommandLine cmd;
 	cmd.Parse(argc, argv);
-	//choose siraiwaNDN or roundRobin or duration or randChoice
-	const char* type = "siraiwaNDN";
+	//choose one {siraiwaNDN, roundRobin, duration, randChoice, fibControl}
+	const char* type = "fibControl";
 	setChoiceType(type);
 	AnnotatedTopologyReader topologyReader("", 25);
 	topologyReader.SetFileName("src/ndnSIM/examples/topologies/usa.txt");

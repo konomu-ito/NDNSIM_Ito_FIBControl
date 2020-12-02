@@ -93,6 +93,21 @@ public:
   void
   removeNextHop(const Face& face);
 
+  int
+  getFcc();
+
+  void
+  setFcc(int fcc);
+
+  int
+  getPhc();
+
+  void
+  setPhc(int phc);
+
+  int
+  getCost();
+
 private:
   /** \note This method is non-const because mutable iterators are needed by callers.
    */
@@ -107,6 +122,8 @@ private:
 private:
   Name m_prefix;
   NextHopList m_nextHops;
+  int m_fcc = 0;
+  int m_phc = 0;
 
   name_tree::Entry* m_nameTreeEntry;
 

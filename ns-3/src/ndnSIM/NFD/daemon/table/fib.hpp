@@ -65,6 +65,19 @@ public: // lookup
   fib::Entry*
   findLongestPrefixMatchFunction(const Name& prefix) const;
 
+  void
+  resetFcc();
+
+  void
+  increaseFcc();
+
+  int
+  getFcc();
+
+
+  fib::Entry*
+  selectFunction(const Name& prefix) const;
+
   /** \brief performs a longest prefix match
    *
    *  This is equivalent to .findLongestPrefixMatch(pitEntry.getName())
@@ -144,6 +157,7 @@ private:
 private:
   NameTree& m_nameTree;
   size_t m_nItems;
+  int m_fcc;
 
   /** \brief the empty FIB entry.
    *

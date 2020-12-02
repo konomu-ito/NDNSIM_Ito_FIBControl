@@ -78,5 +78,35 @@ Entry::sortNextHops()
             [] (const NextHop& a, const NextHop& b) { return a.getCost() < b.getCost(); });
 }
 
+int
+Entry::getFcc()
+{
+	return m_fcc;
+}
+
+void
+Entry::setFcc(int fcc)
+{
+	m_fcc = fcc;
+}
+
+int
+Entry::getPhc()
+{
+	return m_phc;
+}
+
+void
+Entry::setPhc(int phc){
+	m_phc = phc;
+}
+
+int
+Entry::getCost()
+{
+	//costへのweightを定義するならdoubleに変更する
+	return m_fcc + m_phc;
+}
+
 } // namespace fib
 } // namespace nfd

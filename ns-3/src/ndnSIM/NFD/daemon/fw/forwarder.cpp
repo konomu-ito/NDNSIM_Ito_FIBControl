@@ -513,63 +513,123 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 		currentNodeName = "Producer1";
 		break;
 	case 26:
-		currentNodeName = "F1a";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1a";
+		}
 		funcNum = 1;
 		break;
 	case 27:
-		currentNodeName = "F1b";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1b";
+		}
 		funcNum = 2;
 		break;
 	case 28:
-		currentNodeName = "F1c";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1c";
+		}
 		funcNum = 3;
 		break;
 	case 29:
-		currentNodeName = "F2a";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2a";
+		}
 		funcNum = 4;
 		break;
 	case 30:
-		currentNodeName = "F2b";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2b";
+		}
 		funcNum = 5;
 		break;
 	case 31:
-		currentNodeName = "F2c";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2c";
+		}
 		funcNum = 6;
 		break;
 	case 32:
-		currentNodeName = "F3a";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3a";
+		}
 		funcNum = 7;
 		break;
 	case 33:
-		currentNodeName = "F3b";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3b";
+		}
 		funcNum = 8;
 		break;
 	case 34:
-		currentNodeName = "F3c";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3c";
+		}
 		funcNum = 9;
 		break;
 	case 35:
-		currentNodeName = "F4a";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4a";
+		}
 		funcNum = 10;
 		break;
 	case 36:
-		currentNodeName = "F4b";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4b";
+		}
 		funcNum = 11;
 		break;
 	case 37:
-		currentNodeName = "F4c";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4c";
+		}
 		funcNum = 12;
 		break;
 	case 38:
-		currentNodeName = "F5a";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5a";
+		}
 		funcNum = 13;
 		break;
 	case 39:
-		currentNodeName = "F5b";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5b";
+		}
 		funcNum = 14;
 		break;
 	case 40:
-		currentNodeName = "F5c";
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5c";
+		}
 		funcNum = 15;
 		break;
 	case 41:
@@ -611,12 +671,12 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 
 	if (list[1] == currentNodeName){
 		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
-		interest.removeHeadFunction(interest);
-		interest.setFunctionFlag(1);
 
 		ns3::increaseTotalFcc(funcNum);
 		switch(ns3::getChoiceType()){
 		case 0:
+			interest.removeHeadFunction(interest);
+			interest.setFunctionFlag(1);
 			ns3::increaseAllFcc();
 			if(ns3::getAllFcc() == 30){
 				ns3::resetFcc();
@@ -624,6 +684,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 			break;
 		case 2:
 		{
+			interest.removeHeadFunction(interest);
+			interest.setFunctionFlag(1);
 			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 			//reset間隔の設定　50ms
 
@@ -678,7 +740,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 				default:
 					break;
 				}*/
-///* LordFirstの時"//"消してコメントアウト
+				///* LordFirstの時"//"消してコメントアウト
 				switch(funcNum){//一定間隔でreset
 				case 1:
 					table[1][1][0] = 0;
@@ -728,7 +790,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 				default:
 					break;
 				}
-//*/
+				//*/
 			}
 			int weight = ns3::getWeight();
 			switch(funcNum){//Fccをweight分増やす
@@ -781,7 +843,19 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 				break;
 			}
 		}
-
+		case 4:
+		{
+			interest.removeHeadFunction(interest);
+			std::string funcStr = "/" + currentNodeName;
+			interest.addFunctionFullName(Name(funcStr));
+			interest.setFunctionFlag(1);
+			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
+			if((nowTime.count() - 50) > m_resetTime.count()){
+				m_resetTime = nowTime;
+				m_fib.resetFcc();
+			}
+			m_fib.increaseFcc();
+		}
 		break;
 		default:
 			break;
@@ -867,7 +941,11 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 	Face* nextHopFaceFunction;
 	if(functionName.toUri() != "/"){ //When Function Field is not Empty
 		//std::cout << "function routing" << std::endl;
-		fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+		if(ns3::getChoiceType() == 4){
+			fibEntry = m_fib.selectFunction(functionName);
+		}else{
+			fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+		}
 		//std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
 		//std::cout << "Node: " << currentNode << std::endl;
 		/*
@@ -1175,49 +1253,109 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		currentNodeName = "Producer1";
 		break;
 	case 26:
-		currentNodeName = "F1a";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1a";
+		}
 		break;
 	case 27:
-		currentNodeName = "F1b";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1b";
+		}
 		break;
 	case 28:
-		currentNodeName = "F1c";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1c";
+		}
 		break;
 	case 29:
-		currentNodeName = "F2a";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2a";
+		}
 		break;
 	case 30:
-		currentNodeName = "F2b";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2b";
+		}
 		break;
 	case 31:
-		currentNodeName = "F2c";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2c";
+		}
 		break;
 	case 32:
-		currentNodeName = "F3a";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3a";
+		}
 		break;
 	case 33:
-		currentNodeName = "F3b";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3b";
+		}
 		break;
 	case 34:
-		currentNodeName = "F3c";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3c";
+		}
 		break;
 	case 35:
-		currentNodeName = "F4a";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4a";
+		}
 		break;
 	case 36:
-		currentNodeName = "F4b";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4b";
+		}
 		break;
 	case 37:
-		currentNodeName = "F4c";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4c";
+		}
 		break;
 	case 38:
-		currentNodeName = "F5a";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5a";
+		}
 		break;
 	case 39:
-		currentNodeName = "F5b";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5b";
+		}
 		break;
 	case 40:
-		currentNodeName = "F5c";
+		if(ns3::getChoiceType() == 4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5c";
+		}
 		break;
 	case 41:
 		currentNodeName = "Consumer2";
@@ -1318,8 +1456,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		Name funcName = *(data.getTag<lp::FunctionNameTag>());
 		std::string funcString = funcName.toUri();
 		std::cout << "Function Name: " << funcString << std::endl;
-		std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
-		std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+		if(data.getTag<lp::PartialHopTag>() != nullptr){
+			std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+			std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+		}
 	}
 	std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
 	//std::string st = "test";
@@ -1505,7 +1645,72 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 				}
 			}
 		}
+	}else if(ns3::getChoiceType()==4){//FibControl
+		if(data.getTag<lp::FunctionNameTag>() != nullptr){
+			auto functionNameTag = data.getTag<lp::FunctionNameTag>();
+
+			Name funcName = *functionNameTag;
+			std::string string = funcName.toUri();
+
+			auto separator = std::string("/");
+			auto separator_length = separator.length();
+
+			auto list = std::vector<std::string>();
+
+
+			if (separator_length == 0) {//separatorを区切りにlistに格納 先頭はlist[1]
+				list.push_back(string);
+			} else {
+				auto offset = std::string::size_type(0);
+				while (1) {
+					auto pos = string.find(separator, offset);
+					if (pos == std::string::npos) {
+						list.push_back(string.substr(offset));
+						break;
+					}
+					list.push_back(string.substr(offset, pos - offset));
+					offset = pos + separator_length;
+				}
+			}
+
+			if(26 <= currentNode && currentNode <= 40){
+				if(data.getTag<lp::PartialHopTag>() != nullptr){
+					std::cout << "befor: " << string << std::endl;
+					std::string previousFunction = "/" + list[1];
+					std::cout << "previousFunc: " << previousFunction << std::endl;
+					fib::Entry* fibEntry = m_fib.findLongestPrefixMatchFunction(previousFunction);
+					fibEntry->setPhc(*(data.getTag<lp::PartialHopTag>()) - 1);//function node とinstanceの間の1hop分decrement
+					fibEntry->setFcc(*(data.getTag<lp::CountTag>()));
+
+					//先頭FunctionNameの削除
+					int pos = string.find("/", 1);
+					if(pos == -1 && string.size() > 1){
+						string.erase(1, string.size()-1);
+					}
+					else if(pos != -1){
+						string.erase(1, pos);
+					}
+					std::cout << "after: " << string << std::endl;
+
+				}
+
+				//CurrentNodeのファンクションインスタンスのFCCをincrement
+				m_fib.increaseFcc();
+
+				data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
+				std::cout << "m_fib::fcc : " << m_fib.getFcc() << std::endl;
+				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
+				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
+
+			}
+			if(data.getTag<lp::PartialHopTag>() != nullptr){
+				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
+				std::cout << "phc: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+				std::cout << "fcc: " << *(data.getTag<lp::CountTag>()) << std::endl;
+			}
+		}
 	}
+
 	// PIT match
 	pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
 	if (pitMatches.begin() == pitMatches.end()) {

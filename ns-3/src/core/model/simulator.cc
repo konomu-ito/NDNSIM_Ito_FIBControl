@@ -946,6 +946,8 @@ void setChoiceType(const char* type){
 		choiceType = 2;
 	}else if(strType == "randChoice"){
 		choiceType = 3;
+	}else if(strType == "fibControl"){
+		choiceType = 4;
 	}
 }
 

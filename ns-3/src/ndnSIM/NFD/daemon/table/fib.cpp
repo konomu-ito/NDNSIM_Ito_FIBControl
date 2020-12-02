@@ -22,6 +22,7 @@
  * You should have received a copy of the GNU General Public License along with
  * NFD, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <vector>
 
 #include "fib.hpp"
 #include "pit-entry.hpp"
@@ -82,6 +83,33 @@ Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
   return this->findLongestPrefixMatchImpl(pitEntry);
 }
 
+//2020/11/18
+fib::Entry*
+Fib::selectFunction(const Name& prefix) const
+{
+	fib::Entry* fibEntry;
+	int indicatorNum = 3;
+	char indicator = 'a';
+	std::string headFunction = prefix.toUri();
+	auto separator = std::string("/");
+	auto separator_length = separator.length();
+
+	auto pos = headFunction.find(separator,separator_length);
+	if(pos != std::string::npos)
+	headFunction.erase(pos, headFunction.size() - pos);
+
+
+	for(int i = 0; i < indicatorNum; i++){
+		Name exFunctionName = Name(headFunction + indicator);
+		fib::Entry* entry = this->findLongestPrefixMatchFunction(exFunctionName);
+		if(fibEntry == nullptr || entry->getCost() < fibEntry->getCost())
+			fibEntry = entry;
+		indicator++;
+	}
+	fibEntry->setFcc(fibEntry->getFcc() + 1);
+	return fibEntry;
+}
+
 //ADDED Longest Prefix Match for Function Chaining
 fib::Entry*
 Fib::findLongestPrefixMatchFunction(const Name& prefix) const
@@ -95,6 +123,25 @@ Fib::findLongestPrefixMatchFunction(const Name& prefix) const
   }
   return nullptr;
 }
+
+//added 2020/11/25
+void
+Fib::resetFcc(){
+	m_fcc = 0;
+}
+
+void
+Fib::increaseFcc(){
+	if(&m_fcc == nullptr) this->resetFcc();
+	m_fcc++;
+}
+
+int
+Fib::getFcc(){
+	if(&m_fcc == nullptr) this->resetFcc();
+	return m_fcc;
+}
+
 
 const Entry&
 Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const

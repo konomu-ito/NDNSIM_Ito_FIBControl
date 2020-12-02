@@ -39,6 +39,8 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/member.hpp>
 
+#define N 26
+
 namespace ns3 {
 namespace ndn {
 
@@ -126,11 +128,23 @@ protected:
   void
   SetRetxTimer(Time retxTimer);
 
+  double
+  dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumerNode, double weight, int flag);
+
+  std::string
+  roundRobin(int func);
+
   int
   funcJudge(int fn);
 
   shared_ptr<std::string>
   duration(int f1, int f2, int f3);
+
+  std::string
+  randChoice(int func);
+
+  shared_ptr<std::string>
+  fibControl(int f1, int f2, int f3);
 
   shared_ptr<Name>
   sourceRouting(uint32_t functionType, int currentNode, int* sRoute, double weight);

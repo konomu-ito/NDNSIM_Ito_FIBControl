@@ -167,7 +167,8 @@ Consumer::StopApplication() // Called at time specified by Stop
 }
 
 
-double dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumerNode, double weight, int flag){
+double
+Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumerNode, double weight, int flag){
 
 	double Distance[N][N];
 	double fcc1 = ns3::getFunctionCallCount(1) * weight;
@@ -4000,7 +4001,7 @@ double dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumerNod
 int rr[6] = {0,1,1,1,1,1};
 
 std::string
-roundRobin(int func){
+Consumer::roundRobin(int func){
 	if(func == 1){
 		if(rr[func] == 1){
 			rr[func] = 2;
@@ -4164,7 +4165,7 @@ Consumer::duration(int f1, int f2, int f3){
 }
 
 std::string
-randChoice(int func){
+Consumer::randChoice(int func){
 	uint32_t randNum = ::ndn::random::generateWord32() % 3 + 1;
 	if(func == 1){
 		if(randNum == 1){
@@ -4213,6 +4214,35 @@ randChoice(int func){
 	}
 
 	return "";
+}
+
+shared_ptr<std::string>
+Consumer::fibControl(int f1, int f2, int f3){
+	shared_ptr<std::string> ptr;
+
+	if(f1 == 1){
+		ptr = make_shared<std::string>("/F1");
+	}else if(f1 == 2){
+		ptr = make_shared<std::string>("/F2");
+	}else if(f1 == 3){
+		ptr = make_shared<std::string>("/F3");
+	}
+
+	if(f2 == 1){
+		*ptr += "/F1";
+	}else if(f2 == 2){
+		*ptr += "/F2";
+	}else if(f2 == 3){
+		*ptr += "/F3";
+	}
+
+	if(f3 == 4){
+		*ptr += "/F4";
+	}else if(f3 == 5){
+		*ptr += "/F5";
+	}
+
+	return ptr;
 }
 
 
@@ -4724,6 +4754,50 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 			}
 		}
 		break;//end randChoice
+		case 4:
+		{
+			switch(functionType){
+			case 1:
+				funcName = fibControl(1,2,4);
+				break;
+			case 2:
+				funcName = fibControl(1,2,5);
+				break;
+			case 5:
+				funcName = fibControl(1,3,4);
+				break;
+			case 6:
+				funcName = fibControl(1,3,5);
+				break;
+			case 3:
+				funcName = fibControl(2,1,4);
+				break;
+			case 4:
+				funcName = fibControl(2,1,5);
+				break;
+			case 9:
+				funcName = fibControl(2,3,4);
+				break;
+			case 10:
+				funcName = fibControl(2,3,5);
+				break;
+			case 7:
+				funcName = fibControl(3,1,4);
+				break;
+			case 8:
+				funcName = fibControl(3,1,5);
+				break;
+			case 11:
+				funcName = fibControl(3,2,4);
+				break;
+			case 12:
+				funcName = fibControl(3,2,5);
+				break;
+			default:
+				break;
+			}
+		}
+		break;
 		default:
 			std::cerr << "choice method not found" << std::endl;
 			break;
