@@ -214,7 +214,7 @@ Forwarder::onInterestLoop(Face& inFace, const Interest& interest)
 }
 
 void
-Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& pitEntry,
+Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> pitEntry,
 		const Interest& interest)
 {
 	NFD_LOG_DEBUG("onContentStoreMiss interest=" << interest.getName());
@@ -653,6 +653,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 	}
 
 
+	std::cout << "Interest Packet" << std::endl;
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Function Name : " << interest.getFunction() << std::endl;
 	std::cout << "Content  Name : " << interest.getName() << std::endl;
@@ -842,12 +843,11 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 			default:
 				break;
 			}
+			break;
 		}
 		case 4:
 		{
 			interest.removeHeadFunction(interest);
-			std::string funcStr = "/" + currentNodeName;
-			interest.addFunctionFullName(Name(funcStr));
 			interest.setFunctionFlag(1);
 			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 			if((nowTime.count() - 50) > m_resetTime.count()){
@@ -855,6 +855,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 				m_fib.resetFcc();
 			}
 			m_fib.increaseFcc();
+			break;
 		}
 		break;
 		default:
@@ -862,7 +863,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 		}
 
 		if(((interest.getFunction()).toUri()).compare("/") != 0){
-			if(ns3::getChoiceType() == 2){
+			if(ns3::getChoiceType() == 2){//先頭ファンクションが削除されたため次のファンクションインスタンスを選択する
 				std::string funcStr;
 				/*table index
 				 * 1st hop or count
@@ -929,9 +930,10 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 						funcStr = "/F5c";
 					}
 				}
+				std::cout << "funcName: " << interest.getFunction();
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				interest.addFunctionFullName(Name(funcStr));
-				//std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
+				std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 			}
 		}
 	}
@@ -942,10 +944,17 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry>& 
 	if(functionName.toUri() != "/"){ //When Function Field is not Empty
 		//std::cout << "function routing" << std::endl;
 		if(ns3::getChoiceType() == 4){
-			fibEntry = m_fib.selectFunction(functionName);
+			if(functionName.toUri().empty()){
+				fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+			}else{
+				fibEntry = m_fib.selectFunction(functionName);
+				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
+				pitEntry->setSelectedInstance(fibEntry);
+			}
 		}else{
 			fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
 		}
+
 		//std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
 		//std::cout << "Node: " << currentNode << std::endl;
 		/*
@@ -1377,6 +1386,24 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		break;
 	}
 
+	if(ns3::getChoiceType() == 4){
+		if(data.getTag<lp::FunctionNameTag>() != nullptr){
+			if(26 <= currentNode && currentNode <= 40){
+				Name funcName = *(data.getTag<lp::FunctionNameTag>());
+				std::string funcStr = funcName.toUri();
+				std::string separator = "/";
+				if(funcStr.size()>1){
+					funcStr = separator + currentNodeName + funcStr;
+				}else{
+					funcStr = funcStr + currentNodeName;
+				}
+
+				funcName = Name(funcStr);
+				data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(funcName));
+			}
+		}
+	}
+
 
 	/*
   switch(currentNode) {
@@ -1495,62 +1522,67 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 						offset = pos + separator_length;
 					}
 				}
-				if(list[1] == currentNodeName){//ファンクション列をinterestと前後逆にして扱う
+				if(26 <= currentNode && currentNode <= 40){//ファンクション列をinterestと前後逆にして扱う
 					int number;
 					int character;
 
 					//functionとrouterの間でカウントされている分のHopCountを-1する
-					if(data.getTag<lp::PreviousFunctionTag>() != nullptr){
-						auto previousFunctionTag = data.getTag<lp::PreviousFunctionTag>();
-						Name previousFunction = *previousFunctionTag;
-						std::string preFuncStr = previousFunction.toUri();
-						if(preFuncStr.compare("/F1a") == 0){
+					if(data.getTag<lp::PartialHopTag>() != nullptr){
+						if(list[1].compare("/F1a") == 0){
 							table[0][1][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][0] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F1b") == 0){
+						}else if(list[1].compare("/F1b") == 0){
 							table[0][1][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][1] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F1c") == 0){
+						}else if(list[1].compare("/F1c") == 0){
 							table[0][1][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][1][2] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F2a") == 0){
+						}else if(list[1].compare("/F2a") == 0){
 							table[0][2][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][0] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F2b") == 0){
+						}else if(list[1].compare("/F2b") == 0){
 							table[0][2][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][1] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F2c") == 0){
+						}else if(list[1].compare("/F2c") == 0){
 							table[0][2][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][2][2] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F3a") == 0){
+						}else if(list[1].compare("/F3a") == 0){
 							table[0][3][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][0] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F3b") == 0){
+						}else if(list[1].compare("/F3b") == 0){
 							table[0][3][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][1] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F3c") == 0){
+						}else if(list[1].compare("/F3c") == 0){
 							table[0][3][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][3][2] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F4a") == 0){
+						}else if(list[1].compare("/F4a") == 0){
 							table[0][4][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][0] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F4b") == 0){
+						}else if(list[1].compare("/F4b") == 0){
 							table[0][4][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][1] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F4c") == 0){
+						}else if(list[1].compare("/F4c") == 0){
 							table[0][4][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][4][2] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F5a") == 0){
+						}else if(list[1].compare("/F5a") == 0){
 							table[0][5][0] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][0] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F5b") == 0){
+						}else if(list[1].compare("/F5b") == 0){
 							table[0][5][1] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][1] = *(data.getTag<lp::CountTag>());
-						}else if(preFuncStr.compare("/F5c") == 0){
+						}else if(list[1].compare("/F5c") == 0){
 							table[0][5][2] = *(data.getTag<lp::PartialHopTag>())-1;
 							table[1][5][2] = *(data.getTag<lp::CountTag>());
 						}else {
 
+						}
+
+						int pos = string.find("/", 1);
+						if(pos == -1 && string.size() > 1){
+							string.erase(1, string.size()-1);
+						}
+						else if(pos != -1){
+							string.erase(1, pos);
 						}
 					}
 
@@ -1558,155 +1590,85 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 						//table[1][1][0]++;
 						number = 1;
 						character = 0;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1a"));
+
 					}else if(currentNodeName.compare("F1b") == 0){
 						//table[1][1][1]++;
 						number = 1;
 						character = 1;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1b"));
+
 					}else if(currentNodeName.compare("F1c") == 0){
 						//table[1][1][2]++;
 						number = 1;
 						character = 2;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F1c"));
+
 					}else if(currentNodeName.compare("F2a") == 0){
 						//table[1][2][0]++;
 						number = 2;
 						character = 0;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2a"));
+
 					}else if(currentNodeName.compare("F2b") == 0){
 						//table[1][2][1]++;
 						number = 2;
 						character = 1;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2b"));
+
 					}else if(currentNodeName.compare("F2c") == 0){
 						//table[1][2][2]++;
 						number = 2;
 						character = 2;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F2c"));
+
 					}else if(currentNodeName.compare("F3a") == 0){
 						//table[1][3][0]++;
 						number = 3;
 						character = 0;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3a"));
+
 					}else if(currentNodeName.compare("F3b") == 0){
 						//table[1][3][1]++;
 						number = 3;
 						character = 1;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3b"));
+
 					}else if(currentNodeName.compare("F3c") == 0){
 						//table[1][3][2]++;
 						number = 3;
 						character = 2;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F3c"));
+
 					}else if(currentNodeName.compare("F4a") == 0){
 						//table[1][4][0]++;
 						number = 4;
 						character = 0;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4a"));
+
 					}else if(currentNodeName.compare("F4b") == 0){
 						//table[1][4][1]++;
 						number = 4;
 						character = 1;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4b"));
+
 					}else if(currentNodeName.compare("F4c") == 0){
 						//table[1][4][2]++;
 						number = 4;
 						character = 2;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F4c"));
+
 					}else if(currentNodeName.compare("F5a") == 0){
 						//table[1][5][0]++;
 						number = 5;
 						character = 0;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5a"));
+
 					}else if(currentNodeName.compare("F5b") == 0){
 						//table[1][5][1]++;
 						number = 5;
 						character = 1;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5b"));
+
 					}else if(currentNodeName.compare("F5c") == 0){
 						//table[1][5][2]++;
 						number = 5;
 						character = 2;
-						data.setTag<lp::PreviousFunctionTag>(make_shared<lp::PreviousFunctionTag>("/F5c"));
+
 					}
-					int pos = string.find("/", 1);
-					if(pos == -1 && string.size() > 1){
-						string.erase(1, string.size()-1);
-					}
-					else if(pos != -1){
-						string.erase(1, pos);
-					}
+
 					data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 					data.setTag<lp::CountTag>(make_shared<lp::CountTag>(table[1][number][character]));
 				}else if(data.getTag<lp::PartialHopTag>() != nullptr){
 					data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
 				}
-			}
-		}
-	}else if(ns3::getChoiceType()==4){//FibControl
-		if(data.getTag<lp::FunctionNameTag>() != nullptr){
-			auto functionNameTag = data.getTag<lp::FunctionNameTag>();
-
-			Name funcName = *functionNameTag;
-			std::string string = funcName.toUri();
-
-			auto separator = std::string("/");
-			auto separator_length = separator.length();
-
-			auto list = std::vector<std::string>();
-
-
-			if (separator_length == 0) {//separatorを区切りにlistに格納 先頭はlist[1]
-				list.push_back(string);
-			} else {
-				auto offset = std::string::size_type(0);
-				while (1) {
-					auto pos = string.find(separator, offset);
-					if (pos == std::string::npos) {
-						list.push_back(string.substr(offset));
-						break;
-					}
-					list.push_back(string.substr(offset, pos - offset));
-					offset = pos + separator_length;
-				}
-			}
-
-			if(26 <= currentNode && currentNode <= 40){
-				if(data.getTag<lp::PartialHopTag>() != nullptr){
-					std::cout << "befor: " << string << std::endl;
-					std::string previousFunction = "/" + list[1];
-					std::cout << "previousFunc: " << previousFunction << std::endl;
-					fib::Entry* fibEntry = m_fib.findLongestPrefixMatchFunction(previousFunction);
-					fibEntry->setPhc(*(data.getTag<lp::PartialHopTag>()) - 1);//function node とinstanceの間の1hop分decrement
-					fibEntry->setFcc(*(data.getTag<lp::CountTag>()));
-
-					//先頭FunctionNameの削除
-					int pos = string.find("/", 1);
-					if(pos == -1 && string.size() > 1){
-						string.erase(1, string.size()-1);
-					}
-					else if(pos != -1){
-						string.erase(1, pos);
-					}
-					std::cout << "after: " << string << std::endl;
-
-				}
-
-				//CurrentNodeのファンクションインスタンスのFCCをincrement
-				m_fib.increaseFcc();
-
-				data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(Name(string)));
-				std::cout << "m_fib::fcc : " << m_fib.getFcc() << std::endl;
-				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
-				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
-
-			}
-			if(data.getTag<lp::PartialHopTag>() != nullptr){
-				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>())+1));
-				std::cout << "phc: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
-				std::cout << "fcc: " << *(data.getTag<lp::CountTag>()) << std::endl;
 			}
 		}
 	}
@@ -1732,9 +1694,26 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
 	std::set<Face*> pendingDownstreams;
 	bool pitSatisfyFlag = true;
+	bool updateControlFlag = true;
 	// foreach PitEntry
 	auto now = time::steady_clock::now();
 	for (const shared_ptr<pit::Entry>& pitEntry : pitMatches) {
+		if(ns3::getChoiceType()==4 && updateControlFlag){
+			//FIBをUPDATE
+			if(pitEntry->getSelectedInstance() != nullptr){
+				std::cout<<"update:"<< pitEntry->getSelectedInstance()->getPrefix().toUri() <<std::endl;
+				pitEntry->getSelectedInstance()->setFcc(*(data.getTag<lp::CountTag>()));
+				pitEntry->getSelectedInstance()->setPhc(*(data.getTag<lp::PartialHopTag>()));
+			}
+			//Dataパケットに追加したフィールドの更新
+			if(26 <= currentNode && currentNode <= 40){
+				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
+				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(1));
+			}else if(pitEntry->getSelectedInstance() != nullptr){
+				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>()) + 1));
+			}
+			updateControlFlag = false;
+		}
 		NFD_LOG_DEBUG("onIncomingData matching=" << pitEntry->getName());
 		//std::cout << "Pit Entry: " << pitEntry->getName() << std::endl;
 

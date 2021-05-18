@@ -29,6 +29,7 @@
 #include "pit-in-record.hpp"
 #include "pit-out-record.hpp"
 #include "core/scheduler.hpp"
+#include "fib-entry.hpp"
 
 namespace nfd {
 
@@ -85,6 +86,9 @@ public:
    */
   bool
   canMatch(const Interest& interest, size_t nEqualNameComps = 0) const;
+
+  bool
+  canMatchFunction(const Interest& interest, size_t nEqualNameComps = 0) const;
 
 public: // in-record
   /** \return collection of in-records
@@ -214,6 +218,16 @@ public: // out-record
   void
   deleteOutRecord(const Face& face);
 
+  fib::Entry*
+  getSelectedInstance(){
+	  return m_selectedInstance;
+  }
+
+  void
+  setSelectedInstance(fib::Entry* selectedInstance){
+	  m_selectedInstance = selectedInstance;
+  }
+
 public:
   /** \brief unsatisfy timer
    *
@@ -242,6 +256,7 @@ private:
   OutRecordCollection m_outRecords;
 
   name_tree::Entry* m_nameTreeEntry;
+  fib::Entry* m_selectedInstance = nullptr;
 
   friend class name_tree::Entry;
 };

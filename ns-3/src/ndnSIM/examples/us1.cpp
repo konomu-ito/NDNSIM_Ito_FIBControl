@@ -59,6 +59,7 @@ main(int argc, char* argv[])
 	//choose one {siraiwaNDN, roundRobin, duration, randChoice, fibControl}
 	const char* type = "fibControl";
 	setChoiceType(type);
+	ns3::setWeight(1);
 	AnnotatedTopologyReader topologyReader("", 25);
 	topologyReader.SetFileName("src/ndnSIM/examples/topologies/usa.txt");
 	topologyReader.Read();
@@ -845,7 +846,7 @@ main(int argc, char* argv[])
     app.Stop(Seconds(20.0));
   }
 */
-
+	//コンシューマーのリクエスト周期
 	string freq = "10";
 	//30くらい
 	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
@@ -854,7 +855,7 @@ main(int argc, char* argv[])
 	ApplicationContainer app1 = consumerHelper.Install(consumer1);
 	app1.Start(Seconds(0));
 	//app1.Stop(Seconds(1.0));
-
+/*
 	consumerHelper.SetPrefix(prefix4);
 	consumerHelper.SetAttribute("Frequency", StringValue(freq));
 	ApplicationContainer app2 = consumerHelper.Install(consumer2);
@@ -872,7 +873,7 @@ main(int argc, char* argv[])
 	ApplicationContainer app4 = consumerHelper.Install(consumer4);
 	app4.Start(Seconds(0.04));
 	//app4.Stop(Seconds(1.0));
-
+*/
 	ndn::AppHelper producerHelper("ns3::ndn::Producer");
 	producerHelper.SetPrefix(prefix1);
 	producerHelper.SetAttribute("PayloadSize", StringValue("1200"));
@@ -911,7 +912,7 @@ main(int argc, char* argv[])
 		filename = freq + "roundRobinFcc.txt";
 		break;
 	case 2:
-		filename = freq + "LordFirstFcc.txt";
+		filename = freq + "durationFcc.txt";
 		break;
 	case 3:
 		filename = "randChoice.txt";

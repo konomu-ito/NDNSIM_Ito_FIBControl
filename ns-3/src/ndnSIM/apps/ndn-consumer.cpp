@@ -4105,43 +4105,43 @@ Consumer::duration(int f1, int f2, int f3){
 	int charactor = funcJudge(f1);
 	if(f1 == 1){
 		if(charactor == 0){
-			table[1][1][0] += getWeight();
+			table[1][1][0] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F1a");
 
 		}else if(charactor == 1){
-			table[1][1][1] += getWeight();
+			table[1][1][1] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F1b");
 
 		}else if(charactor == 2){
-			table[1][1][2] += getWeight();
+			table[1][1][2] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F1c");
 
 		}
 	}else if(f1 == 2){
 		if(charactor == 0){
-			table[1][2][0] += getWeight();
+			table[1][2][0] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F2a");
 
 		}else if(charactor == 1){
-			table[1][2][1] += getWeight();
+			table[1][2][1] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F2b");
 
 		}else if(charactor == 2){
-			table[1][2][2] += getWeight();
+			table[1][2][2] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F2c");
 
 		}
 	}else if(f1 == 3){
 		if(charactor == 0){
-			table[1][3][0] += getWeight();
+			table[1][3][0] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F3a");
 
 		}else if(charactor == 1){
-			table[1][3][1] += getWeight();
+			table[1][3][1] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F3b");
 
 		}else if(charactor == 2){
-			table[1][3][2] += getWeight();
+			table[1][3][2] += ns3::getWeight();
 			ptr = make_shared<std::string>("/F3c");
 
 		}
@@ -4803,14 +4803,14 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 			break;
 	}
 	std::string str = *funcName;
-	functionName = make_shared<Name>(str);
+	functionName = make_shared<Name>(Name(str));
 	return functionName;
 }
 
 void
 Consumer::SendPacket()
 {
-	if(getTotalSend() > 299) return;
+	if(ns3::getTotalSend() > 299) return;
 	if (!m_active)
 		return;
 
@@ -4838,7 +4838,7 @@ Consumer::SendPacket()
 	shared_ptr<Name> nameWithSequence = make_shared<Name>(m_interestName);
 	nameWithSequence->appendSequenceNumber(seq);
 
-	increaseTotalSend();
+	ns3::increaseTotalSend();
 	//
 
 	//choose Function Type from 1 to 6
@@ -5017,8 +5017,8 @@ Consumer::OnData(shared_ptr<const Data> data)
 
 	//added 2019/11/12
 	if(getChoiceType() == 2){
-		if(data->getTag<lp::PreviousFunctionTag>() != nullptr){
-			Name PreviousFuncName = *(data->getTag<lp::PreviousFunctionTag>());
+		if(data->getTag<lp::FunctionNameTag>() != nullptr){
+			Name PreviousFuncName = *(data->getTag<lp::FunctionNameTag>());
 			std::string PFuncName = PreviousFuncName.toUri();
 
 			if(PFuncName.compare("/F1a") == 0){
@@ -5059,7 +5059,7 @@ Consumer::OnData(shared_ptr<const Data> data)
 	int serviceTime = nowTime.count() - data->getServiceTime().count() + 120;
 	increaseTotalServiceTime(serviceTime);
 	double averageServiceTime = double(getTotalServiceTime()) / double(ns3::getServiceNum());
-	setAverageServiceTime(averageServiceTime);
+	ns3::setAverageServiceTime(averageServiceTime);
 
 	//std::cout << "Service Time: " << data->getServiceTime().count() << std::endl;
 	std::cout << "Service Time        : " << serviceTime << std::endl;

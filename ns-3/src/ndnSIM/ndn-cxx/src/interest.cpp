@@ -23,6 +23,8 @@
 #include "util/random.hpp"
 #include "util/crypto.hpp"
 #include "data.hpp"
+#include "ns3/simulator.h"
+#include <ndn-cxx/lp/tags.hpp>
 
 namespace ndn {
 
@@ -31,270 +33,278 @@ BOOST_CONCEPT_ASSERT((WireEncodable<Interest>));
 BOOST_CONCEPT_ASSERT((WireEncodableWithEncodingBuffer<Interest>));
 BOOST_CONCEPT_ASSERT((WireDecodable<Interest>));
 static_assert(std::is_base_of<tlv::Error, Interest::Error>::value,
-              "Interest::Error must inherit from tlv::Error");
+		"Interest::Error must inherit from tlv::Error");
 
 Interest::Interest()
-  : m_interestLifetime(time::milliseconds::min())
-  , m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
+: m_interestLifetime(time::milliseconds::min())
+, m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
 {
 }
 
 Interest::Interest(const Name& name)
-  : m_name(name)
-  , m_interestLifetime(time::milliseconds::min())
-  , m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
+: m_name(name)
+, m_interestLifetime(time::milliseconds::min())
+, m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
 {
 }
 
 Interest::Interest(const Name& name, const time::milliseconds& interestLifetime)
-  : m_name(name)
-  , m_interestLifetime(interestLifetime)
-  , m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
+: m_name(name)
+, m_interestLifetime(interestLifetime)
+, m_selectedDelegationIndex(INVALID_SELECTED_DELEGATION_INDEX)
 {
 }
 
 Interest::Interest(const Block& wire)
 {
-  wireDecode(wire);
+	wireDecode(wire);
 }
 
 uint32_t
 Interest::getNonce() const
 {
-  if (!m_nonce.hasWire())
-    const_cast<Interest*>(this)->setNonce(random::generateWord32());
+	if (!m_nonce.hasWire())
+		const_cast<Interest*>(this)->setNonce(random::generateWord32());
 
-  if (m_nonce.value_size() == sizeof(uint32_t))
-    return *reinterpret_cast<const uint32_t*>(m_nonce.value());
-  else {
-    // for compatibility reasons.  Should be removed eventually
-    return readNonNegativeInteger(m_nonce);
-  }
+	if (m_nonce.value_size() == sizeof(uint32_t))
+		return *reinterpret_cast<const uint32_t*>(m_nonce.value());
+	else {
+		// for compatibility reasons.  Should be removed eventually
+		return readNonNegativeInteger(m_nonce);
+	}
 }
 
 Interest&
 Interest::setNonce(uint32_t nonce)
 {
-  if (m_wire.hasWire() && m_nonce.value_size() == sizeof(uint32_t)) {
-    std::memcpy(const_cast<uint8_t*>(m_nonce.value()), &nonce, sizeof(nonce));
-  }
-  else {
-    m_nonce = makeBinaryBlock(tlv::Nonce,
-                              reinterpret_cast<const uint8_t*>(&nonce),
-                              sizeof(nonce));
-    m_wire.reset();
-  }
-  return *this;
+	if (m_wire.hasWire() && m_nonce.value_size() == sizeof(uint32_t)) {
+		std::memcpy(const_cast<uint8_t*>(m_nonce.value()), &nonce, sizeof(nonce));
+	}
+	else {
+		m_nonce = makeBinaryBlock(tlv::Nonce,
+				reinterpret_cast<const uint8_t*>(&nonce),
+				sizeof(nonce));
+		m_wire.reset();
+	}
+	return *this;
 }
 
 void
 Interest::refreshNonce()
 {
-  if (!hasNonce())
-    return;
+	if (!hasNonce())
+		return;
 
-  uint32_t oldNonce = getNonce();
-  uint32_t newNonce = oldNonce;
-  while (newNonce == oldNonce)
-    newNonce = random::generateWord32();
+	uint32_t oldNonce = getNonce();
+	uint32_t newNonce = oldNonce;
+	while (newNonce == oldNonce)
+		newNonce = random::generateWord32();
 
-  setNonce(newNonce);
+	setNonce(newNonce);
 }
 
 bool
 Interest::matchesName(const Name& name) const
 {
-  if (name.size() < m_name.size())
-    return false;
+	if (name.size() < m_name.size())
+		return false;
 
-  if (!m_name.isPrefixOf(name))
-    return false;
+	if (!m_name.isPrefixOf(name))
+		return false;
 
-  if (getMinSuffixComponents() >= 0 &&
-      // name must include implicit digest
-      !(name.size() - m_name.size() >= static_cast<size_t>(getMinSuffixComponents())))
-    return false;
+	if (getMinSuffixComponents() >= 0 &&
+			// name must include implicit digest
+			!(name.size() - m_name.size() >= static_cast<size_t>(getMinSuffixComponents())))
+		return false;
 
-  if (getMaxSuffixComponents() >= 0 &&
-      // name must include implicit digest
-      !(name.size() - m_name.size() <= static_cast<size_t>(getMaxSuffixComponents())))
-    return false;
+	if (getMaxSuffixComponents() >= 0 &&
+			// name must include implicit digest
+			!(name.size() - m_name.size() <= static_cast<size_t>(getMaxSuffixComponents())))
+		return false;
 
-  if (!getExclude().empty() &&
-      name.size() > m_name.size() &&
-      getExclude().isExcluded(name[m_name.size()]))
-    return false;
+	if (!getExclude().empty() &&
+			name.size() > m_name.size() &&
+			getExclude().isExcluded(name[m_name.size()]))
+		return false;
 
-  return true;
+	return true;
 }
 
 bool
 Interest::matchesData(const Data& data) const
 {
-  size_t interestNameLength = m_name.size();
-  const Name& dataName = data.getName();
-  size_t fullNameLength = dataName.size() + 1;
+	size_t interestNameLength = m_name.size();
+	const Name& dataName = data.getName();
+	size_t fullNameLength = dataName.size() + 1;
 
-  // check MinSuffixComponents
-  bool hasMinSuffixComponents = getMinSuffixComponents() >= 0;
-  size_t minSuffixComponents = hasMinSuffixComponents ?
-                               static_cast<size_t>(getMinSuffixComponents()) : 0;
-  if (!(interestNameLength + minSuffixComponents <= fullNameLength))
-    return false;
+	// check MinSuffixComponents
+	bool hasMinSuffixComponents = getMinSuffixComponents() >= 0;
+	size_t minSuffixComponents = hasMinSuffixComponents ?
+			static_cast<size_t>(getMinSuffixComponents()) : 0;
+	if (!(interestNameLength + minSuffixComponents <= fullNameLength))
+		return false;
 
-  // check MaxSuffixComponents
-  bool hasMaxSuffixComponents = getMaxSuffixComponents() >= 0;
-  if (hasMaxSuffixComponents &&
-      !(interestNameLength + getMaxSuffixComponents() >= fullNameLength))
-    return false;
+	// check MaxSuffixComponents
+	bool hasMaxSuffixComponents = getMaxSuffixComponents() >= 0;
+	if (hasMaxSuffixComponents &&
+			!(interestNameLength + getMaxSuffixComponents() >= fullNameLength))
+		return false;
 
-  // check prefix
-  if (interestNameLength == fullNameLength) {
-    if (m_name.get(-1).isImplicitSha256Digest()) {
-      if (m_name != data.getFullName())
-        return false;
-    }
-    else {
-      // Interest Name is same length as Data full Name, but last component isn't digest
-      // so there's no possibility of matching
-      return false;
-    }
-  }
-  else {
-    // Interest Name is a strict prefix of Data full Name
-    if (!m_name.isPrefixOf(dataName))
-      return false;
-  }
+	// check prefix
+	if (interestNameLength == fullNameLength) {
+		if (m_name.get(-1).isImplicitSha256Digest()) {
+			if (m_name != data.getFullName())
+				return false;
+		}
+		else {
+			// Interest Name is same length as Data full Name, but last component isn't digest
+			// so there's no possibility of matching
+			return false;
+		}
+	}
+	else {
+		// Interest Name is a strict prefix of Data full Name
+		if (!m_name.isPrefixOf(dataName))
+			return false;
+	}
 
-  // check Exclude
-  // Exclude won't be violated if Interest Name is same as Data full Name
-  if (!getExclude().empty() && fullNameLength > interestNameLength) {
-    if (interestNameLength == fullNameLength - 1) {
-      // component to exclude is the digest
-      if (getExclude().isExcluded(data.getFullName().get(interestNameLength)))
-        return false;
-      // There's opportunity to inspect the Exclude filter and determine whether
-      // the digest would make a difference.
-      // eg. "<NameComponent>AA</NameComponent><Any/>" doesn't exclude any digest -
-      //     fullName not needed;
-      //     "<Any/><NameComponent>AA</NameComponent>" and
-      //     "<Any/><ImplicitSha256DigestComponent>ffffffffffffffffffffffffffffffff
-      //      </ImplicitSha256DigestComponent>"
-      //     excludes all digests - fullName not needed;
-      //     "<Any/><ImplicitSha256DigestComponent>80000000000000000000000000000000
-      //      </ImplicitSha256DigestComponent>"
-      //     excludes some digests - fullName required
-      // But Interests that contain the exact Data Name before digest and also
-      // contain Exclude filter is too rare to optimize for, so we request
-      // fullName no mater what's in the Exclude filter.
-    }
-    else {
-      // component to exclude is not the digest
-      if (getExclude().isExcluded(dataName.get(interestNameLength)))
-        return false;
-    }
-  }
+	// check Exclude
+	// Exclude won't be violated if Interest Name is same as Data full Name
+	if (!getExclude().empty() && fullNameLength > interestNameLength) {
+		if (interestNameLength == fullNameLength - 1) {
+			// component to exclude is the digest
+			if (getExclude().isExcluded(data.getFullName().get(interestNameLength)))
+				return false;
+			// There's opportunity to inspect the Exclude filter and determine whether
+			// the digest would make a difference.
+			// eg. "<NameComponent>AA</NameComponent><Any/>" doesn't exclude any digest -
+			//     fullName not needed;
+			//     "<Any/><NameComponent>AA</NameComponent>" and
+			//     "<Any/><ImplicitSha256DigestComponent>ffffffffffffffffffffffffffffffff
+			//      </ImplicitSha256DigestComponent>"
+			//     excludes all digests - fullName not needed;
+			//     "<Any/><ImplicitSha256DigestComponent>80000000000000000000000000000000
+			//      </ImplicitSha256DigestComponent>"
+			//     excludes some digests - fullName required
+			// But Interests that contain the exact Data Name before digest and also
+			// contain Exclude filter is too rare to optimize for, so we request
+			// fullName no mater what's in the Exclude filter.
+		}
+		else {
+			// component to exclude is not the digest
+			if (getExclude().isExcluded(dataName.get(interestNameLength)))
+				return false;
+		}
+	}
 
-  // check PublisherPublicKeyLocator
-  const KeyLocator& publisherPublicKeyLocator = this->getPublisherPublicKeyLocator();
-  if (!publisherPublicKeyLocator.empty()) {
-    const Signature& signature = data.getSignature();
-    const Block& signatureInfo = signature.getInfo();
-    Block::element_const_iterator it = signatureInfo.find(tlv::KeyLocator);
-    if (it == signatureInfo.elements_end()) {
-      return false;
-    }
-    if (publisherPublicKeyLocator.wireEncode() != *it) {
-      return false;
-    }
-  }
+	// check PublisherPublicKeyLocator
+	const KeyLocator& publisherPublicKeyLocator = this->getPublisherPublicKeyLocator();
+	if (!publisherPublicKeyLocator.empty()) {
+		const Signature& signature = data.getSignature();
+		const Block& signatureInfo = signature.getInfo();
+		Block::element_const_iterator it = signatureInfo.find(tlv::KeyLocator);
+		if (it == signatureInfo.elements_end()) {
+			return false;
+		}
+		if (publisherPublicKeyLocator.wireEncode() != *it) {
+			return false;
+		}
+	}
 
-  return true;
+	if(ns3::getChoiceType() == 4){
+		if(data.getTag<lp::FunctionNameTag>() != nullptr){
+			if(m_functionName.compare(*(data.getTag<lp::FunctionNameTag>())) != 0){
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 template<encoding::Tag TAG>
 size_t
 Interest::wireEncode(EncodingImpl<TAG>& encoder) const
 {
-  size_t totalLength = 0;
+	size_t totalLength = 0;
 
-  // Interest ::= INTEREST-TYPE TLV-LENGTH
-  //                Name
-  //                Selectors?
-  //                Nonce
-  //                InterestLifetime?
-  //                Link?
-  //                SelectedDelegation?
+	// Interest ::= INTEREST-TYPE TLV-LENGTH
+	//                Name
+	//                Selectors?
+	//                Nonce
+	//                InterestLifetime?
+	//                Link?
+	//                SelectedDelegation?
 
-  // (reverse encoding)
+	// (reverse encoding)
 
-  //FunctionTime
-  if (getFunctionTime() >= time::milliseconds::zero() &&
-      getFunctionTime() != DEFAULT_SERVICETIME)
-    {
-      totalLength += prependNonNegativeIntegerBlock(encoder,
-                                                    tlv::FunctionTime,
-                                                    getFunctionTime().count());
-    }
+	//FunctionTime
+	if (getFunctionTime() >= time::milliseconds::zero() &&
+			getFunctionTime() != DEFAULT_SERVICETIME)
+	{
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::FunctionTime,
+				getFunctionTime().count());
+	}
 
-  //ServiceTime
-  if (getServiceTime() >= time::milliseconds::zero() &&
-      getServiceTime() != DEFAULT_SERVICETIME)
-    {
-      totalLength += prependNonNegativeIntegerBlock(encoder,
-                                                    tlv::ServiceTime,
-                                                    getServiceTime().count());
-    }
+	//ServiceTime
+	if (getServiceTime() >= time::milliseconds::zero() &&
+			getServiceTime() != DEFAULT_SERVICETIME)
+	{
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::ServiceTime,
+				getServiceTime().count());
+	}
 
-  //FunctionFlag
-  if (getFunctionFlag() >= 0){
-    totalLength += prependNonNegativeIntegerBlock(encoder,
-                                                    tlv::FunctionFlag,
-                                                    getFunctionFlag());
-  }
+	//FunctionFlag
+	if (getFunctionFlag() >= 0){
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::FunctionFlag,
+				getFunctionFlag());
+	}
 
-  //FunctionName
-  totalLength += getFunction().wireEncodeFunc(encoder);
+	//FunctionName
+	totalLength += getFunction().wireEncodeFunc(encoder);
 
-  totalLength += getFunctionFullName().wireEncodeFuncFullName(encoder);
+	totalLength += getFunctionFullName().wireEncodeFuncFullName(encoder);
 
-  if (hasLink()) {
-    if (hasSelectedDelegation()) {
-      totalLength += prependNonNegativeIntegerBlock(encoder,
-                                                    tlv::SelectedDelegation,
-                                                    m_selectedDelegationIndex);
-    }
-    totalLength += encoder.prependBlock(m_link);
-  }
-  else {
-    BOOST_ASSERT(!hasSelectedDelegation());
-  }
+	if (hasLink()) {
+		if (hasSelectedDelegation()) {
+			totalLength += prependNonNegativeIntegerBlock(encoder,
+					tlv::SelectedDelegation,
+					m_selectedDelegationIndex);
+		}
+		totalLength += encoder.prependBlock(m_link);
+	}
+	else {
+		BOOST_ASSERT(!hasSelectedDelegation());
+	}
 
-  // InterestLifetime
-  if (getInterestLifetime() >= time::milliseconds::zero() &&
-      getInterestLifetime() != DEFAULT_INTEREST_LIFETIME)
-    {
-      totalLength += prependNonNegativeIntegerBlock(encoder,
-                                                    tlv::InterestLifetime,
-                                                    getInterestLifetime().count());
-    }
+	// InterestLifetime
+	if (getInterestLifetime() >= time::milliseconds::zero() &&
+			getInterestLifetime() != DEFAULT_INTEREST_LIFETIME)
+	{
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::InterestLifetime,
+				getInterestLifetime().count());
+	}
 
-  // Nonce
-  getNonce(); // to ensure that Nonce is properly set
-  totalLength += encoder.prependBlock(m_nonce);
+	// Nonce
+	getNonce(); // to ensure that Nonce is properly set
+	totalLength += encoder.prependBlock(m_nonce);
 
-  // Selectors
-  if (hasSelectors())
-    {
-      totalLength += getSelectors().wireEncode(encoder);
-    }
+	// Selectors
+	if (hasSelectors())
+	{
+		totalLength += getSelectors().wireEncode(encoder);
+	}
 
-  // Name
-  totalLength += getName().wireEncode(encoder);
+	// Name
+	totalLength += getName().wireEncode(encoder);
 
-  totalLength += encoder.prependVarNumber(totalLength);
-  totalLength += encoder.prependVarNumber(tlv::Interest);
-  return totalLength;
+	totalLength += encoder.prependVarNumber(totalLength);
+	totalLength += encoder.prependVarNumber(tlv::Interest);
+	return totalLength;
 }
 
 template size_t
@@ -306,243 +316,243 @@ Interest::wireEncode<encoding::EstimatorTag>(EncodingImpl<encoding::EstimatorTag
 const Block&
 Interest::wireEncode() const
 {
-  if (m_wire.hasWire())
-    return m_wire;
+	if (m_wire.hasWire())
+		return m_wire;
 
-  EncodingEstimator estimator;
-  size_t estimatedSize = wireEncode(estimator);
+	EncodingEstimator estimator;
+	size_t estimatedSize = wireEncode(estimator);
 
-  EncodingBuffer buffer(estimatedSize, 0);
-  wireEncode(buffer);
+	EncodingBuffer buffer(estimatedSize, 0);
+	wireEncode(buffer);
 
-  // to ensure that Nonce block points to the right memory location
-  const_cast<Interest*>(this)->wireDecode(buffer.block());
+	// to ensure that Nonce block points to the right memory location
+	const_cast<Interest*>(this)->wireDecode(buffer.block());
 
-  return m_wire;
+	return m_wire;
 }
 
 void
 Interest::wireDecode(const Block& wire)
 {
-  m_wire = wire;
-  m_wire.parse();
+	m_wire = wire;
+	m_wire.parse();
 
-  // Interest ::= INTEREST-TYPE TLV-LENGTH
-  //                Name
-  //                Selectors?
-  //                Nonce
-  //                InterestLifetime?
-  //                Link?
-  //                SelectedDelegation?
+	// Interest ::= INTEREST-TYPE TLV-LENGTH
+	//                Name
+	//                Selectors?
+	//                Nonce
+	//                InterestLifetime?
+	//                Link?
+	//                SelectedDelegation?
 
-  if (m_wire.type() != tlv::Interest)
-    BOOST_THROW_EXCEPTION(Error("Unexpected TLV number when decoding Interest"));
+	if (m_wire.type() != tlv::Interest)
+		BOOST_THROW_EXCEPTION(Error("Unexpected TLV number when decoding Interest"));
 
-  // Name
-  m_name.wireDecode(m_wire.get(tlv::Name));
+	// Name
+	m_name.wireDecode(m_wire.get(tlv::Name));
 
-  // Selectors
-  Block::element_const_iterator val = m_wire.find(tlv::Selectors);
-  if (val != m_wire.elements_end()) {
-    m_selectors.wireDecode(*val);
-  }
-  else
-    m_selectors = Selectors();
+	// Selectors
+	Block::element_const_iterator val = m_wire.find(tlv::Selectors);
+	if (val != m_wire.elements_end()) {
+		m_selectors.wireDecode(*val);
+	}
+	else
+		m_selectors = Selectors();
 
-  // Nonce
-  m_nonce = m_wire.get(tlv::Nonce);
+	// Nonce
+	m_nonce = m_wire.get(tlv::Nonce);
 
-  // InterestLifetime
-  val = m_wire.find(tlv::InterestLifetime);
-  if (val != m_wire.elements_end()) {
-    m_interestLifetime = time::milliseconds(readNonNegativeInteger(*val));
-  }
-  else {
-    m_interestLifetime = DEFAULT_INTEREST_LIFETIME;
-  }
+	// InterestLifetime
+	val = m_wire.find(tlv::InterestLifetime);
+	if (val != m_wire.elements_end()) {
+		m_interestLifetime = time::milliseconds(readNonNegativeInteger(*val));
+	}
+	else {
+		m_interestLifetime = DEFAULT_INTEREST_LIFETIME;
+	}
 
-  // Link object
-  m_linkCached.reset();
-  val = m_wire.find(tlv::Data);
-  if (val != m_wire.elements_end()) {
-    m_link = (*val);
-  }
-  else {
-    m_link = Block();
-  }
+	// Link object
+	m_linkCached.reset();
+	val = m_wire.find(tlv::Data);
+	if (val != m_wire.elements_end()) {
+		m_link = (*val);
+	}
+	else {
+		m_link = Block();
+	}
 
-  // SelectedDelegation
-  val = m_wire.find(tlv::SelectedDelegation);
-  if (val != m_wire.elements_end()) {
-    if (!this->hasLink()) {
-      BOOST_THROW_EXCEPTION(Error("Interest contains SelectedDelegation, but no LINK object"));
-    }
-    uint64_t selectedDelegation = readNonNegativeInteger(*val);
-    if (selectedDelegation < uint64_t(Link::countDelegationsFromWire(m_link))) {
-      m_selectedDelegationIndex = static_cast<size_t>(selectedDelegation);
-    }
-    else {
-      BOOST_THROW_EXCEPTION(Error("Invalid selected delegation index when decoding Interest"));
-    }
-  }
-  else {
-    m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
-  }
+	// SelectedDelegation
+	val = m_wire.find(tlv::SelectedDelegation);
+	if (val != m_wire.elements_end()) {
+		if (!this->hasLink()) {
+			BOOST_THROW_EXCEPTION(Error("Interest contains SelectedDelegation, but no LINK object"));
+		}
+		uint64_t selectedDelegation = readNonNegativeInteger(*val);
+		if (selectedDelegation < uint64_t(Link::countDelegationsFromWire(m_link))) {
+			m_selectedDelegationIndex = static_cast<size_t>(selectedDelegation);
+		}
+		else {
+			BOOST_THROW_EXCEPTION(Error("Invalid selected delegation index when decoding Interest"));
+		}
+	}
+	else {
+		m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
+	}
 
-  //FunctionName
-  m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
+	//FunctionName
+	m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
 
-  m_functionFullName.wireDecodeFuncFullName(m_wire.get(tlv::FunctionFullName));
+	m_functionFullName.wireDecodeFuncFullName(m_wire.get(tlv::FunctionFullName));
 
-  //FunctionFlag
-  val = m_wire.find(tlv::FunctionFlag);
-  if (val != m_wire.elements_end()){
-    m_functionFlag = readNonNegativeInteger(*val);
-  }
+	//FunctionFlag
+	val = m_wire.find(tlv::FunctionFlag);
+	if (val != m_wire.elements_end()){
+		m_functionFlag = readNonNegativeInteger(*val);
+	}
 
-  //ServiceTime
-  val = m_wire.find(tlv::ServiceTime);
-  if (val != m_wire.elements_end()) {
-    m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
-  }
-  else {
-    m_serviceTime = DEFAULT_SERVICETIME;
-  }
+	//ServiceTime
+	val = m_wire.find(tlv::ServiceTime);
+	if (val != m_wire.elements_end()) {
+		m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
+	}
+	else {
+		m_serviceTime = DEFAULT_SERVICETIME;
+	}
 
-  //FunctionTime
-  val = m_wire.find(tlv::FunctionTime);
-  if (val != m_wire.elements_end()) {
-    m_functionTime = time::milliseconds(readNonNegativeInteger(*val));
-  }
-  else {
-    m_functionTime = DEFAULT_FUNCTIONTIME;
-  }
+	//FunctionTime
+	val = m_wire.find(tlv::FunctionTime);
+	if (val != m_wire.elements_end()) {
+		m_functionTime = time::milliseconds(readNonNegativeInteger(*val));
+	}
+	else {
+		m_functionTime = DEFAULT_FUNCTIONTIME;
+	}
 
 }
 
 bool
 Interest::hasLink() const
 {
-  return m_link.hasWire();
+	return m_link.hasWire();
 }
 
 const Link&
 Interest::getLink() const
 {
-  if (hasLink()) {
-    if (!m_linkCached) {
-      m_linkCached = make_shared<Link>(m_link);
-    }
-    return *m_linkCached;
-  }
-  BOOST_THROW_EXCEPTION(Error("There is no encapsulated link object"));
+	if (hasLink()) {
+		if (!m_linkCached) {
+			m_linkCached = make_shared<Link>(m_link);
+		}
+		return *m_linkCached;
+	}
+	BOOST_THROW_EXCEPTION(Error("There is no encapsulated link object"));
 }
 
 void
 Interest::setLink(const Block& link)
 {
-  m_link = link;
-  if (!link.hasWire()) {
-    BOOST_THROW_EXCEPTION(Error("The given link does not have a wire format"));
-  }
-  m_wire.reset();
-  m_linkCached.reset();
-  this->unsetSelectedDelegation();
+	m_link = link;
+	if (!link.hasWire()) {
+		BOOST_THROW_EXCEPTION(Error("The given link does not have a wire format"));
+	}
+	m_wire.reset();
+	m_linkCached.reset();
+	this->unsetSelectedDelegation();
 }
 
 void
 Interest::unsetLink()
 {
-  m_link.reset();
-  m_wire.reset();
-  m_linkCached.reset();
-  this->unsetSelectedDelegation();
+	m_link.reset();
+	m_wire.reset();
+	m_linkCached.reset();
+	this->unsetSelectedDelegation();
 }
 
 bool
 Interest::hasSelectedDelegation() const
 {
-  return m_selectedDelegationIndex != INVALID_SELECTED_DELEGATION_INDEX;
+	return m_selectedDelegationIndex != INVALID_SELECTED_DELEGATION_INDEX;
 }
 
 Name
 Interest::getSelectedDelegation() const
 {
-  if (!hasSelectedDelegation()) {
-    BOOST_THROW_EXCEPTION(Error("There is no encapsulated selected delegation"));
-  }
-  return std::get<1>(Link::getDelegationFromWire(m_link, m_selectedDelegationIndex));
+	if (!hasSelectedDelegation()) {
+		BOOST_THROW_EXCEPTION(Error("There is no encapsulated selected delegation"));
+	}
+	return std::get<1>(Link::getDelegationFromWire(m_link, m_selectedDelegationIndex));
 }
 
 void
 Interest::setSelectedDelegation(const Name& delegationName)
 {
-  size_t delegationIndex = Link::findDelegationFromWire(m_link, delegationName);
-  if (delegationIndex != INVALID_SELECTED_DELEGATION_INDEX) {
-    m_selectedDelegationIndex = delegationIndex;
-  }
-  else {
-    BOOST_THROW_EXCEPTION(std::invalid_argument("Invalid selected delegation name"));
-  }
-  m_wire.reset();
+	size_t delegationIndex = Link::findDelegationFromWire(m_link, delegationName);
+	if (delegationIndex != INVALID_SELECTED_DELEGATION_INDEX) {
+		m_selectedDelegationIndex = delegationIndex;
+	}
+	else {
+		BOOST_THROW_EXCEPTION(std::invalid_argument("Invalid selected delegation name"));
+	}
+	m_wire.reset();
 }
 
 void
 Interest::setSelectedDelegation(size_t delegationIndex)
 {
-  if (delegationIndex >= Link(m_link).getDelegations().size()) {
-    BOOST_THROW_EXCEPTION(Error("Invalid selected delegation index"));
-  }
-  m_selectedDelegationIndex = delegationIndex;
-  m_wire.reset();
+	if (delegationIndex >= Link(m_link).getDelegations().size()) {
+		BOOST_THROW_EXCEPTION(Error("Invalid selected delegation index"));
+	}
+	m_selectedDelegationIndex = delegationIndex;
+	m_wire.reset();
 }
 
 void
 Interest::unsetSelectedDelegation()
 {
-  m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
-  m_wire.reset();
+	m_selectedDelegationIndex = INVALID_SELECTED_DELEGATION_INDEX;
+	m_wire.reset();
 }
 
 std::ostream&
 operator<<(std::ostream& os, const Interest& interest)
 {
-  os << interest.getName();
+	os << interest.getName();
 
-  char delim = '?';
+	char delim = '?';
 
-  if (interest.getMinSuffixComponents() >= 0) {
-    os << delim << "ndn.MinSuffixComponents=" << interest.getMinSuffixComponents();
-    delim = '&';
-  }
-  if (interest.getMaxSuffixComponents() >= 0) {
-    os << delim << "ndn.MaxSuffixComponents=" << interest.getMaxSuffixComponents();
-    delim = '&';
-  }
-  if (interest.getChildSelector() >= 0) {
-    os << delim << "ndn.ChildSelector=" << interest.getChildSelector();
-    delim = '&';
-  }
-  if (interest.getMustBeFresh()) {
-    os << delim << "ndn.MustBeFresh=" << interest.getMustBeFresh();
-    delim = '&';
-  }
-  if (interest.getInterestLifetime() >= time::milliseconds::zero()
-      && interest.getInterestLifetime() != DEFAULT_INTEREST_LIFETIME) {
-    os << delim << "ndn.InterestLifetime=" << interest.getInterestLifetime().count();
-    delim = '&';
-  }
+	if (interest.getMinSuffixComponents() >= 0) {
+		os << delim << "ndn.MinSuffixComponents=" << interest.getMinSuffixComponents();
+		delim = '&';
+	}
+	if (interest.getMaxSuffixComponents() >= 0) {
+		os << delim << "ndn.MaxSuffixComponents=" << interest.getMaxSuffixComponents();
+		delim = '&';
+	}
+	if (interest.getChildSelector() >= 0) {
+		os << delim << "ndn.ChildSelector=" << interest.getChildSelector();
+		delim = '&';
+	}
+	if (interest.getMustBeFresh()) {
+		os << delim << "ndn.MustBeFresh=" << interest.getMustBeFresh();
+		delim = '&';
+	}
+	if (interest.getInterestLifetime() >= time::milliseconds::zero()
+	&& interest.getInterestLifetime() != DEFAULT_INTEREST_LIFETIME) {
+		os << delim << "ndn.InterestLifetime=" << interest.getInterestLifetime().count();
+		delim = '&';
+	}
 
-  if (interest.hasNonce()) {
-    os << delim << "ndn.Nonce=" << interest.getNonce();
-    delim = '&';
-  }
-  if (!interest.getExclude().empty()) {
-    os << delim << "ndn.Exclude=" << interest.getExclude();
-    delim = '&';
-  }
+	if (interest.hasNonce()) {
+		os << delim << "ndn.Nonce=" << interest.getNonce();
+		delim = '&';
+	}
+	if (!interest.getExclude().empty()) {
+		os << delim << "ndn.Exclude=" << interest.getExclude();
+		delim = '&';
+	}
 
-  return os;
+	return os;
 }
 
 } // namespace ndn

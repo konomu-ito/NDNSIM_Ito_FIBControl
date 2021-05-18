@@ -475,6 +475,7 @@ int totalSend = 0;
 
 double averageServiceTime;
 
+int weight;
 
 int getFunctionCallCount(int i){
   switch(i) {
@@ -978,7 +979,11 @@ void printResult(){
 
 int getWeight(){
 	//LordFirst->100 HopFirst->0
-	return 2;
+	return weight;
+}
+
+void setWeight(int w){
+	weight = w;
 }
 
 } // namespace ns3

@@ -1612,6 +1612,20 @@ void setChoiceType(const char* type);
 
 int getChoiceType();
 
+void increaseTotalSend();
+
+int getTotalSend();
+
+void setAverageServiceTime(double time);
+
+double getAverageServiceTime();
+
+void printResult();
+
+int getWeight();
+
+void setWeight(int w);
+
 } // namespace ns3
 
 #endif /* SIMULATOR_H */
