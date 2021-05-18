@@ -43,7 +43,7 @@ BOOST_CONCEPT_ASSERT((boost::ForwardIterator<Fib::const_iterator>));
 // which doesn't require DefaultConstructible
 #ifdef HAVE_IS_DEFAULT_CONSTRUCTIBLE
 static_assert(std::is_default_constructible<Fib::const_iterator>::value,
-              "Fib::const_iterator must be default-constructible");
+		"Fib::const_iterator must be default-constructible");
 #else
 BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<Fib::const_iterator>));
 #endif // HAVE_IS_DEFAULT_CONSTRUCTIBLE
@@ -51,12 +51,13 @@ BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<Fib::const_iterator>));
 static inline bool
 nteHasFibEntry(const name_tree::Entry& nte)
 {
-  return nte.getFibEntry() != nullptr;
+	return nte.getFibEntry() != nullptr;
 }
 
 Fib::Fib(NameTree& nameTree)
-  : m_nameTree(nameTree)
-  , m_nItems(0)
+: m_nameTree(nameTree)
+, m_nItems(0)
+, m_fcc(0)
 {
 }
 
@@ -64,30 +65,30 @@ template<typename K>
 const Entry&
 Fib::findLongestPrefixMatchImpl(const K& key) const
 {
-  name_tree::Entry* nte = m_nameTree.findLongestPrefixMatch(key, &nteHasFibEntry);
-  if (nte != nullptr) {
-    return *nte->getFibEntry();
-  }
-  return *s_emptyEntry;
+	name_tree::Entry* nte = m_nameTree.findLongestPrefixMatch(key, &nteHasFibEntry);
+	if (nte != nullptr) {
+		return *nte->getFibEntry();
+	}
+	return *s_emptyEntry;
 }
 
 const Entry&
 Fib::findLongestPrefixMatch(const Name& prefix) const
 {
-  return this->findLongestPrefixMatchImpl(prefix);
+	return this->findLongestPrefixMatchImpl(prefix);
 }
 
 const Entry&
 Fib::findLongestPrefixMatch(const pit::Entry& pitEntry) const
 {
-  return this->findLongestPrefixMatchImpl(pitEntry);
+	return this->findLongestPrefixMatchImpl(pitEntry);
 }
 
 //2020/11/18
 fib::Entry*
 Fib::selectFunction(const Name& prefix) const
 {
-	fib::Entry* fibEntry;
+	fib::Entry* fibEntrY = nullptr;
 	int indicatorNum = 3;
 	char indicator = 'a';
 	std::string headFunction = prefix.toUri();
@@ -96,32 +97,39 @@ Fib::selectFunction(const Name& prefix) const
 
 	auto pos = headFunction.find(separator,separator_length);
 	if(pos != std::string::npos)
-	headFunction.erase(pos, headFunction.size() - pos);
+		headFunction.erase(pos, headFunction.size() - pos);
 
 
 	for(int i = 0; i < indicatorNum; i++){
 		Name exFunctionName = Name(headFunction + indicator);
+		std::cout << "Candidate:" << exFunctionName.toUri() << std::endl;
 		fib::Entry* entry = this->findLongestPrefixMatchFunction(exFunctionName);
-		if(fibEntry == nullptr || entry->getCost() < fibEntry->getCost())
-			fibEntry = entry;
+		std::cout<<"the cost is " << entry->getCost() << std::endl;
+		if(fibEntrY == nullptr){
+			fibEntrY = entry;
+			std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
+		}else if(entry->getCost() < fibEntrY->getCost()){
+			fibEntrY = entry;
+			std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
+		}
 		indicator++;
 	}
-	fibEntry->setFcc(fibEntry->getFcc() + 1);
-	return fibEntry;
+	fibEntrY->setFcc(fibEntrY->getFcc() + 1);
+	return fibEntrY;
 }
 
 //ADDED Longest Prefix Match for Function Chaining
 fib::Entry*
 Fib::findLongestPrefixMatchFunction(const Name& prefix) const
 {
-  nfd::name_tree::Entry* nameTreeEntry = m_nameTree.findLongestPrefixMatch(prefix);
-  if (static_cast<bool>(nameTreeEntry)) {
-    fib::Entry* fibEntry = nameTreeEntry->getFibEntry();
-    if(fibEntry->getPrefix().toUri()!="/"){
-      return fibEntry;
-    }
-  }
-  return nullptr;
+	nfd::name_tree::Entry* nameTreeEntry = m_nameTree.findLongestPrefixMatch(prefix);
+	if (static_cast<bool>(nameTreeEntry)) {
+		fib::Entry* fibEntry = nameTreeEntry->getFibEntry();
+		if(fibEntry->getPrefix().toUri()!="/"){
+			return fibEntry;
+		}
+	}
+	return nullptr;
 }
 
 //added 2020/11/25
@@ -132,13 +140,11 @@ Fib::resetFcc(){
 
 void
 Fib::increaseFcc(){
-	if(&m_fcc == nullptr) this->resetFcc();
 	m_fcc++;
 }
 
 int
 Fib::getFcc(){
-	if(&m_fcc == nullptr) this->resetFcc();
 	return m_fcc;
 }
 
@@ -146,81 +152,81 @@ Fib::getFcc(){
 const Entry&
 Fib::findLongestPrefixMatch(const measurements::Entry& measurementsEntry) const
 {
-  return this->findLongestPrefixMatchImpl(measurementsEntry);
+	return this->findLongestPrefixMatchImpl(measurementsEntry);
 }
 
 Entry*
 Fib::findExactMatch(const Name& prefix)
 {
-  name_tree::Entry* nte = m_nameTree.findExactMatch(prefix);
-  if (nte != nullptr)
-    return nte->getFibEntry();
+	name_tree::Entry* nte = m_nameTree.findExactMatch(prefix);
+	if (nte != nullptr)
+		return nte->getFibEntry();
 
-  return nullptr;
+	return nullptr;
 }
 
 std::pair<Entry*, bool>
 Fib::insert(const Name& prefix)
 {
-  name_tree::Entry& nte = m_nameTree.lookup(prefix);
-  Entry* entry = nte.getFibEntry();
-  if (entry != nullptr) {
-    return std::make_pair(entry, false);
-  }
+	name_tree::Entry& nte = m_nameTree.lookup(prefix);
+	Entry* entry = nte.getFibEntry();
+	if (entry != nullptr) {
+		return std::make_pair(entry, false);
+	}
 
-  nte.setFibEntry(make_unique<Entry>(prefix));
-  ++m_nItems;
-  return std::make_pair(nte.getFibEntry(), true);
+	nte.setFibEntry(make_unique<Entry>(prefix));
+	++m_nItems;
+	return std::make_pair(nte.getFibEntry(), true);
 }
 
 void
 Fib::erase(name_tree::Entry* nte, bool canDeleteNte)
 {
-  BOOST_ASSERT(nte != nullptr);
+	BOOST_ASSERT(nte != nullptr);
 
-  nte->setFibEntry(nullptr);
-  if (canDeleteNte) {
-    m_nameTree.eraseIfEmpty(nte);
-  }
-  --m_nItems;
+	nte->setFibEntry(nullptr);
+	if (canDeleteNte) {
+		m_nameTree.eraseIfEmpty(nte);
+	}
+	--m_nItems;
 }
 
 void
 Fib::erase(const Name& prefix)
 {
-  name_tree::Entry* nte = m_nameTree.findExactMatch(prefix);
-  if (nte != nullptr) {
-    this->erase(nte);
-  }
+	name_tree::Entry* nte = m_nameTree.findExactMatch(prefix);
+	if (nte != nullptr) {
+		this->erase(nte);
+	}
 }
 
 void
 Fib::erase(const Entry& entry)
 {
-  name_tree::Entry* nte = m_nameTree.getEntry(entry);
-  if (nte == nullptr) { // don't try to erase s_emptyEntry
-    BOOST_ASSERT(&entry == s_emptyEntry.get());
-    return;
-  }
-  this->erase(nte);
+	name_tree::Entry* nte = m_nameTree.getEntry(entry);
+	if (nte == nullptr) { // don't try to erase s_emptyEntry
+		BOOST_ASSERT(&entry == s_emptyEntry.get());
+		return;
+	}
+	this->erase(nte);
 }
 
 void
 Fib::removeNextHop(Entry& entry, const Face& face)
 {
-  entry.removeNextHop(face);
+	entry.removeNextHop(face);
 
-  if (!entry.hasNextHops()) {
-    name_tree::Entry* nte = m_nameTree.getEntry(entry);
-    this->erase(nte, false);
-  }
+	if (!entry.hasNextHops()) {
+		name_tree::Entry* nte = m_nameTree.getEntry(entry);
+		this->erase(nte, false);
+	}
 }
 
 Fib::Range
 Fib::getRange() const
 {
-  return m_nameTree.fullEnumerate(&nteHasFibEntry) |
-         boost::adaptors::transformed(name_tree::GetTableEntry<Entry>(&name_tree::Entry::getFibEntry));
+	return m_nameTree.fullEnumerate(&nteHasFibEntry) |
+			boost::adaptors::transformed(name_tree::GetTableEntry<Entry>(&name_tree::Entry::getFibEntry));
 }
 
 } // namespace fib

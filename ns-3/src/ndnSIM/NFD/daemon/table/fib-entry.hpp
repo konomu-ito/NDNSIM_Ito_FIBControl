@@ -122,8 +122,8 @@ private:
 private:
   Name m_prefix;
   NextHopList m_nextHops;
-  int m_fcc = 0;
-  int m_phc = 0;
+  int m_fcc;
+  int m_phc;
 
   name_tree::Entry* m_nameTreeEntry;
 
