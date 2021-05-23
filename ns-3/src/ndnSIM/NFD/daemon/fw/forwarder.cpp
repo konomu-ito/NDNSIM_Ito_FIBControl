@@ -652,12 +652,13 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		break;
 	}
 
-
-	std::cout << "Interest Packet" << std::endl;
-	std::cout << "Node          : " << currentNodeName << std::endl;
-	std::cout << "Function Name : " << interest.getFunction() << std::endl;
-	std::cout << "Content  Name : " << interest.getName() << std::endl;
-
+	//if(interest.getName()=="/prefix3/%FE%00"){
+		std::cout << "Interest Packet" << std::endl;
+		std::cout << "Node          : " << currentNodeName << std::endl;
+		std::cout << "Function Name : " << interest.getFunction() << std::endl;
+		std::cout << "Content  Name : " << interest.getName() << std::endl;
+//}
+	
 	/*
 	if (interest.getFunctionFlag() == 1){
 		interest.setFunctionFlag(0);
@@ -946,8 +947,10 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		if(ns3::getChoiceType() == 4){
 			if(functionName.toUri().empty()){
 				fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
-			}else{
+			}// else if (list[1] == currentNodeName){}
+			else{
 				fibEntry = m_fib.selectFunction(functionName);
+				//if(interest.getName()== "/prefix3/%FE%00"){
 				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
 			}
@@ -1030,7 +1033,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		}
 
 		 */
-		std::cout << "--------------------------------------------" << std::endl;
+		//std::cout << "--------------------------------------------" << std::endl;
 
 
 		if(fibEntry != nullptr){ //When there is matching FIB route
@@ -1063,7 +1066,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		return;
 	}
 
-	std::cout << "default routing" << std::endl;
+	//std::cout << "default routing" << std::endl;
 	std::cout << "--------------------------------------------" << std::endl;
 	// dispatch to strategy: after incoming Interest
 	this->dispatchToStrategy(*pitEntry,
@@ -1476,19 +1479,19 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   }
 	 */
 
-	std::cout << "Data Packet" << std::endl;
-	std::cout << "Node          : " << currentNodeName << std::endl;
-	std::cout << "Content  Name : " << data.getName() << std::endl;
-	if(data.getTag<lp::FunctionNameTag>() != nullptr){
-		Name funcName = *(data.getTag<lp::FunctionNameTag>());
-		std::string funcString = funcName.toUri();
-		std::cout << "Function Name: " << funcString << std::endl;
-		if(data.getTag<lp::PartialHopTag>() != nullptr){
-			std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
-			std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
-		}
-	}
-	std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
+	// std::cout << "Data Packet" << std::endl;
+	// std::cout << "Node          : " << currentNodeName << std::endl;
+	// std::cout << "Content  Name : " << data.getName() << std::endl;
+	// if(data.getTag<lp::FunctionNameTag>() != nullptr){
+	// 	Name funcName = *(data.getTag<lp::FunctionNameTag>());
+	// 	std::string funcString = funcName.toUri();
+	// 	std::cout << "Function Name: " << funcString << std::endl;
+	// 	if(data.getTag<lp::PartialHopTag>() != nullptr){
+	// 		std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+	// 		std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+	// 	}
+	// }
+	// std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
 	//std::string st = "test";
 	//Name name = Name(st);
 	//data.setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(name));
@@ -1701,16 +1704,20 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		if(ns3::getChoiceType()==4 && updateControlFlag){
 			//FIBをUPDATE
 			if(pitEntry->getSelectedInstance() != nullptr){
+				if(data.getTag<lp::PartialHopTag>() != nullptr){
 				std::cout<<"update:"<< pitEntry->getSelectedInstance()->getPrefix().toUri() <<std::endl;
 				pitEntry->getSelectedInstance()->setFcc(*(data.getTag<lp::CountTag>()));
 				pitEntry->getSelectedInstance()->setPhc(*(data.getTag<lp::PartialHopTag>()));
+				}
 			}
 			//Dataパケットに追加したフィールドの更新
 			if(26 <= currentNode && currentNode <= 40){
 				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
 				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(1));
 			}else if(pitEntry->getSelectedInstance() != nullptr){
+				if(data.getTag<lp::PartialHopTag>() != nullptr){
 				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>()) + 1));
+				}
 			}
 			updateControlFlag = false;
 		}

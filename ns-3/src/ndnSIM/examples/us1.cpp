@@ -917,6 +917,9 @@ main(int argc, char* argv[])
 	case 3:
 		filename = "randChoice.txt";
 		break;
+	case 4:
+		filename ="fibControll.txt";
+		break;
 	}
 	std::ofstream writing_file;
 	writing_file.open(filename, std::ios::out);
