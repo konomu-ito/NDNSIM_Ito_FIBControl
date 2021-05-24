@@ -4221,11 +4221,11 @@ Consumer::fibControl(int f1, int f2, int f3){
 	shared_ptr<std::string> ptr;
 
 	if(f1 == 1){
-		ptr = make_shared<std::string>("/F1");
+		ptr = make_shared<std::string>("/F1+");
 	}else if(f1 == 2){
-		ptr = make_shared<std::string>("/F2");
+		ptr = make_shared<std::string>("/F2+");	
 	}else if(f1 == 3){
-		ptr = make_shared<std::string>("/F3");
+		ptr = make_shared<std::string>("/F3+");
 	}
 
 	if(f2 == 1){
@@ -4244,6 +4244,33 @@ Consumer::fibControl(int f1, int f2, int f3){
 
 	return ptr;
 }
+
+// 	shared_ptr<std::string> ptr;
+
+// 	if(f1 == 1){
+// 		ptr = make_shared<std::string>("/F1");
+// 	}else if(f1 == 2){
+// 		ptr = make_shared<std::string>("/F2");
+// 	}else if(f1 == 3){
+// 		ptr = make_shared<std::string>("/F3");
+// 	}
+
+// 	if(f2 == 1){
+// 		*ptr += "/F1";
+// 	}else if(f2 == 2){
+// 		*ptr += "/F2";
+// 	}else if(f2 == 3){
+// 		*ptr += "/F3";
+// 	}
+
+// 	if(f3 == 4){
+// 		*ptr += "/F4";
+// 	}else if(f3 == 5){
+// 		*ptr += "/F5";
+// 	}
+
+// 	return ptr;
+// }
 
 
 //defined by yamaguchi
@@ -4971,6 +4998,12 @@ Consumer::SendPacket()
 		Name headFuncName(headFunc);
 		shared_ptr<Name> headFuncNamePtr = make_shared<Name>(headFuncName);
 		interest->setFunctionFullName(*headFuncNamePtr);
+	}
+	if(getChoiceType() == 4){
+		// std::string FibCon = "";
+		// Name FibConName(FibCon);
+		// shared_ptr<Name> FibConNamePtr = make_shared<Name>(FibConName);
+		// interest->setFunctionFullName(*FibConNamePtr);
 	}
 
 	time::milliseconds interestLifeTime(m_interestLifeTime.GetMilliSeconds());

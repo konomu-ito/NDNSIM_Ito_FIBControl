@@ -238,27 +238,27 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 	//std::cout<<"Node "<<getNode()->GetId()<<std::endl;
 	//std::cout<<"NONCE: "<<interest.getNonce()<<std::endl;
 
-	Name functionName = interest.getFunction();
+	Name functionName1 = interest.getFunction();
 
-	auto string = functionName.toUri();
+	auto string1 = functionName1.toUri();
 	//std::cout << "Function Name:" << string << std::endl;
-	auto separator = std::string("/");
-	auto separator_length = separator.length();
+	auto separator1 = std::string("/");
+	auto separator1_length1 = separator1.length();
 
-	auto list = std::vector<std::string>();
+	auto list1 = std::vector<std::string>();
 
-	if (separator_length == 0) {
-		list.push_back(string);
+	if (separator1_length1 == 0) {
+		list1.push_back(string1);
 	} else {
-		auto offset = std::string::size_type(0);
+		auto offset1 = std::string::size_type(0);
 		while (1) {
-			auto pos = string.find(separator, offset);
-			if (pos == std::string::npos) {
-				list.push_back(string.substr(offset));
+			auto pos1 = string1.find(separator1, offset1);
+			if (pos1 == std::string::npos) {
+				list1.push_back(string1.substr(offset1));
 				break;
 			}
-			list.push_back(string.substr(offset, pos - offset));
-			offset = pos + separator_length;
+			list1.push_back(string1.substr(offset1, pos1 - offset1));
+			offset1 = pos1 + separator1_length1;
 		}
 	}
 
@@ -671,7 +671,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 	}
 	 */
 
-	if (list[1] == currentNodeName){
+	if (list1[1] == currentNodeName){
 		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
 
 		ns3::increaseTotalFcc(funcNum);
@@ -849,6 +849,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		case 4:
 		{
 			interest.removeHeadFunction(interest);
+			std::cout<<"AfterFunctionName"<<interest.getFunction()<<std::endl;
+			std::cout<<"flag"<<interest.getFunctionFlag()<<std::endl;
 			interest.setFunctionFlag(1);
 			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 			if((nowTime.count() - 50) > m_resetTime.count()){
@@ -875,7 +877,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 				 *
 				 * ex) table[1][1][0] means f1a count
 				 */
-				if(list[2].compare("F1")==0){
+				if(list1[2].compare("F1")==0){
 					if(table[0][1][0]+table[1][1][0]<=table[0][1][1]+table[1][1][1] && table[0][1][0]+table[1][1][0]<=table[0][1][2]+table[1][1][2]){
 						table[1][1][0] += ns3::getWeight();
 						funcStr = "/F1a";
@@ -886,7 +888,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 						table[1][1][2] += ns3::getWeight();
 						funcStr = "/F1c";
 					}
-				}else if(list[2].compare("F2")==0){
+				}else if(list1[2].compare("F2")==0){
 					if(table[0][2][0]+table[1][2][0]<=table[0][2][1]+table[1][2][1] && table[0][2][0]+table[1][2][0]<=table[0][2][2]+table[1][2][2]){
 						table[1][2][0] += ns3::getWeight();
 						funcStr = "/F2a";
@@ -897,7 +899,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 						table[1][2][2] += ns3::getWeight();
 						funcStr = "/F2c";
 					}
-				}else if(list[2].compare("F3")==0){
+				}else if(list1[2].compare("F3")==0){
 					if(table[0][3][0]+table[1][3][0]<=table[0][3][1]+table[1][3][1] && table[0][3][0]+table[1][3][0]<=table[0][3][2]+table[1][3][2]){
 						table[1][3][0] += ns3::getWeight();
 						funcStr = "/F3a";
@@ -908,7 +910,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 						table[1][3][2] += ns3::getWeight();
 						funcStr = "/F3c";
 					}
-				}else if(list[2].compare("F4")==0){
+				}else if(list1[2].compare("F4")==0){
 					if(table[0][4][0]+table[1][4][0]<=table[0][4][1]+table[1][4][1] && table[0][4][0]+table[1][4][0]<=table[0][4][2]+table[1][4][2]){
 						table[1][4][0] += ns3::getWeight();
 						funcStr = "/F4a";
@@ -919,7 +921,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 						table[1][4][2] += ns3::getWeight();
 						funcStr = "/F4c";
 					}
-				}else if(list[2].compare("F5")==0){
+				}else if(list1[2].compare("F5")==0){
 					if(table[0][5][0]+table[1][5][0]<=table[0][5][1]+table[1][5][1] && table[0][5][0]+table[1][5][0]<=table[0][5][2]+table[1][5][2]){
 						table[1][5][0] += ns3::getWeight();
 						funcStr = "/F5a";
@@ -936,26 +938,107 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 				interest.addFunctionFullName(Name(funcStr));
 				std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 			}
+				if(ns3::getChoiceType() == 4){//先頭ファンクションが削除されたため次のファンクションインスタンスを選択する
+				std::string funcStr;
+				if(list1[2].compare("F1")==0){
+					funcStr = "F1+";
+				}else if(list1[2].compare("F2")==0){
+					funcStr = "F2+";
+				}else if(list1[2].compare("F3")==0){
+					funcStr = "F3+";
+				}else if(list1[2].compare("F4")==0){
+					funcStr = "F4+";
+				}else if(list1[2].compare("F5")==0){
+					funcStr = "F5+";
+				}
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				std::cout<<"replaceFunction"<<interest.getFunction()<<std::endl;
+			}
+
 		}
 	}
 
-	functionName = interest.getFunction();
+	Name functionName2 = interest.getFunction();
+
+	auto string2 = functionName2.toUri();
+	//std::cout << "Function Name:" << string << std::endl;
+	auto separator2 = std::string("/");
+	auto separator2_length2 = separator2.length();
+
+	auto list2 = std::vector<std::string>();
+
+	if (separator2_length2 == 0) {
+		list2.push_back(string2);
+	} else {
+		auto offset2 = std::string::size_type(0);
+		while (1) {
+			auto pos2 = string2.find(separator2, offset2);
+			if (pos2 == std::string::npos) {
+				list2.push_back(string2.substr(offset2));
+				break;
+			}
+			list2.push_back(string2.substr(offset2, pos2 - offset2));
+			offset2 = pos2 + separator2_length2;
+		}
+	}
+
 	fib::Entry* fibEntry;
 	Face* nextHopFaceFunction;
-	if(functionName.toUri() != "/"){ //When Function Field is not Empty
+	if(functionName2.toUri() != "/"){ //When Function Field is not Empty
 		//std::cout << "function routing" << std::endl;
 		if(ns3::getChoiceType() == 4){
-			if(functionName.toUri().empty()){
-				fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
-			}// else if (list[1] == currentNodeName){}
-			else{
-				fibEntry = m_fib.selectFunction(functionName);
-				//if(interest.getName()== "/prefix3/%FE%00"){
+			std::string funcStr;
+			if(functionName2.toUri().empty()){
+				fibEntry = m_fib.findLongestPrefixMatchFunction(functionName2);
+			}else if (list2[1].compare("F1+")==0){
+				funcStr = "/F1";
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				functionName2 = interest.getFunction();
+				fibEntry = m_fib.selectFunction(functionName2);
 				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
+				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				
+			}else if (list2[1].compare("F2+")==0){
+				funcStr = "/F2";
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				functionName2 = interest.getFunction();
+				fibEntry = m_fib.selectFunction(functionName2);
+				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
+				pitEntry->setSelectedInstance(fibEntry);
+				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+
+			}else if (list2[1].compare("F3+")==0){
+				funcStr = "/F3";
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				functionName2 = interest.getFunction();
+				fibEntry = m_fib.selectFunction(functionName2);
+				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
+				pitEntry->setSelectedInstance(fibEntry);
+				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+
+			}else if (list2[1].compare("F4+")==0){
+				funcStr = "/F4";
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				functionName2 = interest.getFunction();
+				fibEntry = m_fib.selectFunction(functionName2);
+				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
+				pitEntry->setSelectedInstance(fibEntry);
+				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+
+			}else if (list2[1].compare("F5+")==0){
+				funcStr = "/F5";
+				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
+				functionName2 = interest.getFunction();
+				fibEntry = m_fib.selectFunction(functionName2);
+				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
+				pitEntry->setSelectedInstance(fibEntry);
+				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+			}else {
+				fibEntry = m_fib.findLongestPrefixMatchFunction(interest.getFunctionFullName()); 
 			}
 		}else{
-			fibEntry = m_fib.findLongestPrefixMatchFunction(functionName);
+			fibEntry = m_fib.findLongestPrefixMatchFunction(functionName2);
 		}
 
 		//std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
