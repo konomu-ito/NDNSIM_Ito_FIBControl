@@ -94,6 +94,7 @@ enum {
   FunctionFullName = 37,
   Hop = 38,
   Count = 39,
+  FunctionNextName = 40,
 
   AppPrivateBlock1 = 128,
   AppPrivateBlock2 = 32767

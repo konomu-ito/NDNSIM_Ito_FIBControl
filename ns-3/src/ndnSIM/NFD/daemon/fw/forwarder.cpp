@@ -652,12 +652,11 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		break;
 	}
 
-	//if(interest.getName()=="/prefix3/%FE%00"){
 		std::cout << "Interest Packet" << std::endl;
 		std::cout << "Node          : " << currentNodeName << std::endl;
 		std::cout << "Function Name : " << interest.getFunction() << std::endl;
 		std::cout << "Content  Name : " << interest.getName() << std::endl;
-//}
+
 	
 	/*
 	if (interest.getFunctionFlag() == 1){
@@ -849,8 +848,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		case 4:
 		{
 			interest.removeHeadFunction(interest);
-			std::cout<<"AfterFunctionName"<<interest.getFunction()<<std::endl;
-			std::cout<<"flag"<<interest.getFunctionFlag()<<std::endl;
+			//std::cout<<"AfterFunctionName"<<interest.getFunction()<<std::endl;
+			//std::cout<<"flag"<<interest.getFunctionFlag()<<std::endl;
 			interest.setFunctionFlag(1);
 			time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 			if((nowTime.count() - 50) > m_resetTime.count()){
@@ -938,7 +937,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 				interest.addFunctionFullName(Name(funcStr));
 				std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 			}
-				if(ns3::getChoiceType() == 4){//先頭ファンクションが削除されたため次のファンクションインスタンスを選択する
+				if(ns3::getChoiceType() == 4){//先頭ファンクションが削除されたため次のファンクションインスタンスを選択するために印をつける
 				std::string funcStr;
 				if(list1[2].compare("F1")==0){
 					funcStr = "F1+";
@@ -952,7 +951,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 					funcStr = "F5+";
 				}
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
-				std::cout<<"replaceFunction"<<interest.getFunction()<<std::endl;
+				//std::cout<<"replaceFunction"<<interest.getFunction()<<std::endl;
 			}
 
 		}
@@ -990,62 +989,77 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 			std::string funcStr;
 			if(functionName2.toUri().empty()){
 				fibEntry = m_fib.findLongestPrefixMatchFunction(functionName2);
+				pitEntry->setSelectedInstance(fibEntry);
 			}else if (list2[1].compare("F1+")==0){
 				funcStr = "/F1";
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				functionName2 = interest.getFunction();
 				fibEntry = m_fib.selectFunction(functionName2);
-				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
-				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				//std::cout<<"instanceSET1" << pitEntry->getSelectedInstance()<<std::endl;
+				interest.setFunctionNextName(Name(fibEntry->getPrefix().toUri()));
+				interest.addFunctionFullName(Name(fibEntry->getPrefix().toUri()));
 				
 			}else if (list2[1].compare("F2+")==0){
 				funcStr = "/F2";
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				functionName2 = interest.getFunction();
 				fibEntry = m_fib.selectFunction(functionName2);
-				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
-				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				//std::cout<<"instanceSET2" << pitEntry->getSelectedInstance()<<std::endl;
+				interest.setFunctionNextName(Name(fibEntry->getPrefix().toUri()));
+				interest.addFunctionFullName(Name(fibEntry->getPrefix().toUri()));
 
 			}else if (list2[1].compare("F3+")==0){
 				funcStr = "/F3";
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				functionName2 = interest.getFunction();
 				fibEntry = m_fib.selectFunction(functionName2);
-				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
-				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				//std::cout<<"instanceSET3" << pitEntry->getSelectedInstance()<<std::endl;
+				interest.setFunctionNextName(Name(fibEntry->getPrefix().toUri()));
+				interest.addFunctionFullName(Name(fibEntry->getPrefix().toUri()));
 
 			}else if (list2[1].compare("F4+")==0){
 				funcStr = "/F4";
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				functionName2 = interest.getFunction();
 				fibEntry = m_fib.selectFunction(functionName2);
-				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
-				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				interest.setFunctionNextName(Name(fibEntry->getPrefix().toUri()));
+				interest.addFunctionFullName(Name(fibEntry->getPrefix().toUri()));
 
 			}else if (list2[1].compare("F5+")==0){
 				funcStr = "/F5";
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				functionName2 = interest.getFunction();
 				fibEntry = m_fib.selectFunction(functionName2);
-				std::cout << "pit inserted : " << fibEntry->getPrefix().toUri() << std::endl;
 				pitEntry->setSelectedInstance(fibEntry);
-				interest.setFunctionFullName(Name(fibEntry->getPrefix().toUri()));
+				interest.setFunctionNextName(Name(fibEntry->getPrefix().toUri()));
+				interest.addFunctionFullName(Name(fibEntry->getPrefix().toUri()));
 			}else {
-				fibEntry = m_fib.findLongestPrefixMatchFunction(interest.getFunctionFullName()); 
+				fibEntry = m_fib.findLongestPrefixMatchFunction(interest.getFunctionNextName());
+				pitEntry->setSelectedInstance(fibEntry);
 			}
 		}else{
 			fibEntry = m_fib.findLongestPrefixMatchFunction(functionName2);
+			pitEntry->setSelectedInstance(fibEntry);
 		}
 
-		//std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
+		std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
+		std::cout << "getNext : " << interest.getFunctionNextName() << std::endl;
+		std::cout << "getFull : " << interest.getFunctionFullName() << std::endl;
+
+		//shared_ptr<Interest> interest = make_shared<Interest>(interest);
+		//std::cout << "Interest : " << *interest << std::endl;
+		
+
 		//std::cout << "Node: " << currentNode << std::endl;
 		/*
 		time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 		 */
+		std::cout << "instanceSET interest" << pitEntry->getSelectedInstance() << std::endl;
+		//std::cout << "pitentry" << pitEntry << std::endl;
 		/*
     // for us
     if(currentNode == 2 && fibEntry->getPrefix().toUri() == "/F1a"){
@@ -1150,7 +1164,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 	}
 
 	//std::cout << "default routing" << std::endl;
-	std::cout << "--------------------------------------------" << std::endl;
+	//std::cout << "--------------------------------------------" << std::endl;
+	
 	// dispatch to strategy: after incoming Interest
 	this->dispatchToStrategy(*pitEntry,
 			[&] (fw::Strategy& strategy) { strategy.afterReceiveInterest(inFace, interest, pitEntry); });
@@ -1562,18 +1577,18 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
   }
 	 */
 
-	// std::cout << "Data Packet" << std::endl;
-	// std::cout << "Node          : " << currentNodeName << std::endl;
-	// std::cout << "Content  Name : " << data.getName() << std::endl;
-	// if(data.getTag<lp::FunctionNameTag>() != nullptr){
-	// 	Name funcName = *(data.getTag<lp::FunctionNameTag>());
-	// 	std::string funcString = funcName.toUri();
-	// 	std::cout << "Function Name: " << funcString << std::endl;
-	// 	if(data.getTag<lp::PartialHopTag>() != nullptr){
-	// 		std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
-	// 		std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
-	// 	}
-	// }
+	std::cout << "Data Packet" << std::endl;
+	std::cout << "Node          : " << currentNodeName << std::endl;
+	std::cout << "Content  Name : " << data.getName() << std::endl;
+		if(data.getTag<lp::FunctionNameTag>() != nullptr){
+			Name funcName = *(data.getTag<lp::FunctionNameTag>());
+			std::string funcString = funcName.toUri();
+			std::cout << "Function Name: " << funcString << std::endl;
+		if(data.getTag<lp::PartialHopTag>() != nullptr){
+			std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+			std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+	 	}
+	 }
 	// std::cout << "Time          : " << time::toUnixTimestamp(time::system_clock::now()).count() << std::endl;
 	//std::string st = "test";
 	//Name name = Name(st);
@@ -1761,15 +1776,17 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 
 	// PIT match
 	pit::DataMatchResult pitMatches = m_pit.findAllDataMatches(data);
+
 	if (pitMatches.begin() == pitMatches.end()) {
 		// goto Data unsolicited pipeline
 		this->onDataUnsolicited(inFace, data);
 		return;
 	}
 
-	//std::cout << "PIT Matches: " << pitMatches.size() << std::endl;
+	std::cout << "PIT Matches: " << pitMatches.size() << std::endl;
 
 	shared_ptr<Data> dataCopyWithoutTag = make_shared<Data>(data);
+	std::cout << "data" << *dataCopyWithoutTag << std::endl;
 	dataCopyWithoutTag->removeTag<lp::HopCountTag>();
 
 	// CS insert
@@ -1785,8 +1802,11 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	auto now = time::steady_clock::now();
 	for (const shared_ptr<pit::Entry>& pitEntry : pitMatches) {
 		if(ns3::getChoiceType()==4 && updateControlFlag){
+			std::cout<<"instanceSETdata" << pitEntry->getSelectedInstance()<<std::endl;
+
 			//FIBをUPDATE
 			if(pitEntry->getSelectedInstance() != nullptr){
+				std::cout<<"Instance1"<<pitEntry->getSelectedInstance()<<std::endl;
 				if(data.getTag<lp::PartialHopTag>() != nullptr){
 				std::cout<<"update:"<< pitEntry->getSelectedInstance()->getPrefix().toUri() <<std::endl;
 				pitEntry->getSelectedInstance()->setFcc(*(data.getTag<lp::CountTag>()));
@@ -1796,8 +1816,9 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 			//Dataパケットに追加したフィールドの更新
 			if(26 <= currentNode && currentNode <= 40){
 				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
-				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(1));
+				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 			}else if(pitEntry->getSelectedInstance() != nullptr){
+				std::cout<<"Instance2"<<pitEntry->getSelectedInstance()<<std::endl;
 				if(data.getTag<lp::PartialHopTag>() != nullptr){
 				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(*(data.getTag<lp::PartialHopTag>()) + 1));
 				}
@@ -1805,7 +1826,9 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 			updateControlFlag = false;
 		}
 		NFD_LOG_DEBUG("onIncomingData matching=" << pitEntry->getName());
-		//std::cout << "Pit Entry: " << pitEntry->getName() << std::endl;
+		std::cout << "Pit Entry: " << pitEntry->getName() << std::endl;
+		std::cout << "Pit Interest: " << pitEntry->getInterest() << std::endl;
+        //std::cout << "Pit : " << pitEntry->getInRecords() << std::endl;
 
 		// cancel unsatisfy & straggler timer
 		this->cancelUnsatisfyAndStragglerTimer(*pitEntry);
@@ -1813,7 +1836,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		uint32_t max = 1;
 		Face* savedFace;
 		for(const pit::InRecord& inRecord : pitEntry->getInRecords()) {
-			std::cout << "sequence number: "<< inRecord.getSequenceNumber() << std::endl;
+			//std::cout << "sequence number: "<< inRecord.getSequenceNumber() << std::endl;
 			if(inRecord.getSequenceNumber() > max){
 				max = inRecord.getSequenceNumber();
 				savedFace = &inRecord.getFace();
@@ -1857,7 +1880,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	}
 
 	// foreach pending downstream
-	std::cout << "--------------------------------------------" << std::endl;
+	//std::cout << "--------------------------------------------" << std::endl;
 	for (Face* pendingDownstream : pendingDownstreams) {
 		/*
     if (pendingDownstream == &inFace) {

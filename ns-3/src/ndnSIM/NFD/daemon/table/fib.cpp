@@ -102,15 +102,15 @@ Fib::selectFunction(const Name& prefix) const
 
 	for(int i = 0; i < indicatorNum; i++){
 		Name exFunctionName = Name(headFunction + indicator);
-		std::cout << "Candidate:" << exFunctionName.toUri() << std::endl;
+		//std::cout << "Candidate:" << exFunctionName.toUri() << std::endl;
 		fib::Entry* entry = this->findLongestPrefixMatchFunction(exFunctionName);
-		std::cout<<"the cost is " << entry->getCost() << std::endl;
+		//std::cout<<"the cost is " << entry->getCost() << std::endl;
 		if(fibEntrY == nullptr){
 			fibEntrY = entry;
-			std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
+			//std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
 		}else if(entry->getCost() < fibEntrY->getCost()){
 			fibEntrY = entry;
-			std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
+			//std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
 		}
 		indicator++;
 	}

@@ -261,6 +261,26 @@ public: // Name and guiders
   }
 
   const Name&
+  getFunctionNextName() const
+  {
+	  return m_functionNextName;
+  }
+
+  void
+  setFunctionNextName(const Name& name)
+  {
+	  m_functionNextName = name;
+	  m_wire.reset();
+  }
+
+  void
+  setFunctionNextName(const Name& name) const
+    {
+  	  m_functionNextName = name;
+  	  m_wire.reset();
+    }
+
+  const Name&
   getFunction() const
   {
     return m_functionName;
@@ -528,6 +548,7 @@ public: // EqualityComparable concept
 
 private:
   Name m_name;
+  mutable Name m_functionNextName;
   mutable Name m_functionFullName;
   mutable Name m_functionName;
   Selectors m_selectors;

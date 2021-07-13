@@ -474,9 +474,12 @@ extractLpLocalFields(NetPkt& netPacket, const lp::Packet& lpPacket)
 	  netPacket.setTag(make_shared<lp::FunctionNameTag>(lpPacket.get<lp::FunctionNameTagField>()));
   }
 
-
   if(lpPacket.has<lp::PreviousFunctionTagField>()) {
 	  netPacket.setTag(make_shared<lp::PreviousFunctionTag>(lpPacket.get<lp::PreviousFunctionTagField>()));
+  }
+
+  if(lpPacket.has<lp::PitFunctionNameTagField>()) {
+	  netPacket.setTag(make_shared<lp::PitFunctionNameTag>(lpPacket.get<lp::PitFunctionNameTagField>()));
   }
 }
 

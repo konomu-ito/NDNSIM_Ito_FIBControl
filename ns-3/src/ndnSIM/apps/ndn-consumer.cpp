@@ -5000,6 +5000,12 @@ Consumer::SendPacket()
 		interest->setFunctionFullName(*headFuncNamePtr);
 	}
 	if(getChoiceType() == 4){
+		// std::string headFunc = functionName->toUri();
+		// int pos = headFunc.find("/",1);
+		// headFunc.erase(pos, headFunc.size()-1);
+		// Name headFuncName(headFunc);
+		// shared_ptr<Name> headFuncNamePtr = make_shared<Name>(headFuncName);
+		// interest->setFunctionFullName(*headFuncNamePtr);
 		// std::string FibCon = "";
 		// Name FibConName(FibCon);
 		// shared_ptr<Name> FibConNamePtr = make_shared<Name>(FibConName);

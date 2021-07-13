@@ -40,6 +40,7 @@ enum {
   CountTag = 86,//added 2019/10/26
   FunctionNameTag = 87,//added 2019/11/07
   PreviousFunctionTag = 88, //added 2019/11/07
+  PitFunctionNameTag = 89,//added 2021/06/25
   Nack = 800,
   NackReason = 801,
   NextHopFaceId = 816,

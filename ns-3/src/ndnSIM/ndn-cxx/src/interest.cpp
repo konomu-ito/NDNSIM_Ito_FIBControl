@@ -266,6 +266,8 @@ Interest::wireEncode(EncodingImpl<TAG>& encoder) const
 	//FunctionName
 	totalLength += getFunction().wireEncodeFunc(encoder);
 
+	totalLength += getFunctionNextName().wireEncodeFuncNextName(encoder);
+
 	totalLength += getFunctionFullName().wireEncodeFuncFullName(encoder);
 
 	if (hasLink()) {
@@ -401,6 +403,8 @@ Interest::wireDecode(const Block& wire)
 
 	//FunctionName
 	m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
+
+	m_functionNextName.wireDecodeFuncNextName(m_wire.get(tlv::FunctionNextName));
 
 	m_functionFullName.wireDecodeFuncFullName(m_wire.get(tlv::FunctionFullName));
 

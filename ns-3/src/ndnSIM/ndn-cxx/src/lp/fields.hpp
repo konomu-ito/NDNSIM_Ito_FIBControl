@@ -102,6 +102,11 @@ typedef detail::FieldDecl<field_location_tags::Header,
                           Name,
                           tlv::PreviousFunctionTag, isTag> PreviousFunctionTagField;
 BOOST_CONCEPT_ASSERT((Field<PreviousFunctionTagField>));
+
+typedef detail::FieldDecl<field_location_tags::Header,
+                          Name,
+                          tlv::PitFunctionNameTag, isTag> PitFunctionNameTagField;
+BOOST_CONCEPT_ASSERT((Field<PitFunctionNameTagField>));
 //
 
 
@@ -131,7 +136,8 @@ typedef boost::mpl::set<
   PartialHopTagField,
   CountTagField,
   FunctionNameTagField,
-  PreviousFunctionTagField
+  PreviousFunctionTagField,
+  PitFunctionNameTagField
   > FieldSet;
 
 } // namespace lp
