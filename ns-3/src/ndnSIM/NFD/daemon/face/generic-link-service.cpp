@@ -133,6 +133,11 @@ GenericLinkService::encodeLpFields(const ndn::TagHost& netPkt, lp::Packet& lpPac
   if (previousFunctionTag != nullptr) {
 	  lpPacket.add<lp::PreviousFunctionTagField>(*previousFunctionTag);
   }
+
+  shared_ptr<lp::PitFunctionNameTag> pitfunctionNameTag = netPkt.getTag<lp::PitFunctionNameTag>();
+  if (pitfunctionNameTag != nullptr) {
+	  lpPacket.add<lp::PitFunctionNameTagField>(*pitfunctionNameTag);
+  }
 }
 
 void
@@ -296,6 +301,10 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
 
   // forwarding expects Data to be created with make_shared
   auto data = make_shared<Data>(netPkt);
+
+  if (firstPkt.has<lp::PitFunctionNameTagField>()) {
+  	  data->setTag(make_shared<lp::PitFunctionNameTag>(firstPkt.get<lp::PitFunctionNameTagField>()));
+    }
 
   if (firstPkt.has<lp::PreviousFunctionTagField>()) {
 	  data->setTag(make_shared<lp::PreviousFunctionTag>(firstPkt.get<lp::PreviousFunctionTagField>()));
