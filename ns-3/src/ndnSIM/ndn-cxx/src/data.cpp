@@ -81,11 +81,13 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool unsignedPortion/* = false*/) c
   // MetaInfo
   totalLength += getMetaInfo().wireEncode(encoder);
 
+  // Function Name by konomu
+  //totalLength += getFunction().wireEncodeFunc(encoder);
+
   // Name
   totalLength += getName().wireEncode(encoder);
 
-  // Function Name
-  //totalLength += getFunction().wireEncodeFunc(encoder);
+  
 
   // Hop
 /*
@@ -155,6 +157,7 @@ Data::wireDecode(const Block& wire)
 
   // Data ::= DATA-TLV TLV-LENGTH
   //            Name
+  // add        FunctionName
   //            MetaInfo
   //            Content
   //            Signature
@@ -162,8 +165,8 @@ Data::wireDecode(const Block& wire)
   // Name
   m_name.wireDecode(m_wire.get(tlv::Name));
 
-  // Function Name
-  //m_functionName.wireDecode(m_wire.get(tlv::FunctionName));
+  // Function Name by konomu
+  //m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
 
   // MetaInfo
   m_metaInfo.wireDecode(m_wire.get(tlv::MetaInfo));
@@ -213,27 +216,31 @@ Data::setName(const Name& name)
   return *this;
 }
 
+//by konomu
 /*
 void
-Data::setFunction(const Name& functionName)
+Data::setFunction(const Name& name)
 {
-	m_functionName = functionName;
-}
-
-Name
-Data::removeHeadFunction(std::string& funcStr)
-{
-	int pos = funcStr.find("/", 1);
-	if(pos == -1 && funcStr.size() > 1){
-		funcStr.erase(1, funcStr.size()-1);
-		return Name(funcStr);
-	}
-	else if(pos != -1){
-		funcStr.erase(1, pos);
-		return Name(funcStr);
-	}
+  onChanged();
+	m_functionName = name;
 }
 */
+
+
+// Name
+// Data::removeHeadFunction(std::string& funcStr)
+// {
+// 	int pos = funcStr.find("/", 1);
+// 	if(pos == -1 && funcStr.size() > 1){
+// 		funcStr.erase(1, funcStr.size()-1);
+// 		return Name(funcStr);
+// 	}
+// 	else if(pos != -1){
+// 		funcStr.erase(1, pos);
+// 		return Name(funcStr);
+// 	}
+// }
+
 const Name&
 Data::getFullName() const
 {
@@ -411,6 +418,7 @@ bool
 Data::operator==(const Data& other) const
 {
   return getName() == other.getName() &&
+    //getFunction() == other.getFunction() && //by konomu
     getMetaInfo() == other.getMetaInfo() &&
     getContent() == other.getContent() &&
     getSignature() == other.getSignature();
@@ -426,6 +434,7 @@ std::ostream&
 operator<<(std::ostream& os, const Data& data)
 { 
   os << "Name: " << data.getName() << "\n";
+  //os << "getFunctionName: " << data.getFunction() << "\n";//by konomu
   os << "MetaInfo: " << data.getMetaInfo() << "\n";
   os << "Content: (size: " << data.getContent().value_size() << ")\n";
   os << "Signature: (type: " << data.getSignature().getType() <<

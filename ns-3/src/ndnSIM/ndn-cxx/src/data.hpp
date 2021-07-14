@@ -163,17 +163,16 @@ public:
    * @throws Error if Data packet doesn't have a full name yet (wire encoding has not been
    *         yet created)
    */
-  //defined by naoki
-  /*
+  //defined by konomu
+  // 追加するとPublicKeyでセグフォ発生
+/*
   const Name&
   getFunction() const;
 
   void
-  setFunction(const Name& functionName);
-
-  Name
-  removeHeadFunction(std::string& funcStr);
+  setFunction(const Name& name);
 */
+
 
   const Name&
   getFullName() const;
@@ -332,7 +331,7 @@ protected:
 
 private:
   Name m_name;
-  Name m_functionName;
+  //mutable Name m_functionName; by konomu
   MetaInfo m_metaInfo;
   mutable Block m_content;
   Signature m_signature;
@@ -355,7 +354,7 @@ Data::getName() const
 {
   return m_name;
 }
-
+//by konomu
 /*
 inline const Name&
 Data::getFunction() const

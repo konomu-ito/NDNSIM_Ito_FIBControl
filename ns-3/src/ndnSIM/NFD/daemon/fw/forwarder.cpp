@@ -1580,6 +1580,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	std::cout << "Data Packet" << std::endl;
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
+	//std::cout << "Function Name : " << data.getFunctionName() << std::endl;
 		if(data.getTag<lp::FunctionNameTag>() != nullptr){
 			Name funcName = *(data.getTag<lp::FunctionNameTag>());
 			std::string funcString = funcName.toUri();

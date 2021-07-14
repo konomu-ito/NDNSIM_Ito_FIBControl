@@ -128,6 +128,8 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 	  auto string = funcName.toUri();
 	  std::cout << "string:" << string << std::endl;
 
+    //data->setFunctionName(funcName);
+
 	  data->setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(funcName));
 	  data->setTag<lp::PartialHopTag>(nullptr);
 	  data->setTag<lp::CountTag>(nullptr);
