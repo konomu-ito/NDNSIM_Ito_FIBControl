@@ -82,7 +82,10 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool unsignedPortion/* = false*/) c
   totalLength += getMetaInfo().wireEncode(encoder);
 
   // Function Name by konomu
-  //totalLength += getFunction().wireEncodeFunc(encoder);
+  // if(!getFunction().empty()){
+  //   totalLength += getFunction().wireEncodeFunc(encoder);
+  // }
+  
 
   // Name
   totalLength += getName().wireEncode(encoder);
@@ -166,6 +169,12 @@ Data::wireDecode(const Block& wire)
   m_name.wireDecode(m_wire.get(tlv::Name));
 
   // Function Name by konomu
+//   Block::element_const_iterator val = m_wire.find(tlv::FunctionName);
+//   if (val != m_wire.elements_end()){
+//     m_functionName.wireDecodeFunc(*val);
+// }
+
+
   //m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
 
   // MetaInfo
@@ -217,14 +226,14 @@ Data::setName(const Name& name)
 }
 
 //by konomu
-/*
-void
-Data::setFunction(const Name& name)
-{
-  onChanged();
-	m_functionName = name;
-}
-*/
+
+// void
+// Data::setFunction(const Name& name)
+// {
+//   onChanged();
+// 	m_functionName = name;
+// }
+
 
 
 // Name

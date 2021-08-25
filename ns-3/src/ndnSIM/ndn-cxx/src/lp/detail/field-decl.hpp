@@ -65,6 +65,7 @@ struct DecodeHelper<TlvType, std::pair<Buffer::const_iterator, Buffer::const_ite
 	{
 		if (wire.value_size() == 0) {
 			BOOST_THROW_EXCEPTION(ndn::tlv::Error(to_string(wire.type()) + " must not be empty"));
+			//std::cout << "BOOST " << std::endl;
 		}
 
 		return std::make_pair(wire.value_begin(), wire.value_end());
