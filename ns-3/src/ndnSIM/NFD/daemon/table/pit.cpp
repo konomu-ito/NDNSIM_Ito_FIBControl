@@ -69,7 +69,8 @@ Pit::findOrInsert(const Interest& interest, bool allowInsert)
 				[&interest, nteNameLen] (const shared_ptr<Entry>& entry) {
 			// initial part of name is guaranteed to be equal by NameTree
 			// check implicit digest (or its absence) only
-			return entry->canMatchFunction(interest, nteNameLen);
+			//return entry->canMatchFunction(interest, nteNameLen);
+			return entry->canMatch(interest, nteNameLen);
 		});
 
 		if (it != pitEntries.end()) {
@@ -112,7 +113,6 @@ Pit::findAllDataMatches(const Data& data) const
 				matches.emplace_back(pitEntry);
 		}
 	}
-
 	return matches;
 }
 
