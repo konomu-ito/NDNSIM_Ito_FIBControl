@@ -668,7 +668,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		interest.setServiceTime(serviceTime);
 		std::cout << "ServiceTime: " << interest.getServiceTime().count() << std::endl;
 	}
-	 */
+	*/
+	 
 
 	if (list1[1] == currentNodeName){
 		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
@@ -1050,6 +1051,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		//  std::cout << "FIBAd : " << fibEntry << std::endl;
 		//  std::cout << "getNext : " << interest.getFunctionNextName() << std::endl;
 		  std::cout << "getFull : " << interest.getFunctionFullName() << std::endl;
+		  //std::cout << "CacheMissServiceTime : " << interest.getServiceTime().count() << std::endl;
 
 		//shared_ptr<Interest> interest = make_shared<Interest>(interest);
 		//std::cout << "Interest : " << *interest << std::endl;
@@ -1177,6 +1179,14 @@ Forwarder::onContentStoreHit(const Face& inFace, const shared_ptr<pit::Entry>& p
 		const Interest& interest, const Data& data)
 {
 	NFD_LOG_DEBUG("onContentStoreHit interest=" << interest.getName());
+	//std::cout << "aaaaaaaaaaaaaaaaaHITaaaaaaaaaaaaaaaaaaaaaaa" << std::endl;
+	// std::cout << "CachHitInterest =" << interest.getName() << std::endl;
+	// std::cout << "CachHitServiceTime =" << interest.getServiceTime() << std::endl;
+	data.setServiceTime(interest.getServiceTime());
+	data.setTag<lp::FunctionNameTag>(nullptr);
+	data.setTag<lp::PartialHopTag>(nullptr);
+	data.setTag<lp::CountTag>(nullptr);
+	
 
 	beforeSatisfyInterest(*pitEntry, *m_csFace, data);
 	this->dispatchToStrategy(*pitEntry,
@@ -1581,6 +1591,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	std::cout << "Data Packet" << std::endl;
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
+
+	if(26 <= currentNode && currentNode <= 40){
+		data.setServiceTime(data.getServiceTime() + time::milliseconds(40));
+	}
 
 
 	//std::cout << "Function Name : " << data.getFunction() << std::endl;
