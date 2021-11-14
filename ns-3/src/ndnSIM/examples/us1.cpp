@@ -57,7 +57,7 @@ main(int argc, char* argv[])
 	CommandLine cmd;
 	cmd.Parse(argc, argv);
 	//choose one {siraiwaNDN, roundRobin, duration, randChoice, fibControl}
-	const char* type = "fibControl";
+	const char* type = "siraiwaNDN";
 	setChoiceType(type);
 	ns3::setWeight(1);
 	AnnotatedTopologyReader topologyReader("", 25);
@@ -65,9 +65,67 @@ main(int argc, char* argv[])
 	topologyReader.Read();
 
 	// Install NDN stack on all nodes
+
+	//No Cache
 	ndn::StackHelper ndnHelper;
 	ndnHelper.SetOldContentStore("ns3::ndn::cs::Nocache");
 	ndnHelper.InstallAll();
+
+	//On Cache by konomu
+	// ndn::StackHelper ndnHelper1;
+	// ndnHelper1.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize",
+	// 							"100"); // default ContentStore parameters
+	// ndnHelper1.Install(Names::Find<Node>("Node1"));
+	// ndnHelper1.Install(Names::Find<Node>("Node2"));
+	// ndnHelper1.Install(Names::Find<Node>("Node3"));
+	// ndnHelper1.Install(Names::Find<Node>("Node4"));
+	// ndnHelper1.Install(Names::Find<Node>("Node5"));
+	// ndnHelper1.Install(Names::Find<Node>("Node6"));
+	// ndnHelper1.Install(Names::Find<Node>("Node7"));
+	// ndnHelper1.Install(Names::Find<Node>("Node8"));
+	// ndnHelper1.Install(Names::Find<Node>("Node9"));
+	// ndnHelper1.Install(Names::Find<Node>("Node10"));
+	// ndnHelper1.Install(Names::Find<Node>("Node11"));
+	// ndnHelper1.Install(Names::Find<Node>("Node12"));
+	// ndnHelper1.Install(Names::Find<Node>("Node13"));
+	// ndnHelper1.Install(Names::Find<Node>("Node14"));
+	// ndnHelper1.Install(Names::Find<Node>("Node15"));
+	// ndnHelper1.Install(Names::Find<Node>("Node16"));
+	// ndnHelper1.Install(Names::Find<Node>("Node17"));
+	// ndnHelper1.Install(Names::Find<Node>("Node18"));
+	// ndnHelper1.Install(Names::Find<Node>("Node19"));
+	// ndnHelper1.Install(Names::Find<Node>("Node20"));
+	// ndnHelper1.Install(Names::Find<Node>("Node21"));
+	// ndnHelper1.Install(Names::Find<Node>("Node22"));
+	// ndnHelper1.Install(Names::Find<Node>("Node23"));
+	// ndnHelper1.Install(Names::Find<Node>("Node24"));
+	
+
+	// ndn::StackHelper ndnHelper2;
+	// ndnHelper2.SetOldContentStore("ns3::ndn::cs::Nocache"); 
+	// ndnHelper2.Install(Names::Find<Node>("Consumer1"));
+	// ndnHelper2.Install(Names::Find<Node>("Producer1"));
+	// ndnHelper2.Install(Names::Find<Node>("F1a"));
+	// ndnHelper2.Install(Names::Find<Node>("F1b"));
+	// ndnHelper2.Install(Names::Find<Node>("F1c"));
+	// ndnHelper2.Install(Names::Find<Node>("F2a"));
+	// ndnHelper2.Install(Names::Find<Node>("F2b"));
+	// ndnHelper2.Install(Names::Find<Node>("F2c"));
+	// ndnHelper2.Install(Names::Find<Node>("F3a"));
+	// ndnHelper2.Install(Names::Find<Node>("F3b"));
+	// ndnHelper2.Install(Names::Find<Node>("F3c"));
+	// ndnHelper2.Install(Names::Find<Node>("F4a"));
+	// ndnHelper2.Install(Names::Find<Node>("F4b"));
+	// ndnHelper2.Install(Names::Find<Node>("F4c"));
+	// ndnHelper2.Install(Names::Find<Node>("F5a"));
+	// ndnHelper2.Install(Names::Find<Node>("F5b"));
+	// ndnHelper2.Install(Names::Find<Node>("F5c"));
+	// ndnHelper2.Install(Names::Find<Node>("Consumer2"));
+	// ndnHelper2.Install(Names::Find<Node>("Consumer3"));
+	// ndnHelper2.Install(Names::Find<Node>("Consumer4"));
+	// ndnHelper2.Install(Names::Find<Node>("Producer2"));
+	// ndnHelper2.Install(Names::Find<Node>("Producer3"));
+	// ndnHelper2.Install(Names::Find<Node>("Producer4"));
 
 	// Set BestRoute strategy
 	ndn::StrategyChoiceHelper::InstallAll("/prefix1", "/localhost/nfd/strategy/best-route/%FD%01");
@@ -847,32 +905,38 @@ main(int argc, char* argv[])
   }
 */
 	//コンシューマーのリクエスト周期
-	string freq = "10";
+	string freq = "30";
 	//30くらい
-	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+	//ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerZipfMandelbrot");
 	consumerHelper.SetPrefix(prefix3);
 	consumerHelper.SetAttribute("Frequency", StringValue(freq));
+	consumerHelper.SetAttribute("NumberOfContents", StringValue("30"));
 	ApplicationContainer app1 = consumerHelper.Install(consumer1);
 	app1.Start(Seconds(0));
 	//app1.Stop(Seconds(1.0));
 
 	consumerHelper.SetPrefix(prefix4);
 	consumerHelper.SetAttribute("Frequency", StringValue(freq));
+	consumerHelper.SetAttribute("NumberOfContents", StringValue("30"));
 	ApplicationContainer app2 = consumerHelper.Install(consumer2);
 	app2.Start(Seconds(0.02));
 	//app2.Stop(Seconds(1.0));
 
 	consumerHelper.SetPrefix(prefix1);
 	consumerHelper.SetAttribute("Frequency", StringValue(freq));
+	consumerHelper.SetAttribute("NumberOfContents", StringValue("30"));
 	ApplicationContainer app3 = consumerHelper.Install(consumer3);
 	app3.Start(Seconds(0.03));
 	//app3.Stop(Seconds(1.0));
 
 	consumerHelper.SetPrefix(prefix2);
 	consumerHelper.SetAttribute("Frequency", StringValue(freq));
+	consumerHelper.SetAttribute("NumberOfContents", StringValue("30"));
 	ApplicationContainer app4 = consumerHelper.Install(consumer4);
 	app4.Start(Seconds(0.04));
 	//app4.Stop(Seconds(1.0));
+	
 
 	ndn::AppHelper producerHelper("ns3::ndn::Producer");
 	producerHelper.SetPrefix(prefix1);
@@ -901,6 +965,8 @@ main(int argc, char* argv[])
 	ndn::GlobalRoutingHelper::CalculateRoutes();
 
 	Simulator::Stop(Seconds(200.0));
+
+	//ndn::CsTracer::InstallAll("CStrace_fibControl_" + freq + ".txt", Seconds(1));
 
 	Simulator::Run();
 	std::string filename;

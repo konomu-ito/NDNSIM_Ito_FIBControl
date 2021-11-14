@@ -85,6 +85,15 @@ Data::wireEncode(EncodingImpl<TAG>& encoder, bool unsignedPortion/* = false*/) c
   // if(!getFunction().empty()){
   //   totalLength += getFunction().wireEncodeFunc(encoder);
   // }
+
+  //ServiceTime
+	if (getServiceTime() >= time::milliseconds::zero() &&
+			getServiceTime() != time::milliseconds(0))
+	{
+		totalLength += prependNonNegativeIntegerBlock(encoder,
+				tlv::ServiceTime,
+				getServiceTime().count());
+	}
   
 
   // Name
@@ -174,6 +183,15 @@ Data::wireDecode(const Block& wire)
 //     m_functionName.wireDecodeFunc(*val);
 // }
 
+//ServiceTime
+	Block::element_const_iterator val = m_wire.find(tlv::ServiceTime);
+	if (val != m_wire.elements_end()) {
+		m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
+	}
+	else {
+		m_serviceTime = time::milliseconds(0);
+	}
+
 
   //m_functionName.wireDecodeFunc(m_wire.get(tlv::FunctionName));
 
@@ -183,7 +201,7 @@ Data::wireDecode(const Block& wire)
   // Content
   m_content = m_wire.get(tlv::Content);
 
-  Block::element_const_iterator val = m_wire.find(tlv::Hop);
+  val = m_wire.find(tlv::Hop);
 
   //hop
 /*
@@ -293,14 +311,15 @@ Data::setFreshnessPeriod(const time::milliseconds& freshnessPeriod)
 }
 
 //ServiceTime
-Data&
-Data::setServiceTime(const time::milliseconds& serviceTime)
-{
-  onChanged();
-  m_metaInfo.setServiceTime(serviceTime);
+// Data&
+// Data::setServiceTime(const time::milliseconds& serviceTime)
+// {
+//   onChanged();
+//   m_metaInfo.setServiceTime(serviceTime);
 
-  return *this;
-}
+//   return *this;
+// }
+
 
 Data&
 Data::setFinalBlockId(const name::Component& finalBlockId)

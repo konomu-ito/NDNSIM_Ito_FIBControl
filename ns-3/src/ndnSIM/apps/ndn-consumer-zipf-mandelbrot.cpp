@@ -125,6 +125,8 @@ ConsumerZipfMandelbrot::GetS() const
 void
 ConsumerZipfMandelbrot::SendPacket()
 {
+
+  if(ns3::getTotalSend() > 299) return;  //by konomu
   if (!m_active)
     return;
 
@@ -169,10 +171,50 @@ ConsumerZipfMandelbrot::SendPacket()
   shared_ptr<Name> nameWithSequence = make_shared<Name>(m_interestName);
   nameWithSequence->appendSequenceNumber(seq);
   //
+  // bykonomu ここから
+  ns3::increaseTotalSend();
+	//
+
+	//choose Function Type from 1 to 6
+	uint32_t functionType = ::ndn::random::generateWord32() % 12 + 1;
+
+	int currentNode = ns3::Simulator::GetContext();
+	//std::cout << "Consumer Node: " <<  currentNode << std::endl;
+	//std::cout << "function type:"  <<  functionType << std::endl;
+
+	//dijkstra
+	int sRoute[N];
+	//need to change
+	double weight = ns3::getWeight();
+	shared_ptr<Name> functionName = sourceRouting(functionType, currentNode, sRoute, weight);
+
+  ns3::increaseInterestNum();
+
+  //ここまで追加
 
   shared_ptr<Interest> interest = make_shared<Interest>();
   interest->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
   interest->setName(*nameWithSequence);
+
+  //ここから
+  interest->setFunction(*functionName);
+	if(getChoiceType() == 2){
+		std::string headFunc = functionName->toUri();
+		int pos = headFunc.find("/",1);
+		headFunc.erase(pos, headFunc.size()-1);
+		Name headFuncName(headFunc);
+		shared_ptr<Name> headFuncNamePtr = make_shared<Name>(headFuncName);
+		interest->setFunctionFullName(*headFuncNamePtr);
+	}
+
+  time::milliseconds interestLifeTime(m_interestLifeTime.GetMilliSeconds());
+	//time::milliseconds interestLifeTime(1000);
+	//interest->setInterestLifetime(interestLifeTime);
+	time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
+	interest->setServiceTime(nowTime);
+	interest->setFunctionFlag(0);
+
+  //ここまで
 
   // NS_LOG_INFO ("Requesting Interest: \n" << *interest);
   NS_LOG_INFO("> Interest for " << seq << ", Total: " << m_seq << ", face: " << m_face->getId());

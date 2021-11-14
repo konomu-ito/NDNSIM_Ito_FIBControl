@@ -143,6 +143,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   data->setFreshnessPeriod(::ndn::time::milliseconds(m_freshness.GetMilliSeconds()));
   //std::cout << "Interest servicetime: " << interest->getServiceTime().count() << std::endl;
   data->setServiceTime(interest->getServiceTime());
+   //std::cout << "Producer servicetime: " << data->getServiceTime().count() << std::endl;
 
   data->setContent(make_shared< ::ndn::Buffer>(m_virtualPayloadSize));
 

@@ -5095,7 +5095,7 @@ Consumer::OnData(shared_ptr<const Data> data)
 
 	time::milliseconds nowTime = time::toUnixTimestamp(time::system_clock::now());
 	//int serviceTime = nowTime.count() - data->getServiceTime().count() - 180;
-	int serviceTime = nowTime.count() - data->getServiceTime().count() + 120;
+	int serviceTime = nowTime.count() - data->getServiceTime().count();
 	increaseTotalServiceTime(serviceTime);
 	double averageServiceTime = double(getTotalServiceTime()) / double(ns3::getServiceNum());
 	ns3::setAverageServiceTime(averageServiceTime);

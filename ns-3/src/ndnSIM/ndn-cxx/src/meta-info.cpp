@@ -35,7 +35,7 @@ static_assert(std::is_base_of<tlv::Error, MetaInfo::Error>::value,
 MetaInfo::MetaInfo()
   : m_type(tlv::ContentType_Blob)
   , m_freshnessPeriod(-1)
-  , m_serviceTime(-1)
+  //, m_serviceTime(-1)
 {
 }
 
@@ -61,13 +61,13 @@ MetaInfo::setFreshnessPeriod(const time::milliseconds& freshnessPeriod)
 }
 
 //ServiceTime
-MetaInfo&
-MetaInfo::setServiceTime(const time::milliseconds& serviceTime)
-{
-  m_wire.reset();
-  m_serviceTime = serviceTime;
-  return *this;
-}
+// MetaInfo&
+// MetaInfo::setServiceTime(const time::milliseconds& serviceTime)
+// {
+//   m_wire.reset();
+//   m_serviceTime = serviceTime;
+//   return *this;
+// }
 
 MetaInfo&
 MetaInfo::setFinalBlockId(const name::Component& finalBlockId)
@@ -159,11 +159,11 @@ MetaInfo::wireEncode(EncodingImpl<TAG>& encoder) const
     }
 
   // ServiceTime
-  if (m_serviceTime >= time::milliseconds::zero())
-    {
-      totalLength += prependNonNegativeIntegerBlock(encoder, tlv::ServiceTime,
-                                                    m_serviceTime.count());
-    }
+  // if (m_serviceTime >= time::milliseconds::zero())
+  //   {
+  //     totalLength += prependNonNegativeIntegerBlock(encoder, tlv::ServiceTime,
+  //                                                   m_serviceTime.count());
+  //   }
 
   // FreshnessPeriod
   if (m_freshnessPeriod >= time::milliseconds::zero())
@@ -239,13 +239,13 @@ MetaInfo::wireDecode(const Block& wire)
   }
 
   // ServiceTime
-  if (val != m_wire.elements_end() && val->type() == tlv::ServiceTime) {
-    m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
-    ++val;
-  }
-  else {
-    m_serviceTime = time::milliseconds::min();
-  }
+  // if (val != m_wire.elements_end() && val->type() == tlv::ServiceTime) {
+  //   m_serviceTime = time::milliseconds(readNonNegativeInteger(*val));
+  //   ++val;
+  // }
+  // else {
+  //   m_serviceTime = time::milliseconds::min();
+  // }
 
   // FinalBlockId
   if (val != m_wire.elements_end() && val->type() == tlv::FinalBlockId) {
@@ -279,9 +279,9 @@ operator<<(std::ostream& os, const MetaInfo& info)
   }
 
   // ServiceTime
-  if (info.getServiceTime() >= time::milliseconds::zero()) {
-    os << ", ServiceTime: " << info.getServiceTime();
-  }
+  // if (info.getServiceTime() >= time::milliseconds::zero()) {
+  //   os << ", ServiceTime: " << info.getServiceTime();
+  // }
 
   // FinalBlockId
   if (!info.getFinalBlockId().empty()) {

@@ -34,6 +34,7 @@ namespace ndn {
 
 /** @brief represents a Data packet
  */
+
 class Data : public TagHost, public enable_shared_from_this<Data>
 {
 public:
@@ -213,12 +214,12 @@ public:
   Data&
   setFreshnessPeriod(const time::milliseconds& freshnessPeriod);
 
-  //ServiceTime
-  const time::milliseconds&
-  getServiceTime() const;
+  //ServiceTime //ori
+  // const time::milliseconds&
+  // getServiceTime() const;
 
-  Data&
-  setServiceTime(const time::milliseconds& serviceTime);
+  // Data&
+  // setServiceTime(const time::milliseconds& serviceTime);
 
   //
 
@@ -227,6 +228,21 @@ public:
 
   Data&
   setFinalBlockId(const name::Component& finalBlockId);
+
+  
+  const time::milliseconds&
+  getServiceTime() const
+  {
+    return m_serviceTime;
+  }
+
+  void
+  setServiceTime(const time::milliseconds& serviceTime) const
+  {
+    m_serviceTime = serviceTime;
+    m_wire.reset();
+    //return *this;
+  }
 /*
   int
   getHop() const;
@@ -332,7 +348,8 @@ protected:
 private:
   Name m_name;
   //mutable Name m_functionName; //by konomu
-  MetaInfo m_metaInfo;
+  mutable time::milliseconds m_serviceTime;
+  mutable MetaInfo m_metaInfo;
   mutable Block m_content;
   Signature m_signature;
 
@@ -382,11 +399,11 @@ Data::getFreshnessPeriod() const
 }
 
 //ServiceTime
-inline const time::milliseconds&
-Data::getServiceTime() const
-{
-  return m_metaInfo.getServiceTime();
-}
+// inline const time::milliseconds&
+// Data::getServiceTime() const
+// {
+//   return m_metaInfo.getServiceTime();
+// }
 
 inline const name::Component&
 Data::getFinalBlockId() const
