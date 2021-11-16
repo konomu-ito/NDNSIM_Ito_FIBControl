@@ -57,7 +57,7 @@ main(int argc, char* argv[])
 	CommandLine cmd;
 	cmd.Parse(argc, argv);
 	//choose one {siraiwaNDN, roundRobin, duration, randChoice, fibControl}
-	const char* type = "siraiwaNDN";
+	const char* type = "duration";
 	setChoiceType(type);
 	ns3::setWeight(1);
 	AnnotatedTopologyReader topologyReader("", 25);
@@ -972,19 +972,19 @@ main(int argc, char* argv[])
 	std::string filename;
 	switch(getChoiceType()){
 	case 0:
-		filename = freq + "siraiwaFcc.txt";
+		filename = freq + "siraiwaFccCache.txt";
 		break;
 	case 1:
-		filename = freq + "roundRobinFcc.txt";
+		filename = freq + "roundRobinFccCache.txt";
 		break;
 	case 2:
 		filename = freq + "durationFcc.txt";
 		break;
 	case 3:
-		filename = "randChoice.txt";
+		filename = freq + "randChoiceCache.txt";
 		break;
 	case 4:
-		filename = freq + "fibControl.txt";
+		filename = freq + "fibControlCache.txt";
 		break;
 	}
 	std::ofstream writing_file;

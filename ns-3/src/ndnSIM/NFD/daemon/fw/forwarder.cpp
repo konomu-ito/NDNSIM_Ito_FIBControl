@@ -670,10 +670,8 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 	}
 	*/
 	 
-
 	if (list1[1] == currentNodeName){
 		//std::cout << "removed,Function Name : " << interest.getFunction() << std::endl;
-
 		ns3::increaseTotalFcc(funcNum);
 		switch(ns3::getChoiceType()){
 		case 0:
@@ -683,6 +681,10 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 			if(ns3::getAllFcc() == 30){
 				ns3::resetFcc();
 			}
+			break;
+		case 1:
+			interest.removeHeadFunction(interest);
+			interest.setFunctionFlag(1);
 			break;
 		case 2:
 		{
@@ -846,6 +848,10 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 			}
 			break;
 		}
+		case 3:
+			interest.removeHeadFunction(interest);
+			interest.setFunctionFlag(1);
+			break;
 		case 4:
 		{
 			interest.removeHeadFunction(interest);
@@ -957,7 +963,6 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 
 		}
 	}
-
 	Name functionName2 = interest.getFunction();
 
 	auto string2 = functionName2.toUri();
@@ -1050,7 +1055,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		//  std::cout << "FIB : " << fibEntry->getPrefix().toUri() << std::endl;
 		//  std::cout << "FIBAd : " << fibEntry << std::endl;
 		//  std::cout << "getNext : " << interest.getFunctionNextName() << std::endl;
-		  std::cout << "getFull : " << interest.getFunctionFullName() << std::endl;
+		  //std::cout << "getFull : " << interest.getFunctionFullName() << std::endl;
 		  //std::cout << "CacheMissServiceTime : " << interest.getServiceTime().count() << std::endl;
 
 		//shared_ptr<Interest> interest = make_shared<Interest>(interest);
