@@ -686,7 +686,6 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		break;
 	case 48:
 		if(ns3::getChoiceType()==4){
- */
 			currentNodeName = "F4";
 		}else{
 			currentNodeName = "F4a";
@@ -2007,7 +2006,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 					if(currentNodeName.compare("F1a") == 0){
 						//table[1][1][0]++;
 						number = 1;
-						character = 0;
+						character 測定結果= 0;
 
 					}else if(currentNodeName.compare("F1b") == 0){
 						//table[1][1][1]++;
