@@ -39,7 +39,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/ref.hpp>
 
-#define N 26
+#define N 39 //us24=26,Sinet,Geant=39
 
 NS_LOG_COMPONENT_DEFINE("ndn.Consumer");
 
@@ -214,6 +214,8 @@ Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumer
 
 
 	if(flag == 0){
+		//us-1
+		/*
 		if (consumerNode == 0){
 
 			//F1->F2->F4
@@ -1571,1721 +1573,2535 @@ Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumer
 				Distance[11][25] = 2;
 				Distance[20][25] = 4;
 			}
-
 		}
+		*/ //us-1
 
+		//Sinet
+		/*
+		if (consumerNode == 0){
+			if(functionType==1){
+			Distance[0][35]=5+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=5+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==2){
+			Distance[0][35]=5+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=5+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==3){
+			Distance[0][7]=1+fcc4;
+			Distance[0][21]=5+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==4){
+			Distance[0][7]=1+fcc4;
+			Distance[0][21]=5+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==5){
+			Distance[0][35]=5+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=5+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==6){
+			Distance[0][35]=5+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=5+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==7){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=5+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==8){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=5+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==9){
+			Distance[0][7]=1+fcc4;
+			Distance[0][21]=5+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==10){
+			Distance[0][7]=1+fcc4;
+			Distance[0][21]=5+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==11){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=5+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==12){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=5+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			}
+			if (consumerNode == 54){
+			if(functionType==1){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==2){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==3){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==4){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==5){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==6){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==7){
+			Distance[0][11]=3+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=4+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==8){
+			Distance[0][11]=3+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=4+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==9){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==10){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			if(functionType==11){
+			Distance[0][11]=3+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=4+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=1;
+			Distance[10][38]=3;
+			Distance[20][38]=3;
+			}
+			if(functionType==12){
+			Distance[0][11]=3+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=4+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=3;
+			Distance[36][38]=4;
+			}
+			}
+			if (consumerNode == 55){
+			if(functionType==1){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==2){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==3){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==4){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==5){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==6){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==7){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==8){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==9){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==10){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==11){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==12){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=2+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			}
+			if (consumerNode == 56){
+			if(functionType==1){
+			Distance[0][35]=1+fcc1;
+			Distance[0][25]=3+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==2){
+			Distance[0][35]=1+fcc1;
+			Distance[0][25]=3+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=1+fcc5;
+			Distance[35][31]=2+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=2+fcc6;
+			Distance[16][7]=4+fcc4;
+			Distance[16][21]=2+fcc5;
+			Distance[16][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==3){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==4){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=4+fcc3;
+			Distance[21][35]=1+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=2+fcc3;
+			Distance[31][35]=2+fcc1;
+			Distance[31][25]=2+fcc2;
+			Distance[31][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==5){
+			Distance[0][35]=1+fcc1;
+			Distance[0][25]=3+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==6){
+			Distance[0][35]=1+fcc1;
+			Distance[0][25]=3+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][11]=2+fcc7;
+			Distance[35][13]=2+fcc8;
+			Distance[35][9]=2+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=2+fcc8;
+			Distance[25][9]=2+fcc9;
+			Distance[16][11]=2+fcc7;
+			Distance[16][13]=2+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==7){
+			Distance[0][11]=1+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=3+fcc10;
+			Distance[35][10]=2+fcc11;
+			Distance[35][20]=3+fcc12;
+			Distance[25][24]=3+fcc10;
+			Distance[25][10]=2+fcc11;
+			Distance[25][20]=3+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=2+fcc11;
+			Distance[16][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==8){
+			Distance[0][11]=1+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=2+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=2+fcc3;
+			Distance[13][35]=2+fcc1;
+			Distance[13][25]=2+fcc2;
+			Distance[13][16]=2+fcc3;
+			Distance[9][35]=2+fcc1;
+			Distance[9][25]=2+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=3+fcc14;
+			Distance[35][36]=1+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=3+fcc14;
+			Distance[25][36]=3+fcc15;
+			Distance[16][4]=4+fcc13;
+			Distance[16][15]=3+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==9){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][24]=1+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=2+fcc10;
+			Distance[13][10]=2+fcc11;
+			Distance[13][20]=3+fcc12;
+			Distance[9][24]=3+fcc10;
+			Distance[9][10]=2+fcc11;
+			Distance[9][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==10){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][11]=3+fcc7;
+			Distance[7][13]=2+fcc8;
+			Distance[7][9]=4+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=2+fcc8;
+			Distance[21][9]=2+fcc9;
+			Distance[31][11]=2+fcc7;
+			Distance[31][13]=2+fcc8;
+			Distance[31][9]=2+fcc9;
+			Distance[11][4]=2+fcc13;
+			Distance[11][15]=1+fcc14;
+			Distance[11][36]=3+fcc15;
+			Distance[13][4]=3+fcc13;
+			Distance[13][15]=3+fcc14;
+			Distance[13][36]=3+fcc15;
+			Distance[9][4]=4+fcc13;
+			Distance[9][15]=3+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+			if(functionType==11){
+			Distance[0][11]=1+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=4+fcc11;
+			Distance[7][20]=4+fcc12;
+			Distance[21][24]=3+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=3+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=2+fcc11;
+			Distance[31][20]=3+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==12){
+			Distance[0][11]=1+fcc7;
+			Distance[0][13]=3+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=3+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=2+fcc6;
+			Distance[13][7]=2+fcc4;
+			Distance[13][21]=2+fcc5;
+			Distance[13][31]=2+fcc6;
+			Distance[9][7]=4+fcc4;
+			Distance[9][21]=2+fcc5;
+			Distance[9][31]=2+fcc6;
+			Distance[7][4]=3+fcc13;
+			Distance[7][15]=4+fcc14;
+			Distance[7][36]=5+fcc15;
+			Distance[21][4]=4+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=2+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=3+fcc14;
+			Distance[31][36]=3+fcc15;
+			Distance[4][38]=3;
+			Distance[15][38]=2;
+			Distance[36][38]=2;
+			}
+		}	
+*/    //Sinet
+
+			//Geant
+			///*
+			if (consumerNode == 0){
+			if(functionType==1){
+			Distance[0][35]=3+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==2){
+			Distance[0][35]=3+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==3){
+			Distance[0][7]=2+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==4){
+			Distance[0][7]=2+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==5){
+			Distance[0][35]=3+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==6){
+			Distance[0][35]=3+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==7){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==8){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==9){
+			Distance[0][7]=2+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==10){
+			Distance[0][7]=2+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=2+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==11){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==12){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			}
+			if (consumerNode == 54){
+			if(functionType==1){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==2){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==3){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==4){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==5){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==6){
+			Distance[0][35]=4+fcc1;
+			Distance[0][25]=4+fcc2;
+			Distance[0][16]=2+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==7){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==8){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==9){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==10){
+			Distance[0][7]=0+fcc4;
+			Distance[0][21]=3+fcc5;
+			Distance[0][31]=3+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			if(functionType==11){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=2;
+			Distance[10][38]=1;
+			Distance[20][38]=2;
+			}
+			if(functionType==12){
+			Distance[0][11]=4+fcc7;
+			Distance[0][13]=5+fcc8;
+			Distance[0][9]=2+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=2;
+			Distance[15][38]=2;
+			Distance[36][38]=3;
+			}
+			}
+			if (consumerNode == 55){
+			if(functionType==1){
+			Distance[0][35]=6+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==2){
+			Distance[0][35]=6+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==3){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==4){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==5){
+			Distance[0][35]=6+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==6){
+			Distance[0][35]=6+fcc1;
+			Distance[0][25]=2+fcc2;
+			Distance[0][16]=4+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==7){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=1+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==8){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=1+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==9){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==10){
+			Distance[0][7]=4+fcc4;
+			Distance[0][21]=2+fcc5;
+			Distance[0][31]=5+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==11){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=1+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==12){
+			Distance[0][11]=0+fcc7;
+			Distance[0][13]=1+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			}
+			if (consumerNode == 56){
+			if(functionType==1){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==2){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][7]=4+fcc4;
+			Distance[35][21]=5+fcc5;
+			Distance[35][31]=5+fcc6;
+			Distance[25][7]=4+fcc4;
+			Distance[25][21]=2+fcc5;
+			Distance[25][31]=5+fcc6;
+			Distance[16][7]=2+fcc4;
+			Distance[16][21]=3+fcc5;
+			Distance[16][31]=4+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==3){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==4){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][35]=4+fcc1;
+			Distance[7][25]=4+fcc2;
+			Distance[7][16]=2+fcc3;
+			Distance[21][35]=5+fcc1;
+			Distance[21][25]=2+fcc2;
+			Distance[21][16]=3+fcc3;
+			Distance[31][35]=5+fcc1;
+			Distance[31][25]=5+fcc2;
+			Distance[31][16]=4+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==5){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==6){
+			Distance[0][35]=2+fcc1;
+			Distance[0][25]=5+fcc2;
+			Distance[0][16]=3+fcc3;
+			Distance[35][11]=6+fcc7;
+			Distance[35][13]=7+fcc8;
+			Distance[35][9]=4+fcc9;
+			Distance[25][11]=2+fcc7;
+			Distance[25][13]=3+fcc8;
+			Distance[25][9]=3+fcc9;
+			Distance[16][11]=4+fcc7;
+			Distance[16][13]=5+fcc8;
+			Distance[16][9]=2+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==7){
+			Distance[0][11]=5+fcc7;
+			Distance[0][13]=6+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][24]=5+fcc10;
+			Distance[35][10]=5+fcc11;
+			Distance[35][20]=6+fcc12;
+			Distance[25][24]=2+fcc10;
+			Distance[25][10]=3+fcc11;
+			Distance[25][20]=1+fcc12;
+			Distance[16][24]=3+fcc10;
+			Distance[16][10]=3+fcc11;
+			Distance[16][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==8){
+			Distance[0][11]=5+fcc7;
+			Distance[0][13]=6+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][35]=6+fcc1;
+			Distance[11][25]=2+fcc2;
+			Distance[11][16]=4+fcc3;
+			Distance[13][35]=7+fcc1;
+			Distance[13][25]=3+fcc2;
+			Distance[13][16]=5+fcc3;
+			Distance[9][35]=4+fcc1;
+			Distance[9][25]=3+fcc2;
+			Distance[9][16]=2+fcc3;
+			Distance[35][4]=4+fcc13;
+			Distance[35][15]=4+fcc14;
+			Distance[35][36]=3+fcc15;
+			Distance[25][4]=4+fcc13;
+			Distance[25][15]=4+fcc14;
+			Distance[25][36]=5+fcc15;
+			Distance[16][4]=2+fcc13;
+			Distance[16][15]=2+fcc14;
+			Distance[16][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==9){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][24]=2+fcc10;
+			Distance[11][10]=2+fcc11;
+			Distance[11][20]=1+fcc12;
+			Distance[13][24]=3+fcc10;
+			Distance[13][10]=3+fcc11;
+			Distance[13][20]=2+fcc12;
+			Distance[9][24]=1+fcc10;
+			Distance[9][10]=1+fcc11;
+			Distance[9][20]=2+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==10){
+			Distance[0][7]=3+fcc4;
+			Distance[0][21]=4+fcc5;
+			Distance[0][31]=4+fcc6;
+			Distance[7][11]=4+fcc7;
+			Distance[7][13]=5+fcc8;
+			Distance[7][9]=2+fcc9;
+			Distance[21][11]=2+fcc7;
+			Distance[21][13]=3+fcc8;
+			Distance[21][9]=3+fcc9;
+			Distance[31][11]=5+fcc7;
+			Distance[31][13]=6+fcc8;
+			Distance[31][9]=3+fcc9;
+			Distance[11][4]=4+fcc13;
+			Distance[11][15]=4+fcc14;
+			Distance[11][36]=5+fcc15;
+			Distance[13][4]=5+fcc13;
+			Distance[13][15]=5+fcc14;
+			Distance[13][36]=6+fcc15;
+			Distance[9][4]=2+fcc13;
+			Distance[9][15]=2+fcc14;
+			Distance[9][36]=3+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+			if(functionType==11){
+			Distance[0][11]=5+fcc7;
+			Distance[0][13]=6+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][24]=2+fcc10;
+			Distance[7][10]=3+fcc11;
+			Distance[7][20]=3+fcc12;
+			Distance[21][24]=2+fcc10;
+			Distance[21][10]=2+fcc11;
+			Distance[21][20]=1+fcc12;
+			Distance[31][24]=3+fcc10;
+			Distance[31][10]=4+fcc11;
+			Distance[31][20]=4+fcc12;
+			Distance[24][38]=4;
+			Distance[10][38]=5;
+			Distance[20][38]=5;
+			}
+			if(functionType==12){
+			Distance[0][11]=5+fcc7;
+			Distance[0][13]=6+fcc8;
+			Distance[0][9]=3+fcc9;
+			Distance[11][7]=4+fcc4;
+			Distance[11][21]=2+fcc5;
+			Distance[11][31]=5+fcc6;
+			Distance[13][7]=5+fcc4;
+			Distance[13][21]=3+fcc5;
+			Distance[13][31]=6+fcc6;
+			Distance[9][7]=2+fcc4;
+			Distance[9][21]=3+fcc5;
+			Distance[9][31]=3+fcc6;
+			Distance[7][4]=2+fcc13;
+			Distance[7][15]=2+fcc14;
+			Distance[7][36]=3+fcc15;
+			Distance[21][4]=2+fcc13;
+			Distance[21][15]=3+fcc14;
+			Distance[21][36]=4+fcc15;
+			Distance[31][4]=4+fcc13;
+			Distance[31][15]=2+fcc14;
+			Distance[31][36]=4+fcc15;
+			Distance[4][38]=5;
+			Distance[15][38]=3;
+			Distance[36][38]=5;
+			}
+		}
+//*/   //Geant
 	}
 
 
-	/*
-  //for us
-  if(flag == 0){
-    if (consumerNode == 0){
-
-      //F1->F2->F4
-      if (functionType == 1) {
-        Distance[0][2] = 2 + fcc1;
-        Distance[0][11] = 3 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F1->F2->F5
-      if (functionType == 2) {
-        Distance[0][2] = 2 + fcc1;
-        Distance[0][11] = 3 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F2->F1->F4
-      if (functionType == 3) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 5 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F2->F1->F5
-      if (functionType == 4) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 5 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F1->F3->F4
-      if (functionType == 5) {
-        Distance[0][2] = 2 + fcc1;
-        Distance[0][11] = 3 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F1->F3->F5
-      if (functionType == 6) {
-        Distance[0][2] = 2 + fcc1;
-        Distance[0][11] = 3 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][6] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][6] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][6] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F3->F1->F4
-      if (functionType == 7) {
-        Distance[0][8] = 4 + fcc7;
-        Distance[0][13] = 5 + fcc8;
-        Distance[0][15] = 4 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F3->F1->F5
-      if (functionType == 8) {
-        Distance[0][8] = 4 + fcc7;
-        Distance[0][13] = 5 + fcc8;
-        Distance[0][15] = 4 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F2->F3->F4
-      if (functionType == 9) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 5 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F2->F3->F5
-      if (functionType == 10) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 5 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][9] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][9] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][9] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F3->F2->F4
-      if (functionType == 11) {
-        Distance[0][8] = 4 + fcc7;
-        Distance[0][13] = 5 + fcc8;
-        Distance[0][15] = 4 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F3->F2->F5
-      if (functionType == 12) {
-        Distance[0][8] = 4 + fcc7;
-        Distance[0][13] = 5 + fcc8;
-        Distance[0][15] = 4 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-    }
-
-    if (consumerNode == 41){
-
-      //F1->F2->F4
-      if (functionType == 1) {
-        Distance[0][2] = 4 + fcc1;
-        Distance[0][11] = 2 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F1->F2->F5
-      if (functionType == 2) {
-        Distance[0][2] = 4 + fcc1;
-        Distance[0][11] = 2 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F2->F1->F4
-      if (functionType == 3) {
-        Distance[0][7] = 4 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F2->F1->F5
-      if (functionType == 4) {
-        Distance[0][7] = 4 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F1->F3->F4
-      if (functionType == 5) {
-        Distance[0][2] = 4 + fcc1;
-        Distance[0][11] = 2 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F1->F3->F5
-      if (functionType == 6) {
-        Distance[0][2] = 4 + fcc1;
-        Distance[0][11] = 2 + fcc2;
-        Distance[0][18] = 6 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][6] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][6] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][6] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F3->F1->F4
-      if (functionType == 7) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 3 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F3->F1->F5
-      if (functionType == 8) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 3 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F2->F3->F4
-      if (functionType == 9) {
-        Distance[0][7] = 4 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F2->F3->F5
-      if (functionType == 10) {
-        Distance[0][7] = 4 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][9] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][9] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][9] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F3->F2->F4
-      if (functionType == 11) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 3 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F3->F2->F5
-      if (functionType == 12) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 3 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-    }
-
-    if (consumerNode == 42){
-
-      //F1->F2->F4
-      if (functionType == 1) {
-        Distance[0][2] = 7 + fcc1;
-        Distance[0][11] = 6 + fcc2;
-        Distance[0][18] = 2 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F1->F2->F5
-      if (functionType == 2) {
-        Distance[0][2] = 7 + fcc1;
-        Distance[0][11] = 6 + fcc2;
-        Distance[0][18] = 2 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F2->F1->F4
-      if (functionType == 3) {
-        Distance[0][7] = 6 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F2->F1->F5
-      if (functionType == 4) {
-        Distance[0][7] = 6 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F1->F3->F4
-      if (functionType == 5) {
-        Distance[0][2] = 7 + fcc1;
-        Distance[0][11] = 6 + fcc2;
-        Distance[0][18] = 2 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F1->F3->F5
-      if (functionType == 6) {
-        Distance[0][2] = 7 + fcc1;
-        Distance[0][11] = 6 + fcc2;
-        Distance[0][18] = 2 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][6] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][6] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][6] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F3->F1->F4
-      if (functionType == 7) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 5 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F3->F1->F5
-      if (functionType == 8) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 5 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F2->F3->F4
-      if (functionType == 9) {
-        Distance[0][7] = 6 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F2->F3->F5
-      if (functionType == 10) {
-        Distance[0][7] = 6 + fcc4;
-        Distance[0][10] = 4 + fcc5;
-        Distance[0][16] = 4 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][9] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][9] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][9] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-      //F3->F2->F4
-      if (functionType == 11) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 5 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 1;
-        Distance[12][25] = 4;
-        Distance[21][25] = 6;
-      }
-
-      //F3->F2->F5
-      if (functionType == 12) {
-        Distance[0][8] = 5 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 5 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 1;
-        Distance[9][25] = 3;
-        Distance[23][25] = 6;
-      }
-
-    }
-
-    if (consumerNode == 43){
-
-      //F1->F2->F4
-      if (functionType == 1) {
-        Distance[0][2] = 3 + fcc1;
-        Distance[0][11] = 5 + fcc2;
-        Distance[0][18] = 5 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F1->F2->F5
-      if (functionType == 2) {
-        Distance[0][2] = 3 + fcc1;
-        Distance[0][11] = 5 + fcc2;
-        Distance[0][18] = 5 + fcc3;
-        Distance[2][7] = 2 + fcc4;
-        Distance[2][10] = 3 + fcc5;
-        Distance[2][16] = 4 + fcc6;
-        Distance[11][7] = 2 + fcc4;
-        Distance[11][10] = 2 + fcc5;
-        Distance[11][16] = 2 + fcc6;
-        Distance[18][7] = 4 + fcc4;
-        Distance[18][10] = 2 + fcc5;
-        Distance[18][16] = 2 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F2->F1->F4
-      if (functionType == 3) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 3 + fcc5;
-        Distance[0][16] = 6 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F2->F1->F5
-      if (functionType == 4) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 3 + fcc5;
-        Distance[0][16] = 6 + fcc6;
-        Distance[7][2] = 2 + fcc1;
-        Distance[7][11] = 2 + fcc2;
-        Distance[7][18] = 4 + fcc3;
-        Distance[10][2] = 3 + fcc1;
-        Distance[10][11] = 2 + fcc2;
-        Distance[10][18] = 2 + fcc3;
-        Distance[16][2] = 4 + fcc1;
-        Distance[16][11] = 2 + fcc2;
-        Distance[16][18] = 2 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F1->F3->F4
-      if (functionType == 5) {
-        Distance[0][2] = 3 + fcc1;
-        Distance[0][11] = 5 + fcc2;
-        Distance[0][18] = 5 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F1->F3->F5
-      if (functionType == 6) {
-        Distance[0][2] = 3 + fcc1;
-        Distance[0][11] = 5 + fcc2;
-        Distance[0][18] = 5 + fcc3;
-        Distance[2][8] = 3 + fcc7;
-        Distance[2][13] = 4 + fcc8;
-        Distance[2][15] = 3 + fcc9;
-        Distance[11][8] = 3 + fcc7;
-        Distance[11][13] = 2 + fcc8;
-        Distance[11][15] = 1 + fcc9;
-        Distance[18][8] = 3 + fcc7;
-        Distance[18][13] = 2 + fcc8;
-        Distance[18][15] = 3 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][6] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][6] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][6] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F3->F1->F4
-      if (functionType == 7) {
-        Distance[0][8] = 2 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 6 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][5] = 2 + fcc10;
-        Distance[2][12] = 3 + fcc11;
-        Distance[2][21] = 5 + fcc12;
-        Distance[11][5] = 4 + fcc10;
-        Distance[11][12] = 1 + fcc11;
-        Distance[11][21] = 3 + fcc12;
-        Distance[18][5] = 4 + fcc10;
-        Distance[18][12] = 3 + fcc11;
-        Distance[18][21] = 3 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F3->F1->F5
-      if (functionType == 8) {
-        Distance[0][8] = 2 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 6 + fcc9;
-        Distance[8][2] = 3 + fcc1;
-        Distance[8][11] = 3 + fcc2;
-        Distance[8][18] = 3 + fcc3;
-        Distance[13][2] = 4 + fcc1;
-        Distance[13][11] = 2 + fcc2;
-        Distance[13][18] = 2 + fcc3;
-        Distance[15][2] = 3 + fcc1;
-        Distance[15][11] = 1 + fcc2;
-        Distance[15][18] = 3 + fcc3;
-        Distance[2][3] = 1 + fcc13;
-        Distance[2][9] = 2 + fcc14;
-        Distance[2][23] = 6 + fcc15;
-        Distance[11][3] = 3 + fcc13;
-        Distance[11][9] = 1 + fcc14;
-        Distance[11][23] = 4 + fcc15;
-        Distance[18][3] = 5 + fcc13;
-        Distance[18][9] = 3 + fcc14;
-        Distance[18][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F2->F3->F4
-      if (functionType == 9) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 3 + fcc5;
-        Distance[0][16] = 6 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][5] = 1 + fcc10;
-        Distance[8][12] = 3 + fcc11;
-        Distance[8][21] = 5 + fcc12;
-        Distance[13][5] = 3 + fcc10;
-        Distance[13][12] = 1 + fcc11;
-        Distance[13][21] = 3 + fcc12;
-        Distance[15][5] = 5 + fcc10;
-        Distance[15][12] = 2 + fcc11;
-        Distance[15][21] = 2 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F2->F3->F5
-      if (functionType == 10) {
-        Distance[0][7] = 3 + fcc4;
-        Distance[0][10] = 3 + fcc5;
-        Distance[0][16] = 6 + fcc6;
-        Distance[7][8] = 1 + fcc7;
-        Distance[7][13] = 3 + fcc8;
-        Distance[7][15] = 3 + fcc9;
-        Distance[10][8] = 1 + fcc7;
-        Distance[10][13] = 1 + fcc8;
-        Distance[10][15] = 3 + fcc9;
-        Distance[16][8] = 4 + fcc7;
-        Distance[16][13] = 2 + fcc8;
-        Distance[16][15] = 1 + fcc9;
-        Distance[8][3] = 2 + fcc13;
-        Distance[8][9] = 2 + fcc14;
-        Distance[8][23] = 4 + fcc15;
-        Distance[13][3] = 4 + fcc13;
-        Distance[13][9] = 2 + fcc14;
-        Distance[13][23] = 2 + fcc15;
-        Distance[15][3] = 4 + fcc13;
-        Distance[15][9] = 2 + fcc14;
-        Distance[15][23] = 3 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-      //F3->F2->F4
-      if (functionType == 11) {
-        Distance[0][8] = 2 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 6 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][5] = 2 + fcc10;
-        Distance[7][12] = 3 + fcc11;
-        Distance[7][21] = 5 + fcc12;
-        Distance[10][5] = 2 + fcc10;
-        Distance[10][12] = 2 + fcc11;
-        Distance[10][21] = 4 + fcc12;
-        Distance[16][5] = 5 + fcc10;
-        Distance[16][12] = 1 + fcc11;
-        Distance[16][21] = 1 + fcc12;
-        Distance[5][25] = 5;
-        Distance[12][25] = 2;
-        Distance[21][25] = 1;
-      }
-
-      //F3->F2->F5
-      if (functionType == 12) {
-        Distance[0][8] = 2 + fcc7;
-        Distance[0][13] = 4 + fcc8;
-        Distance[0][15] = 6 + fcc9;
-        Distance[8][7] = 1 + fcc4;
-        Distance[8][10] = 1 + fcc5;
-        Distance[8][16] = 4 + fcc6;
-        Distance[13][7] = 3 + fcc4;
-        Distance[13][10] = 1 + fcc5;
-        Distance[13][16] = 2 + fcc6;
-        Distance[15][7] = 3 + fcc4;
-        Distance[15][10] = 3 + fcc5;
-        Distance[15][16] = 1 + fcc6;
-        Distance[7][3] = 1 + fcc13;
-        Distance[7][9] = 2 + fcc14;
-        Distance[7][23] = 5 + fcc15;
-        Distance[10][3] = 3 + fcc13;
-        Distance[10][9] = 1 + fcc14;
-        Distance[10][23] = 3 + fcc15;
-        Distance[16][3] = 5 + fcc13;
-        Distance[16][9] = 2 + fcc14;
-        Distance[16][23] = 2 + fcc15;
-        Distance[3][25] = 6;
-        Distance[9][25] = 3;
-        Distance[23][25] = 1;
-      }
-
-    }
-  }
-	 */
-
-	/*
-  //for us
-  if(flag == 1){
-    //F1->F2->F4
-    if (functionType == 1) {
-      Distance[0][2] = 1 + fcc1t;
-      Distance[0][11] = 1 + fcc2t;
-      Distance[0][18] = 1 + fcc3t;
-      Distance[2][7] = 1 + fcc4t;
-      Distance[2][10] = 1 + fcc5t;
-      Distance[2][16] = 1 + fcc6t;
-      Distance[11][7] = 1 + fcc4t;
-      Distance[11][10] = 1 + fcc5t;
-      Distance[11][16] = 1 + fcc6t;
-      Distance[18][7] = 1 + fcc4t;
-      Distance[18][10] = 1 + fcc5t;
-      Distance[18][16] = 1 + fcc6t;
-      Distance[7][5] = 1 + fcc10t;
-      Distance[7][12] = 1 + fcc11t;
-      Distance[7][21] = 1 + fcc12t;
-      Distance[10][5] = 1 + fcc10t;
-      Distance[10][12] = 1 + fcc11t;
-      Distance[10][21] = 1 + fcc12t;
-      Distance[16][5] = 1 + fcc10t;
-      Distance[16][12] = 1 + fcc11t;
-      Distance[16][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 1;
-      Distance[21][25] = 1;
-    }
-
-    //F1->F2->F5
-    if (functionType == 2) {
-      Distance[0][2] = 1 + fcc1t;
-      Distance[0][11] = 1 + fcc2t;
-      Distance[0][18] = 1 + fcc3t;
-      Distance[2][7] = 1 + fcc4t;
-      Distance[2][10] = 1 + fcc5t;
-      Distance[2][16] = 1 + fcc6t;
-      Distance[11][7] = 1 + fcc4t;
-      Distance[11][10] = 1 + fcc5t;
-      Distance[11][16] = 1 + fcc6t;
-      Distance[18][7] = 1 + fcc4t;
-      Distance[18][10] = 1 + fcc5t;
-      Distance[18][16] = 1 + fcc6t;
-      Distance[7][3] = 1 + fcc13t;
-      Distance[7][9] = 1 + fcc14t;
-      Distance[7][23] = 1 + fcc15t;
-      Distance[10][3] = 1 + fcc13t;
-      Distance[10][9] = 1 + fcc14t;
-      Distance[10][23] = 1 + fcc15t;
-      Distance[16][3] = 1 + fcc13t;
-      Distance[16][9] = 1 + fcc14t;
-      Distance[16][23] = 1 + fcc15t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-
-    //F2->F1->F4
-    if (functionType == 3) {
-      Distance[0][7] = 1 + fcc4t;
-      Distance[0][10] = 1 + fcc5t;
-      Distance[0][16] = 1 + fcc6t;
-      Distance[7][2] = 1 + fcc1t;
-      Distance[7][11] = 1 + fcc2t;
-      Distance[7][18] = 1 + fcc3t;
-      Distance[10][2] = 1 + fcc1t;
-      Distance[10][11] = 1 + fcc2t;
-      Distance[10][18] = 1 + fcc3t;
-      Distance[16][2] = 1 + fcc1t;
-      Distance[16][11] = 1 + fcc2t;
-      Distance[16][18] = 1 + fcc3t;
-      Distance[2][5] = 1 + fcc10t;
-      Distance[2][12] = 1 + fcc11t;
-      Distance[2][21] = 1 + fcc12t;
-      Distance[11][5] = 1 + fcc10t;
-      Distance[11][12] = 1 + fcc11t;
-      Distance[11][21] = 1 + fcc12t;
-      Distance[18][5] = 1 + fcc10t;
-      Distance[18][12] = 1 + fcc11t;
-      Distance[18][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 1;
-      Distance[21][25] = 1;
-    }
-
-    //F2->F1->F5
-    if (functionType == 4) {
-      Distance[0][7] = 1 + fcc4t;
-      Distance[0][10] = 1 + fcc5t;
-      Distance[0][16] = 1 + fcc6t;
-      Distance[7][2] = 1 + fcc1t;
-      Distance[7][11] = 1 + fcc2t;
-      Distance[7][18] = 1 + fcc3t;
-      Distance[10][2] = 1 + fcc1t;
-      Distance[10][11] = 1 + fcc2t;
-      Distance[10][18] = 1 + fcc3t;
-      Distance[16][2] = 1 + fcc1t;
-      Distance[16][11] = 1 + fcc2t;
-      Distance[16][18] = 1 + fcc3t;
-      Distance[2][3] = 1 + fcc13t;
-      Distance[2][9] = 1 + fcc14t;
-      Distance[2][23] = 1 + fcc15t;
-      Distance[11][3] = 1 + fcc13t;
-      Distance[11][9] = 1 + fcc14t;
-      Distance[11][23] = 1 + fcc15t;
-      Distance[18][3] = 1 + fcc13t;
-      Distance[18][9] = 1 + fcc14t;
-      Distance[18][23] = 1 + fcc15t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-
-    //F1->F3->F4
-    if (functionType == 5) {
-      Distance[0][2] = 1 + fcc1t;
-      Distance[0][11] = 1 + fcc2t;
-      Distance[0][18] = 1 + fcc3t;
-      Distance[2][8] = 1 + fcc7t;
-      Distance[2][13] = 1 + fcc8t;
-      Distance[2][15] = 1 + fcc9t;
-      Distance[11][8] = 1 + fcc7t;
-      Distance[11][13] = 1 + fcc8t;
-      Distance[11][15] = 1 + fcc9t;
-      Distance[18][8] = 1 + fcc7t;
-      Distance[18][13] = 1 + fcc8t;
-      Distance[18][15] = 1 + fcc9t;
-      Distance[8][5] = 1 + fcc10t;
-      Distance[8][12] = 1 + fcc11t;
-      Distance[8][21] = 1 + fcc12t;
-      Distance[13][5] = 1 + fcc10t;
-      Distance[13][12] = 1 + fcc11t;
-      Distance[13][21] = 1 + fcc12t;
-      Distance[15][5] = 1 + fcc10t;
-      Distance[15][12] = 1 + fcc11t;
-      Distance[15][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 2;
-      Distance[21][25] = 1;
-    }
-
-    //F1->F3->F5
-    if (functionType == 6) {
-      Distance[0][2] = 1 + fcc1t;
-      Distance[0][11] = 1 + fcc2t;
-      Distance[0][18] = 1 + fcc3t;
-      Distance[2][8] = 1 + fcc7t;
-      Distance[2][13] = 1 + fcc8t;
-      Distance[2][15] = 1 + fcc9t;
-      Distance[11][8] = 1 + fcc7t;
-      Distance[11][13] = 1 + fcc8t;
-      Distance[11][15] = 1 + fcc9t;
-      Distance[18][8] = 1 + fcc7t;
-      Distance[18][13] = 1 + fcc8t;
-      Distance[18][15] = 1 + fcc9t;
-      Distance[8][3] = 1 + fcc13t;
-      Distance[8][6] = 1 + fcc14t;
-      Distance[8][23] = 1 + fcc15t;
-      Distance[13][3] = 1 + fcc13t;
-      Distance[13][6] = 1 + fcc14t;
-      Distance[13][23] = 1 + fcc15t;
-      Distance[15][3] = 1 + fcc13t;
-      Distance[15][6] = 1 + fcc14t;
-      Distance[15][23] = 1 + fcc15t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-
-    //F3->F1->F4
-    if (functionType == 7) {
-      Distance[0][8] = 1 + fcc7t;
-      Distance[0][13] = 1 + fcc8t;
-      Distance[0][15] = 1 + fcc9t;
-      Distance[8][2] = 1 + fcc1t;
-      Distance[8][11] = 1 + fcc2t;
-      Distance[8][18] = 1 + fcc3t;
-      Distance[13][2] = 1 + fcc1t;
-      Distance[13][11] = 1 + fcc2t;
-      Distance[13][18] = 1 + fcc3t;
-      Distance[15][2] = 1 + fcc1t;
-      Distance[15][11] = 1 + fcc2t;
-      Distance[15][18] = 1 + fcc3t;
-      Distance[2][5] = 1 + fcc10t;
-      Distance[2][12] = 1 + fcc11t;
-      Distance[2][21] = 1 + fcc12t;
-      Distance[11][5] = 1 + fcc10t;
-      Distance[11][12] = 1 + fcc11t;
-      Distance[11][21] = 1 + fcc12t;
-      Distance[18][5] = 1 + fcc10t;
-      Distance[18][12] = 1 + fcc11t;
-      Distance[18][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 2;
-      Distance[21][25] = 1;
-    }
-
-    //F3->F1->F5
-    if (functionType == 8) {
-      Distance[0][8] = 1 + fcc7t;
-      Distance[0][13] = 1 + fcc8t;
-      Distance[0][15] = 1 + fcc9t;
-      Distance[8][2] = 1 + fcc1t;
-      Distance[8][11] = 1 + fcc2t;
-      Distance[8][18] = 1 + fcc3t;
-      Distance[13][2] = 1 + fcc1t;
-      Distance[13][11] = 1 + fcc2t;
-      Distance[13][18] = 1 + fcc3t;
-      Distance[15][2] = 1 + fcc1t;
-      Distance[15][11] = 1 + fcc2t;
-      Distance[15][18] = 1 + fcc3t;
-      Distance[2][3] = 1 + fcc13t;
-      Distance[2][9] = 1 + fcc14t;
-      Distance[2][23] = 1 + fcc15t;
-      Distance[11][3] = 1 + fcc13t;
-      Distance[11][9] = 1 + fcc14t;
-      Distance[11][23] = 1 + fcc15t;
-      Distance[18][3] = 1 + fcc13t;
-      Distance[18][9] = 1 + fcc14t;
-      Distance[18][23] = 1 + fcc15t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-
-    //F2->F3->F4
-    if (functionType == 9) {
-      Distance[0][7] = 1 + fcc4t;
-      Distance[0][10] = 1 + fcc5t;
-      Distance[0][16] = 1 + fcc6t;
-      Distance[7][8] = 1 + fcc7t;
-      Distance[7][13] = 1 + fcc8t;
-      Distance[7][15] = 1 + fcc9t;
-      Distance[10][8] = 1 + fcc7t;
-      Distance[10][13] = 1 + fcc8t;
-      Distance[10][15] = 1 + fcc9t;
-      Distance[16][8] = 1 + fcc7t;
-      Distance[16][13] = 1 + fcc8t;
-      Distance[16][15] = 1 + fcc9t;
-      Distance[8][5] = 1 + fcc10t;
-      Distance[8][12] = 1 + fcc11t;
-      Distance[8][21] = 1 + fcc12t;
-      Distance[13][5] = 1 + fcc10t;
-      Distance[13][12] = 1 + fcc11t;
-      Distance[13][21] = 1 + fcc12t;
-      Distance[15][5] = 1 + fcc10t;
-      Distance[15][12] = 1 + fcc11t;
-      Distance[15][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 1;
-      Distance[21][25] = 1;
-    }
-
-    //F2->F3->F5
-    if (functionType == 10) {
-      Distance[0][7] = 1 + fcc4t;
-      Distance[0][10] = 1 + fcc5t;
-      Distance[0][16] = 1 + fcc6t;
-      Distance[7][8] = 1 + fcc7t;
-      Distance[7][13] = 1 + fcc8t;
-      Distance[7][15] = 1 + fcc9t;
-      Distance[10][8] = 1 + fcc7t;
-      Distance[10][13] = 1 + fcc8t;
-      Distance[10][15] = 1 + fcc9t;
-      Distance[16][8] = 1 + fcc7t;
-      Distance[16][13] = 1 + fcc8t;
-      Distance[16][15] = 1 + fcc9t;
-      Distance[8][3] = 1 + fcc10t;
-      Distance[8][9] = 1 + fcc11t;
-      Distance[8][23] = 1 + fcc12t;
-      Distance[13][3] = 1 + fcc10t;
-      Distance[13][9] = 1 + fcc11t;
-      Distance[13][23] = 1 + fcc12t;
-      Distance[15][3] = 1 + fcc10t;
-      Distance[15][9] = 1 + fcc11t;
-      Distance[15][23] = 1 + fcc12t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-
-    //F3->F2->F4
-    if (functionType == 11) {
-      Distance[0][8] = 1 + fcc4t;
-      Distance[0][13] = 1 + fcc5t;
-      Distance[0][15] = 1 + fcc6t;
-      Distance[8][7] = 1 + fcc7t;
-      Distance[8][10] = 1 + fcc8t;
-      Distance[8][16] = 1 + fcc9t;
-      Distance[13][7] = 1 + fcc7t;
-      Distance[13][10] = 1 + fcc8t;
-      Distance[13][16] = 1 + fcc9t;
-      Distance[15][7] = 1 + fcc7t;
-      Distance[15][10] = 1 + fcc8t;
-      Distance[15][16] = 1 + fcc9t;
-      Distance[7][5] = 1 + fcc10t;
-      Distance[7][12] = 1 + fcc11t;
-      Distance[7][21] = 1 + fcc12t;
-      Distance[10][5] = 1 + fcc10t;
-      Distance[10][12] = 1 + fcc11t;
-      Distance[10][21] = 1 + fcc12t;
-      Distance[16][5] = 1 + fcc10t;
-      Distance[16][12] = 1 + fcc11t;
-      Distance[16][21] = 1 + fcc12t;
-      Distance[5][25] = 1;
-      Distance[12][25] = 1;
-      Distance[21][25] = 1;
-    }
-
-    //F3->F2->F5
-    if (functionType == 12) {
-      Distance[0][8] = 1 + fcc4t;
-      Distance[0][13] = 1 + fcc5t;
-      Distance[0][15] = 1 + fcc6t;
-      Distance[8][7] = 1 + fcc7t;
-      Distance[8][10] = 1 + fcc8t;
-      Distance[8][16] = 1 + fcc9t;
-      Distance[13][7] = 1 + fcc7t;
-      Distance[13][10] = 1 + fcc8t;
-      Distance[13][16] = 1 + fcc9t;
-      Distance[15][7] = 1 + fcc7t;
-      Distance[15][10] = 1 + fcc8t;
-      Distance[15][16] = 1 + fcc9t;
-      Distance[7][3] = 1 + fcc13t;
-      Distance[7][9] = 1 + fcc14t;
-      Distance[7][23] = 1 + fcc15t;
-      Distance[10][3] = 1 + fcc13t;
-      Distance[10][9] = 1 + fcc14t;
-      Distance[10][23] = 1 + fcc15t;
-      Distance[16][3] = 1 + fcc13t;
-      Distance[16][9] = 1 + fcc14t;
-      Distance[16][23] = 1 + fcc15t;
-      Distance[3][25] = 1;
-      Distance[9][25] = 1;
-      Distance[23][25] = 1;
-    }
-  }
-	 */
-
-
-	//for us1
+	
 	if(flag == 1){
+		//for us1
+		/*
 		//F1->F2->F4
 		if (functionType == 1) {
 			Distance[0][3] = 1 + fcc1t;
@@ -3621,6 +4437,639 @@ Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumer
 			Distance[11][25] = 1;
 			Distance[20][25] = 1;
 		}
+		*/  //us-1
+
+		//Sinet
+		/*
+		if(functionType==1){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][7]=1+fcc4t;
+			Distance[35][21]=1+fcc5t;
+			Distance[35][31]=1+fcc6t;
+			Distance[25][7]=1+fcc4t;
+			Distance[25][21]=1+fcc5t;
+			Distance[25][31]=1+fcc6t;
+			Distance[16][7]=1+fcc4t;
+			Distance[16][21]=1+fcc5t;
+			Distance[16][31]=1+fcc6t;
+			Distance[7][24]=1+fcc10t;
+			Distance[7][10]=1+fcc11t;
+			Distance[7][20]=1+fcc12t;
+			Distance[21][24]=1+fcc10t;
+			Distance[21][10]=1+fcc11t;
+			Distance[21][20]=1+fcc12t;
+			Distance[31][24]=1+fcc10t;
+			Distance[31][10]=1+fcc11t;
+			Distance[31][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==2){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][7]=1+fcc4t;
+			Distance[35][21]=1+fcc5t;
+			Distance[35][31]=1+fcc6t;
+			Distance[25][7]=1+fcc4t;
+			Distance[25][21]=1+fcc5t;
+			Distance[25][31]=1+fcc6t;
+			Distance[16][7]=1+fcc4t;
+			Distance[16][21]=1+fcc5t;
+			Distance[16][31]=1+fcc6t;
+			Distance[7][4]=1+fcc13t;
+			Distance[7][15]=1+fcc14t;
+			Distance[7][36]=1+fcc15t;
+			Distance[21][4]=1+fcc13t;
+			Distance[21][15]=1+fcc14t;
+			Distance[21][36]=1+fcc15t;
+			Distance[31][4]=1+fcc13t;
+			Distance[31][15]=1+fcc14t;
+			Distance[31][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==3){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][35]=1+fcc1t;
+			Distance[7][25]=1+fcc2t;
+			Distance[7][16]=1+fcc3t;
+			Distance[21][35]=1+fcc1t;
+			Distance[21][25]=1+fcc2t;
+			Distance[21][16]=1+fcc3t;
+			Distance[31][35]=1+fcc1t;
+			Distance[31][25]=1+fcc2t;
+			Distance[31][16]=1+fcc3t;
+			Distance[35][24]=1+fcc10t;
+			Distance[35][10]=1+fcc11t;
+			Distance[35][20]=1+fcc12t;
+			Distance[25][24]=1+fcc10t;
+			Distance[25][10]=1+fcc11t;
+			Distance[25][20]=1+fcc12t;
+			Distance[16][24]=1+fcc10t;
+			Distance[16][10]=1+fcc11t;
+			Distance[16][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==4){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][35]=1+fcc1t;
+			Distance[7][25]=1+fcc2t;
+			Distance[7][16]=1+fcc3t;
+			Distance[21][35]=1+fcc1t;
+			Distance[21][25]=1+fcc2t;
+			Distance[21][16]=1+fcc3t;
+			Distance[31][35]=1+fcc1t;
+			Distance[31][25]=1+fcc2t;
+			Distance[31][16]=1+fcc3t;
+			Distance[35][4]=1+fcc13t;
+			Distance[35][15]=1+fcc14t;
+			Distance[35][36]=1+fcc15t;
+			Distance[25][4]=1+fcc13t;
+			Distance[25][15]=1+fcc14t;
+			Distance[25][36]=1+fcc15t;
+			Distance[16][4]=1+fcc13t;
+			Distance[16][15]=1+fcc14t;
+			Distance[16][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==5){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][11]=1+fcc7t;
+			Distance[35][13]=1+fcc8t;
+			Distance[35][9]=1+fcc9t;
+			Distance[25][11]=1+fcc7t;
+			Distance[25][13]=1+fcc8t;
+			Distance[25][9]=1+fcc9t;
+			Distance[16][11]=1+fcc7t;
+			Distance[16][13]=1+fcc8t;
+			Distance[16][9]=1+fcc9t;
+			Distance[11][24]=1+fcc10t;
+			Distance[11][10]=1+fcc11t;
+			Distance[11][20]=1+fcc12t;
+			Distance[13][24]=1+fcc10t;
+			Distance[13][10]=1+fcc11t;
+			Distance[13][20]=1+fcc12t;
+			Distance[9][24]=1+fcc10t;
+			Distance[9][10]=1+fcc11t;
+			Distance[9][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==6){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][11]=1+fcc7t;
+			Distance[35][13]=1+fcc8t;
+			Distance[35][9]=1+fcc9t;
+			Distance[25][11]=1+fcc7t;
+			Distance[25][13]=1+fcc8t;
+			Distance[25][9]=1+fcc9t;
+			Distance[16][11]=1+fcc7t;
+			Distance[16][13]=1+fcc8t;
+			Distance[16][9]=1+fcc9t;
+			Distance[11][4]=1+fcc13t;
+			Distance[11][15]=1+fcc14t;
+			Distance[11][36]=1+fcc15t;
+			Distance[13][4]=1+fcc13t;
+			Distance[13][15]=1+fcc14t;
+			Distance[13][36]=1+fcc15t;
+			Distance[9][4]=1+fcc13t;
+			Distance[9][15]=1+fcc14t;
+			Distance[9][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==7){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][35]=1+fcc1t;
+			Distance[11][25]=1+fcc2t;
+			Distance[11][16]=1+fcc3t;
+			Distance[13][35]=1+fcc1t;
+			Distance[13][25]=1+fcc2t;
+			Distance[13][16]=1+fcc3t;
+			Distance[9][35]=1+fcc1t;
+			Distance[9][25]=1+fcc2t;
+			Distance[9][16]=1+fcc3t;
+			Distance[35][24]=1+fcc10t;
+			Distance[35][10]=1+fcc11t;
+			Distance[35][20]=1+fcc12t;
+			Distance[25][24]=1+fcc10t;
+			Distance[25][10]=1+fcc11t;
+			Distance[25][20]=1+fcc12t;
+			Distance[16][24]=1+fcc10t;
+			Distance[16][10]=1+fcc11t;
+			Distance[16][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==8){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][35]=1+fcc1t;
+			Distance[11][25]=1+fcc2t;
+			Distance[11][16]=1+fcc3t;
+			Distance[13][35]=1+fcc1t;
+			Distance[13][25]=1+fcc2t;
+			Distance[13][16]=1+fcc3t;
+			Distance[9][35]=1+fcc1t;
+			Distance[9][25]=1+fcc2t;
+			Distance[9][16]=1+fcc3t;
+			Distance[35][4]=1+fcc13t;
+			Distance[35][15]=1+fcc14t;
+			Distance[35][36]=1+fcc15t;
+			Distance[25][4]=1+fcc13t;
+			Distance[25][15]=1+fcc14t;
+			Distance[25][36]=1+fcc15t;
+			Distance[16][4]=1+fcc13t;
+			Distance[16][15]=1+fcc14t;
+			Distance[16][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==9){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][11]=1+fcc7t;
+			Distance[7][13]=1+fcc8t;
+			Distance[7][9]=1+fcc9t;
+			Distance[21][11]=1+fcc7t;
+			Distance[21][13]=1+fcc8t;
+			Distance[21][9]=1+fcc9t;
+			Distance[31][11]=1+fcc7t;
+			Distance[31][13]=1+fcc8t;
+			Distance[31][9]=1+fcc9t;
+			Distance[11][24]=1+fcc10t;
+			Distance[11][10]=1+fcc11t;
+			Distance[11][20]=1+fcc12t;
+			Distance[13][24]=1+fcc10t;
+			Distance[13][10]=1+fcc11t;
+			Distance[13][20]=1+fcc12t;
+			Distance[9][24]=1+fcc10t;
+			Distance[9][10]=1+fcc11t;
+			Distance[9][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==10){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][11]=1+fcc7t;
+			Distance[7][13]=1+fcc8t;
+			Distance[7][9]=1+fcc9t;
+			Distance[21][11]=1+fcc7t;
+			Distance[21][13]=1+fcc8t;
+			Distance[21][9]=1+fcc9t;
+			Distance[31][11]=1+fcc7t;
+			Distance[31][13]=1+fcc8t;
+			Distance[31][9]=1+fcc9t;
+			Distance[11][4]=1+fcc13t;
+			Distance[11][15]=1+fcc14t;
+			Distance[11][36]=1+fcc15t;
+			Distance[13][4]=1+fcc13t;
+			Distance[13][15]=1+fcc14t;
+			Distance[13][36]=1+fcc15t;
+			Distance[9][4]=1+fcc13t;
+			Distance[9][15]=1+fcc14t;
+			Distance[9][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==11){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][7]=1+fcc4t;
+			Distance[11][21]=1+fcc5t;
+			Distance[11][31]=1+fcc6t;
+			Distance[13][7]=1+fcc4t;
+			Distance[13][21]=1+fcc5t;
+			Distance[13][31]=1+fcc6t;
+			Distance[9][7]=1+fcc4t;
+			Distance[9][21]=1+fcc5t;
+			Distance[9][31]=1+fcc6t;
+			Distance[7][24]=1+fcc10t;
+			Distance[7][10]=1+fcc11t;
+			Distance[7][20]=1+fcc12t;
+			Distance[21][24]=1+fcc10t;
+			Distance[21][10]=1+fcc11t;
+			Distance[21][20]=1+fcc12t;
+			Distance[31][24]=1+fcc10t;
+			Distance[31][10]=1+fcc11t;
+			Distance[31][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==12){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][7]=1+fcc4t;
+			Distance[11][21]=1+fcc5t;
+			Distance[11][31]=1+fcc6t;
+			Distance[13][7]=1+fcc4t;
+			Distance[13][21]=1+fcc5t;
+			Distance[13][31]=1+fcc6t;
+			Distance[9][7]=1+fcc4t;
+			Distance[9][21]=1+fcc5t;
+			Distance[9][31]=1+fcc6t;
+			Distance[7][4]=1+fcc13t;
+			Distance[7][15]=1+fcc14t;
+			Distance[7][36]=1+fcc15t;
+			Distance[21][4]=1+fcc13t;
+			Distance[21][15]=1+fcc14t;
+			Distance[21][36]=1+fcc15t;
+			Distance[31][4]=1+fcc13t;
+			Distance[31][15]=1+fcc14t;
+			Distance[31][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			//*/  //Sinet
+
+			//Geant
+			///*
+			if(functionType==1){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][7]=1+fcc4t;
+			Distance[35][21]=1+fcc5t;
+			Distance[35][31]=1+fcc6t;
+			Distance[25][7]=1+fcc4t;
+			Distance[25][21]=1+fcc5t;
+			Distance[25][31]=1+fcc6t;
+			Distance[16][7]=1+fcc4t;
+			Distance[16][21]=1+fcc5t;
+			Distance[16][31]=1+fcc6t;
+			Distance[7][24]=1+fcc10t;
+			Distance[7][10]=1+fcc11t;
+			Distance[7][20]=1+fcc12t;
+			Distance[21][24]=1+fcc10t;
+			Distance[21][10]=1+fcc11t;
+			Distance[21][20]=1+fcc12t;
+			Distance[31][24]=1+fcc10t;
+			Distance[31][10]=1+fcc11t;
+			Distance[31][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==2){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][7]=1+fcc4t;
+			Distance[35][21]=1+fcc5t;
+			Distance[35][31]=1+fcc6t;
+			Distance[25][7]=1+fcc4t;
+			Distance[25][21]=1+fcc5t;
+			Distance[25][31]=1+fcc6t;
+			Distance[16][7]=1+fcc4t;
+			Distance[16][21]=1+fcc5t;
+			Distance[16][31]=1+fcc6t;
+			Distance[7][4]=1+fcc13t;
+			Distance[7][15]=1+fcc14t;
+			Distance[7][36]=1+fcc15t;
+			Distance[21][4]=1+fcc13t;
+			Distance[21][15]=1+fcc14t;
+			Distance[21][36]=1+fcc15t;
+			Distance[31][4]=1+fcc13t;
+			Distance[31][15]=1+fcc14t;
+			Distance[31][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==3){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][35]=1+fcc1t;
+			Distance[7][25]=1+fcc2t;
+			Distance[7][16]=1+fcc3t;
+			Distance[21][35]=1+fcc1t;
+			Distance[21][25]=1+fcc2t;
+			Distance[21][16]=1+fcc3t;
+			Distance[31][35]=1+fcc1t;
+			Distance[31][25]=1+fcc2t;
+			Distance[31][16]=1+fcc3t;
+			Distance[35][24]=1+fcc10t;
+			Distance[35][10]=1+fcc11t;
+			Distance[35][20]=1+fcc12t;
+			Distance[25][24]=1+fcc10t;
+			Distance[25][10]=1+fcc11t;
+			Distance[25][20]=1+fcc12t;
+			Distance[16][24]=1+fcc10t;
+			Distance[16][10]=1+fcc11t;
+			Distance[16][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==4){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][35]=1+fcc1t;
+			Distance[7][25]=1+fcc2t;
+			Distance[7][16]=1+fcc3t;
+			Distance[21][35]=1+fcc1t;
+			Distance[21][25]=1+fcc2t;
+			Distance[21][16]=1+fcc3t;
+			Distance[31][35]=1+fcc1t;
+			Distance[31][25]=1+fcc2t;
+			Distance[31][16]=1+fcc3t;
+			Distance[35][4]=1+fcc13t;
+			Distance[35][15]=1+fcc14t;
+			Distance[35][36]=1+fcc15t;
+			Distance[25][4]=1+fcc13t;
+			Distance[25][15]=1+fcc14t;
+			Distance[25][36]=1+fcc15t;
+			Distance[16][4]=1+fcc13t;
+			Distance[16][15]=1+fcc14t;
+			Distance[16][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==5){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][11]=1+fcc7t;
+			Distance[35][13]=1+fcc8t;
+			Distance[35][9]=1+fcc9t;
+			Distance[25][11]=1+fcc7t;
+			Distance[25][13]=1+fcc8t;
+			Distance[25][9]=1+fcc9t;
+			Distance[16][11]=1+fcc7t;
+			Distance[16][13]=1+fcc8t;
+			Distance[16][9]=1+fcc9t;
+			Distance[11][24]=1+fcc10t;
+			Distance[11][10]=1+fcc11t;
+			Distance[11][20]=1+fcc12t;
+			Distance[13][24]=1+fcc10t;
+			Distance[13][10]=1+fcc11t;
+			Distance[13][20]=1+fcc12t;
+			Distance[9][24]=1+fcc10t;
+			Distance[9][10]=1+fcc11t;
+			Distance[9][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==6){
+			Distance[0][35]=1+fcc1t;
+			Distance[0][25]=1+fcc2t;
+			Distance[0][16]=1+fcc3t;
+			Distance[35][11]=1+fcc7t;
+			Distance[35][13]=1+fcc8t;
+			Distance[35][9]=1+fcc9t;
+			Distance[25][11]=1+fcc7t;
+			Distance[25][13]=1+fcc8t;
+			Distance[25][9]=1+fcc9t;
+			Distance[16][11]=1+fcc7t;
+			Distance[16][13]=1+fcc8t;
+			Distance[16][9]=1+fcc9t;
+			Distance[11][4]=1+fcc13t;
+			Distance[11][15]=1+fcc14t;
+			Distance[11][36]=1+fcc15t;
+			Distance[13][4]=1+fcc13t;
+			Distance[13][15]=1+fcc14t;
+			Distance[13][36]=1+fcc15t;
+			Distance[9][4]=1+fcc13t;
+			Distance[9][15]=1+fcc14t;
+			Distance[9][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==7){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][35]=1+fcc1t;
+			Distance[11][25]=1+fcc2t;
+			Distance[11][16]=1+fcc3t;
+			Distance[13][35]=1+fcc1t;
+			Distance[13][25]=1+fcc2t;
+			Distance[13][16]=1+fcc3t;
+			Distance[9][35]=1+fcc1t;
+			Distance[9][25]=1+fcc2t;
+			Distance[9][16]=1+fcc3t;
+			Distance[35][24]=1+fcc10t;
+			Distance[35][10]=1+fcc11t;
+			Distance[35][20]=1+fcc12t;
+			Distance[25][24]=1+fcc10t;
+			Distance[25][10]=1+fcc11t;
+			Distance[25][20]=1+fcc12t;
+			Distance[16][24]=1+fcc10t;
+			Distance[16][10]=1+fcc11t;
+			Distance[16][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==8){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][35]=1+fcc1t;
+			Distance[11][25]=1+fcc2t;
+			Distance[11][16]=1+fcc3t;
+			Distance[13][35]=1+fcc1t;
+			Distance[13][25]=1+fcc2t;
+			Distance[13][16]=1+fcc3t;
+			Distance[9][35]=1+fcc1t;
+			Distance[9][25]=1+fcc2t;
+			Distance[9][16]=1+fcc3t;
+			Distance[35][4]=1+fcc13t;
+			Distance[35][15]=1+fcc14t;
+			Distance[35][36]=1+fcc15t;
+			Distance[25][4]=1+fcc13t;
+			Distance[25][15]=1+fcc14t;
+			Distance[25][36]=1+fcc15t;
+			Distance[16][4]=1+fcc13t;
+			Distance[16][15]=1+fcc14t;
+			Distance[16][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==9){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][11]=1+fcc7t;
+			Distance[7][13]=1+fcc8t;
+			Distance[7][9]=1+fcc9t;
+			Distance[21][11]=1+fcc7t;
+			Distance[21][13]=1+fcc8t;
+			Distance[21][9]=1+fcc9t;
+			Distance[31][11]=1+fcc7t;
+			Distance[31][13]=1+fcc8t;
+			Distance[31][9]=1+fcc9t;
+			Distance[11][24]=1+fcc10t;
+			Distance[11][10]=1+fcc11t;
+			Distance[11][20]=1+fcc12t;
+			Distance[13][24]=1+fcc10t;
+			Distance[13][10]=1+fcc11t;
+			Distance[13][20]=1+fcc12t;
+			Distance[9][24]=1+fcc10t;
+			Distance[9][10]=1+fcc11t;
+			Distance[9][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==10){
+			Distance[0][7]=1+fcc4t;
+			Distance[0][21]=1+fcc5t;
+			Distance[0][31]=1+fcc6t;
+			Distance[7][11]=1+fcc7t;
+			Distance[7][13]=1+fcc8t;
+			Distance[7][9]=1+fcc9t;
+			Distance[21][11]=1+fcc7t;
+			Distance[21][13]=1+fcc8t;
+			Distance[21][9]=1+fcc9t;
+			Distance[31][11]=1+fcc7t;
+			Distance[31][13]=1+fcc8t;
+			Distance[31][9]=1+fcc9t;
+			Distance[11][4]=1+fcc13t;
+			Distance[11][15]=1+fcc14t;
+			Distance[11][36]=1+fcc15t;
+			Distance[13][4]=1+fcc13t;
+			Distance[13][15]=1+fcc14t;
+			Distance[13][36]=1+fcc15t;
+			Distance[9][4]=1+fcc13t;
+			Distance[9][15]=1+fcc14t;
+			Distance[9][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+			if(functionType==11){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][7]=1+fcc4t;
+			Distance[11][21]=1+fcc5t;
+			Distance[11][31]=1+fcc6t;
+			Distance[13][7]=1+fcc4t;
+			Distance[13][21]=1+fcc5t;
+			Distance[13][31]=1+fcc6t;
+			Distance[9][7]=1+fcc4t;
+			Distance[9][21]=1+fcc5t;
+			Distance[9][31]=1+fcc6t;
+			Distance[7][24]=1+fcc10t;
+			Distance[7][10]=1+fcc11t;
+			Distance[7][20]=1+fcc12t;
+			Distance[21][24]=1+fcc10t;
+			Distance[21][10]=1+fcc11t;
+			Distance[21][20]=1+fcc12t;
+			Distance[31][24]=1+fcc10t;
+			Distance[31][10]=1+fcc11t;
+			Distance[31][20]=1+fcc12t;
+			Distance[24][38]=1;
+			Distance[10][38]=1;
+			Distance[20][38]=1;
+			}
+			if(functionType==12){
+			Distance[0][11]=1+fcc7t;
+			Distance[0][13]=1+fcc8t;
+			Distance[0][9]=1+fcc9t;
+			Distance[11][7]=1+fcc4t;
+			Distance[11][21]=1+fcc5t;
+			Distance[11][31]=1+fcc6t;
+			Distance[13][7]=1+fcc4t;
+			Distance[13][21]=1+fcc5t;
+			Distance[13][31]=1+fcc6t;
+			Distance[9][7]=1+fcc4t;
+			Distance[9][21]=1+fcc5t;
+			Distance[9][31]=1+fcc6t;
+			Distance[7][4]=1+fcc13t;
+			Distance[7][15]=1+fcc14t;
+			Distance[7][36]=1+fcc15t;
+			Distance[21][4]=1+fcc13t;
+			Distance[21][15]=1+fcc14t;
+			Distance[21][36]=1+fcc15t;
+			Distance[31][4]=1+fcc13t;
+			Distance[31][15]=1+fcc14t;
+			Distance[31][36]=1+fcc15t;
+			Distance[4][38]=1;
+			Distance[15][38]=1;
+			Distance[36][38]=1;
+			}
+
 	}
 
 
@@ -3688,161 +5137,9 @@ Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumer
 	}
 	sRoute[j] = sp;
 
-	/*
-  //for us
-  switch (sRoute[3]) {
-    case 2:
-      sDist -= fcc1;
-      break;
-    case 12:
-      sDist -= fcc2;
-      break;
-    case 18:
-      sDist -= fcc3;
-      break;
-    case 14:
-      sDist -= fcc4;
-      break;
-    case 7:
-      sDist -= fcc5;
-      break;
-    case 16:
-      sDist -= fcc6;
-      break;
-    case 23:
-      sDist -= fcc7;
-      break;
-    case 5:
-      sDist -= fcc8;
-      break;
-    case 15:
-      sDist -= fcc9;
-      break;
-    case 1:
-      sDist -= fcc10;
-      break;
-    case 17:
-      sDist -= fcc11;
-      break;
-    case 8:
-      sDist -= fcc12;
-      break;
-    case 6:
-      sDist -= fcc13;
-      break;
-    case 19:
-      sDist -= fcc14;
-      break;
-    case 13:
-      sDist -= fcc15;
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[2]) {
-    case 2:
-      sDist -= fcc1;
-      break;
-    case 12:
-      sDist -= fcc2;
-      break;
-    case 18:
-      sDist -= fcc3;
-      break;
-    case 14:
-      sDist -= fcc4;
-      break;
-    case 7:
-      sDist -= fcc5;
-      break;
-    case 16:
-      sDist -= fcc6;
-      break;
-    case 23:
-      sDist -= fcc7;
-      break;
-    case 5:
-      sDist -= fcc8;
-      break;
-    case 15:
-      sDist -= fcc9;
-      break;
-    case 1:
-      sDist -= fcc10;
-      break;
-    case 17:
-      sDist -= fcc11;
-      break;
-    case 8:
-      sDist -= fcc12;
-      break;
-    case 6:
-      sDist -= fcc13;
-      break;
-    case 19:
-      sDist -= fcc14;
-      break;
-    case 13:
-      sDist -= fcc15;
-      break;
-    default:
-      break;
-  }
-
-  switch (sRoute[1]) {
-    case 2:
-      sDist -= fcc1;
-      break;
-    case 12:
-      sDist -= fcc2;
-      break;
-    case 18:
-      sDist -= fcc3;
-      break;
-    case 14:
-      sDist -= fcc4;
-      break;
-    case 7:
-      sDist -= fcc5;
-      break;
-    case 16:
-      sDist -= fcc6;
-      break;
-    case 23:
-      sDist -= fcc7;
-      break;
-    case 5:
-      sDist -= fcc8;
-      break;
-    case 15:
-      sDist -= fcc9;
-      break;
-    case 1:
-      sDist -= fcc10;
-      break;
-    case 17:
-      sDist -= fcc11;
-      break;
-    case 8:
-      sDist -= fcc12;
-      break;
-    case 6:
-      sDist -= fcc13;
-      break;
-    case 19:
-      sDist -= fcc14;
-      break;
-    case 13:
-      sDist -= fcc15;
-      break;
-    default:
-      break;
-  }
-	 */
-
 
 	//for us1
+	/*
 	switch (sRoute[3]) {
 	case 3:
 		sDist -= fcc1;
@@ -3992,7 +5289,308 @@ Consumer::dijkstra(int sp, int dp, int sRoute[N], int functionType, int consumer
 	default:
 		break;
 	}
+*/
+	//Sinet
+	/*
+		switch (sRoute[3]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[2]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[1]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+*/ //Sinet
 
+				//Geant
+				///*
+				switch (sRoute[3]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[2]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[1]) {
+				case 35:
+				sDist -= fcc1;
+				break;
+				case 25:
+				sDist -= fcc2;
+				break;
+				case 16:
+				sDist -= fcc3;
+				break;
+				case 7:
+				sDist -= fcc4;
+				break;
+				case 21:
+				sDist -= fcc5;
+				break;
+				case 31:
+				sDist -= fcc6;
+				break;
+				case 11:
+				sDist -= fcc7;
+				break;
+				case 13:
+				sDist -= fcc8;
+				break;
+				case 9:
+				sDist -= fcc9;
+				break;
+				case 24:
+				sDist -= fcc10;
+				break;
+				case 10:
+				sDist -= fcc11;
+				break;
+				case 20:
+				sDist -= fcc12;
+				break;
+				case 4:
+				sDist -= fcc13;
+				break;
+				case 15:
+				sDist -= fcc14;
+				break;
+				case 36:
+				sDist -= fcc15;
+				break;
+				default:
+				break;
+				}
+			//*/  //Geant
 
 	return sDist;
 
@@ -4282,8 +5880,8 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 	switch(getChoiceType()){
 	case 0: //siraiwaNDN
 
-		distance = dijkstra(0, 25, sRoute, functionType, currentNode, weight, 0);
-		//int distance = dijkstra(0, 25, sRoute, 1, currentNode, weight, 0);
+		//distance = dijkstra(0, 25, sRoute, functionType, currentNode, weight, 0);//us-24
+		distance = dijkstra(0, 38, sRoute, functionType, currentNode, weight, 0);//Sinet,Geant
 		//std::cout << "distance: " << distance << std::endl;
 
 		/*
@@ -4292,161 +5890,8 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 			  std::cout << "" << std::endl;
 		 */
 
-
-		/*
-			  //for us
-			  switch (sRoute[3]) {
-			    case 2:
-		 *funcName = "/F1a";
-			      break;
-			    case 11:
-		 *funcName = "/F1b";
-			      break;
-			    case 18:
-		 *funcName = "/F1c";
-			      break;
-			    case 7:
-		 *funcName = "/F2a";
-			      break;
-			    case 10:
-		 *funcName = "/F2b";
-			      break;
-			    case 16:
-		 *funcName = "/F2c";
-			      break;
-			    case 8:
-		 *funcName = "/F3a";
-			      break;
-			    case 13:
-		 *funcName = "/F3b";
-			      break;
-			    case 15:
-		 *funcName = "/F3c";
-			      break;
-			    case 5:
-		 *funcName = "/F4a";
-			      break;
-			    case 12:
-		 *funcName = "/F4b";
-			      break;
-			    case 21:
-		 *funcName = "/F4c";
-			      break;
-			    case 3:
-		 *funcName = "/F5a";
-			      break;
-			    case 9:
-		 *funcName = "/F5b";
-			      break;
-			    case 23:
-		 *funcName = "/F5c";
-			      break;
-			    default:
-			      break;
-			  }
-
-			  switch (sRoute[2]) {
-			    case 2:
-		 *funcName += "/F1a";
-			      break;
-			    case 11:
-		 *funcName += "/F1b";
-			      break;
-			    case 18:
-		 *funcName += "/F1c";
-			      break;
-			    case 7:
-		 *funcName += "/F2a";
-			      break;
-			    case 10:
-		 *funcName += "/F2b";
-			      break;
-			    case 16:
-		 *funcName += "/F2c";
-			      break;
-			    case 8:
-		 *funcName += "/F3a";
-			      break;
-			    case 13:
-		 *funcName += "/F3b";
-			      break;
-			    case 15:
-		 *funcName += "/F3c";
-			      break;
-			    case 5:
-		 *funcName += "/F4a";
-			      break;
-			    case 12:
-		 *funcName += "/F4b";
-			      break;
-			    case 21:
-		 *funcName += "/F4c";
-			      break;
-			    case 3:
-		 *funcName += "/F5a";
-			      break;
-			    case 9:
-		 *funcName += "/F5b";
-			      break;
-			    case 23:
-		 *funcName += "/F5c";
-			      break;
-			    default:
-			      break;
-			  }
-
-			  switch (sRoute[1]) {
-			    case 2:
-		 *funcName += "/F1a";
-			      break;
-			    case 11:
-		 *funcName += "/F1b";
-			      break;
-			    case 18:
-		 *funcName += "/F1c";
-			      break;
-			    case 7:
-		 *funcName += "/F2a";
-			      break;
-			    case 10:
-		 *funcName += "/F2b";
-			      break;
-			    case 16:
-		 *funcName += "/F2c";
-			      break;
-			    case 8:
-		 *funcName += "/F3a";
-			      break;
-			    case 13:
-		 *funcName += "/F3b";
-			      break;
-			    case 15:
-		 *funcName += "/F3c";
-			      break;
-			    case 5:
-		 *funcName += "/F4a";
-			      break;
-			    case 12:
-		 *funcName += "/F4b";
-			      break;
-			    case 21:
-		 *funcName += "/F4c";
-			      break;
-			    case 3:
-		 *funcName += "/F5a";
-			      break;
-			    case 9:
-		 *funcName += "/F5b";
-			      break;
-			    case 23:
-		 *funcName += "/F5c";
-			      break;
-			    default:
-			      break;
-			  }
-		 */
-
 		//for us1
+		/*
 		switch (sRoute[3]) {
 		case 3:
 			*funcName = "/F1a";
@@ -4596,75 +6041,444 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 		default:
 			break;
 		}
+		*/
+	//Sinet
+	/*
+		 switch (sRoute[3]) {
+				case 35:
+				*funcName = "/F1a";
+				break;
+				case 25:
+				*funcName = "/F1b";
+				break;
+				case 16:
+				*funcName = "/F1c";
+				break;
+				case 7:
+				*funcName = "/F2a";
+				break;
+				case 21:
+				*funcName = "/F2b";
+				break;
+				case 31:
+				*funcName = "/F2c";
+				break;
+				case 11:
+				*funcName = "/F3a";
+				break;
+				case 13:
+				*funcName = "/F3b";
+				break;
+				case 9:
+				*funcName = "/F3c";
+				break;
+				case 24:
+				*funcName = "/F4a";
+				break;
+				case 10:
+				*funcName = "/F4b";
+				break;
+				case 20:
+				*funcName = "/F4c";
+				break;
+				case 4:
+				*funcName = "/F5a";
+				break;
+				case 15:
+				*funcName = "/F5b";
+				break;
+				case 36:
+				*funcName = "/F5c";
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[2]) {
+				case 35:
+				*funcName += "/F1a";
+				break;
+				case 25:
+				*funcName += "/F1b";
+				break;
+				case 16:
+				*funcName += "/F1c";
+				break;
+				case 7:
+				*funcName += "/F2a";
+				break;
+				case 21:
+				*funcName += "/F2b";
+				break;
+				case 31:
+				*funcName += "/F2c";
+				break;
+				case 11:
+				*funcName += "/F3a";
+				break;
+				case 13:
+				*funcName += "/F3b";
+				break;
+				case 9:
+				*funcName += "/F3c";
+				break;
+				case 24:
+				*funcName += "/F4a";
+				break;
+				case 10:
+				*funcName += "/F4b";
+				break;
+				case 20:
+				*funcName += "/F4c";
+				break;
+				case 4:
+				*funcName += "/F5a";
+				break;
+				case 15:
+				*funcName += "/F5b";
+				break;
+				case 36:
+				*funcName += "/F5c";
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[1]) {
+				case 35:
+				*funcName += "/F1a";
+				break;
+				case 25:
+				*funcName += "/F1b";
+				break;
+				case 16:
+				*funcName += "/F1c";
+				break;
+				case 7:
+				*funcName += "/F2a";
+				break;
+				case 21:
+				*funcName += "/F2b";
+				break;
+				case 31:
+				*funcName += "/F2c";
+				break;
+				case 11:
+				*funcName += "/F3a";
+				break;
+				case 13:
+				*funcName += "/F3b";
+				break;
+				case 9:
+				*funcName += "/F3c";
+				break;
+				case 24:
+				*funcName += "/F4a";
+				break;
+				case 10:
+				*funcName += "/F4b";
+				break;
+				case 20:
+				*funcName += "/F4c";
+				break;
+				case 4:
+				*funcName += "/F5a";
+				break;
+				case 15:
+				*funcName += "/F5b";
+				break;
+				case 36:
+				*funcName += "/F5c";
+				break;
+				default:
+				break;
+			}
+*/
+				//Geant
+				///*
+				 switch (sRoute[3]) {
+				case 35:
+				*funcName = "/F1a";
+				break;
+				case 25:
+				*funcName = "/F1b";
+				break;
+				case 16:
+				*funcName = "/F1c";
+				break;
+				case 7:
+				*funcName = "/F2a";
+				break;
+				case 21:
+				*funcName = "/F2b";
+				break;
+				case 31:
+				*funcName = "/F2c";
+				break;
+				case 11:
+				*funcName = "/F3a";
+				break;
+				case 13:
+				*funcName = "/F3b";
+				break;
+				case 9:
+				*funcName = "/F3c";
+				break;
+				case 24:
+				*funcName = "/F4a";
+				break;
+				case 10:
+				*funcName = "/F4b";
+				break;
+				case 20:
+				*funcName = "/F4c";
+				break;
+				case 4:
+				*funcName = "/F5a";
+				break;
+				case 15:
+				*funcName = "/F5b";
+				break;
+				case 36:
+				*funcName = "/F5c";
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[2]) {
+				case 35:
+				*funcName += "/F1a";
+				break;
+				case 25:
+				*funcName += "/F1b";
+				break;
+				case 16:
+				*funcName += "/F1c";
+				break;
+				case 7:
+				*funcName += "/F2a";
+				break;
+				case 21:
+				*funcName += "/F2b";
+				break;
+				case 31:
+				*funcName += "/F2c";
+				break;
+				case 11:
+				*funcName += "/F3a";
+				break;
+				case 13:
+				*funcName += "/F3b";
+				break;
+				case 9:
+				*funcName += "/F3c";
+				break;
+				case 24:
+				*funcName += "/F4a";
+				break;
+				case 10:
+				*funcName += "/F4b";
+				break;
+				case 20:
+				*funcName += "/F4c";
+				break;
+				case 4:
+				*funcName += "/F5a";
+				break;
+				case 15:
+				*funcName += "/F5b";
+				break;
+				case 36:
+				*funcName += "/F5c";
+				break;
+				default:
+				break;
+				}
+				switch (sRoute[1]) {
+				case 35:
+				*funcName += "/F1a";
+				break;
+				case 25:
+				*funcName += "/F1b";
+				break;
+				case 16:
+				*funcName += "/F1c";
+				break;
+				case 7:
+				*funcName += "/F2a";
+				break;
+				case 21:
+				*funcName += "/F2b";
+				break;
+				case 31:
+				*funcName += "/F2c";
+				break;
+				case 11:
+				*funcName += "/F3a";
+				break;
+				case 13:
+				*funcName += "/F3b";
+				break;
+				case 9:
+				*funcName += "/F3c";
+				break;
+				case 24:
+				*funcName += "/F4a";
+				break;
+				case 10:
+				*funcName += "/F4b";
+				break;
+				case 20:
+				*funcName += "/F4c";
+				break;
+				case 4:
+				*funcName += "/F5a";
+				break;
+				case 15:
+				*funcName += "/F5b";
+				break;
+				case 36:
+				*funcName += "/F5c";
+				break;
+				default:
+				break;
+			}
+			// */ //Geant
 		increaseTotalHops(distance);
 
 		break;  // end siraiwaNDN
 		case 1: //roundRobin
 		{
-			switch(functionType){// firstType
-			case 1:
-			case 2:
-			case 5:
-			case 6:
+			uint32_t randNum1 = ::ndn::random::generateWord32() % 5 + 1;
+			uint32_t randNum2 = ::ndn::random::generateWord32() % 5 + 1;
+			uint32_t randNum3 = ::ndn::random::generateWord32() % 5 + 1;
+			while(randNum1 == randNum2){
+				randNum2 = ::ndn::random::generateWord32() % 5 + 1;
+			}
+			while(randNum1 == randNum3 || randNum2 == randNum3){
+				randNum3 = ::ndn::random::generateWord32() % 5 + 1;
+			}
+			
+			
+			switch(randNum1){//firstType
+				case 1:
 				*funcName += roundRobin(1);
 				break;
-			case 3:
-			case 4:
-			case 9:
-			case 10:
+				case 2:
 				*funcName += roundRobin(2);
 				break;
-			case 7:
-			case 8:
-			case 11:
-			case 12:
+				case 3:
 				*funcName += roundRobin(3);
 				break;
-			default:
-				break;
-			}
-			switch(functionType){// secondType
-			case 1:
-			case 2:
-			case 11:
-			case 12:
-				*funcName += roundRobin(2);
-				break;
-			case 3:
-			case 4:
-			case 7:
-			case 8:
-				*funcName += roundRobin(1);
-				break;
-			case 5:
-			case 6:
-			case 9:
-			case 10:
-				*funcName += roundRobin(3);
-				break;
-			default:
-				break;
-			}
-			switch(functionType){// thirdType
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 9:
-			case 11:
+				case 4:
 				*funcName += roundRobin(4);
 				break;
-			case 2:
-			case 4:
-			case 6:
-			case 8:
-			case 10:
-			case 12:
+				case 5:
 				*funcName += roundRobin(5);
 				break;
-			default:
+				default:
 				break;
 			}
+			switch(randNum2){//secondType
+				case 1:
+				*funcName += roundRobin(1);
+				break;
+				case 2:
+				*funcName += roundRobin(2);
+				break;
+				case 3:
+				*funcName += roundRobin(3);
+				break;
+				case 4:
+				*funcName += roundRobin(4);
+				break;
+				case 5:
+				*funcName += roundRobin(5);
+				break;
+				default:
+				break;
+			}
+			switch(randNum3){//ThirdType
+				case 1:
+				*funcName += roundRobin(1);
+				break;
+				case 2:
+				*funcName += roundRobin(2);
+				break;
+				case 3:
+				*funcName += roundRobin(3);
+				break;
+				case 4:
+				*funcName += roundRobin(4);
+				break;
+				case 5:
+				*funcName += roundRobin(5);
+				break;
+				default:
+				break;
+			}
+			// switch(functionType){// firstType
+			// case 1:
+			// case 2:
+			// case 5:
+			// case 6:
+			// 	*funcName += roundRobin(1);
+			// 	break;
+			// case 3:
+			// case 4:
+			// case 9:
+			// case 10:
+			// 	*funcName += roundRobin(2);
+			// 	break;
+			// case 7:
+			// case 8:
+			// case 11:
+			// case 12:
+			// 	*funcName += roundRobin(3);
+			// 	break;
+			// default:
+			// 	break;
+			// }
+			// switch(functionType){// secondType
+			// case 1:
+			// case 2:
+			// case 11:
+			// case 12:
+			// 	*funcName += roundRobin(2);
+			// 	break;
+			// case 3:
+			// case 4:
+			// case 7:
+			// case 8:
+			// 	*funcName += roundRobin(1);
+			// 	break;
+			// case 5:
+			// case 6:
+			// case 9:
+			// case 10:
+			// 	*funcName += roundRobin(3);
+			// 	break;
+			// default:
+			// 	break;
+			// }
+			// switch(functionType){// thirdType
+			// case 1:
+			// case 3:
+			// case 5:
+			// case 7:
+			// case 9:
+			// case 11:
+			// 	*funcName += roundRobin(4);
+			// 	break;
+			// case 2:
+			// case 4:
+			// case 6:
+			// case 8:
+			// case 10:
+			// case 12:
+			// 	*funcName += roundRobin(5);
+			// 	break;
+			// default:
+			// 	break;
+			// }
 		}
 		break;//end roundRobin
 		case 2://duration
@@ -4715,70 +6529,137 @@ Consumer::sourceRouting(uint32_t functionType, int currentNode, int* sRoute, dou
 
 		case 3:
 		{
-			switch(functionType){// firstType
-			case 1:
-			case 2:
-			case 5:
-			case 6:
+			uint32_t randNum1 = ::ndn::random::generateWord32() % 5 + 1;
+			uint32_t randNum2 = ::ndn::random::generateWord32() % 5 + 1;
+			uint32_t randNum3 = ::ndn::random::generateWord32() % 5 + 1;
+			while(randNum1 == randNum2){
+				randNum2 = ::ndn::random::generateWord32() % 5 + 1;
+			}
+			while(randNum1 == randNum3 || randNum2 == randNum3){
+				randNum3 = ::ndn::random::generateWord32() % 5 + 1;
+			}
+
+			switch(randNum1){//firstType
+				case 1:
 				*funcName += randChoice(1);
 				break;
-			case 3:
-			case 4:
-			case 9:
-			case 10:
+				case 2:
 				*funcName += randChoice(2);
 				break;
-			case 7:
-			case 8:
-			case 11:
-			case 12:
+				case 3:
 				*funcName += randChoice(3);
 				break;
-			default:
-				break;
-			}
-			switch(functionType){// secondType
-			case 1:
-			case 2:
-			case 11:
-			case 12:
-				*funcName += randChoice(2);
-				break;
-			case 3:
-			case 4:
-			case 7:
-			case 8:
-				*funcName += randChoice(1);
-				break;
-			case 5:
-			case 6:
-			case 9:
-			case 10:
-				*funcName += randChoice(3);
-				break;
-			default:
-				break;
-			}
-			switch(functionType){// thirdType
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 9:
-			case 11:
+				case 4:
 				*funcName += randChoice(4);
 				break;
-			case 2:
-			case 4:
-			case 6:
-			case 8:
-			case 10:
-			case 12:
+				case 5:
 				*funcName += randChoice(5);
 				break;
-			default:
+				default:
 				break;
 			}
+			switch(randNum2){//firstType
+				case 1:
+				*funcName += randChoice(1);
+				break;
+				case 2:
+				*funcName += randChoice(2);
+				break;
+				case 3:
+				*funcName += randChoice(3);
+				break;
+				case 4:
+				*funcName += randChoice(4);
+				break;
+				case 5:
+				*funcName += randChoice(5);
+				break;
+				default:
+				break;
+			}
+			switch(randNum3){//firstType
+				case 1:
+				*funcName += randChoice(1);
+				break;
+				case 2:
+				*funcName += randChoice(2);
+				break;
+				case 3:
+				*funcName += randChoice(3);
+				break;
+				case 4:
+				*funcName += randChoice(4);
+				break;
+				case 5:
+				*funcName += randChoice(5);
+				break;
+				default:
+				break;
+			}
+			// switch(functionType){// firstType
+			// case 1:
+			// case 2:
+			// case 5:
+			// case 6:
+			// 	*funcName += randChoice(1);
+			// 	break;
+			// case 3:
+			// case 4:
+			// case 9:
+			// case 10:
+			// 	*funcName += randChoice(2);
+			// 	break;
+			// case 7:
+			// case 8:
+			// case 11:
+			// case 12:
+			// 	*funcName += randChoice(3);
+			// 	break;
+			// default:
+			// 	break;
+			// }
+			// switch(functionType){// secondType
+			// case 1:
+			// case 2:
+			// case 11:
+			// case 12:
+			// 	*funcName += randChoice(2);
+			// 	break;
+			// case 3:
+			// case 4:
+			// case 7:
+			// case 8:
+			// 	*funcName += randChoice(1);
+			// 	break;
+			// case 5:
+			// case 6:
+			// case 9:
+			// case 10:
+			// 	*funcName += randChoice(3);
+			// 	break;
+			// default:
+			// 	break;
+			// }
+			// switch(functionType){// thirdType
+			// case 1:
+			// case 3:
+			// case 5:
+			// case 7:
+			// case 9:
+			// case 11:
+			// 	*funcName += randChoice(4);
+			// 	break;
+			// case 2:
+			// case 4:
+			// case 6:
+			// case 8:
+			// case 10:
+			// case 12:
+			// 	*funcName += randChoice(5);
+			// 	break;
+			// default:
+			// 	break;
+			// }
 		}
 		break;//end randChoice
 		case 4:
@@ -4988,6 +6869,7 @@ Consumer::SendPacket()
 	 */
 	// shared_ptr<Interest> interest = make_shared<Interest> ();
 	shared_ptr<Interest> interest = make_shared<Interest>();
+	
 	interest->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
 	interest->setName(*nameWithSequence);
 	interest->setFunction(*functionName);
@@ -5052,7 +6934,7 @@ Consumer::OnData(shared_ptr<const Data> data)
 	uint32_t seq = data->getName().at(-1).toSequenceNumber();
 	NS_LOG_INFO("< DATA for " << seq);
 	ns3::increaseServiceNum();
-	std::cout << "Service Num: " << ns3::getServiceNum() << std::endl;
+	//std::cout << "Service Num: " << ns3::getServiceNum() << std::endl;
 
 	//added 2019/11/12
 	if(getChoiceType() == 2){
@@ -5101,11 +6983,11 @@ Consumer::OnData(shared_ptr<const Data> data)
 	ns3::setAverageServiceTime(averageServiceTime);
 
 	//std::cout << "Service Time: " << data->getServiceTime().count() << std::endl;
-	std::cout << "Service Time        : " << serviceTime << std::endl;
-	std::cout << "Average Service Time: " << averageServiceTime << std::endl;
-	std::cout << "Service End Time    : " << nowTime.count() << std::endl;
+	// std::cout << "Service Time        : " << serviceTime << std::endl;
+	// std::cout << "Average Service Time: " << averageServiceTime << std::endl;
+	// std::cout << "Service End Time    : " << nowTime.count() << std::endl;
 
-	std::cout << "------------------------------------------------" << std::endl;
+	// std::cout << "------------------------------------------------" << std::endl;
 
 	/*
 //   std::cout << "Interest Num:" << getInterestNum() << std::endl;
@@ -5163,7 +7045,7 @@ Consumer::OnData(shared_ptr<const Data> data)
 	for(int i = 1; i < 16; i++){
 		totalFcc += getTotalFcc(i);
 	}
-	std::cout << "TotalFcc: " << totalFcc << std::endl;
+	//std::cout << "TotalFcc: " << totalFcc << std::endl;
 
 	int hopCount = 0;
 	auto hopCountTag = data->getTag<lp::HopCountTag>();

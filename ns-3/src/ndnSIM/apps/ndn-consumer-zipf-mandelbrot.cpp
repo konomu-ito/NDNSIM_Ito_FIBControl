@@ -195,6 +195,8 @@ ConsumerZipfMandelbrot::SendPacket()
   shared_ptr<Interest> interest = make_shared<Interest>();
   interest->setNonce(m_rand->GetValue(0, std::numeric_limits<uint32_t>::max()));
   interest->setName(*nameWithSequence);
+  //std::cout << "Function Type" << functionType << std::endl;
+  //std::cout << "Consumer Function Name" << *functionName << std::endl;
 
   //ここから
   interest->setFunction(*functionName);

@@ -39,7 +39,7 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/member.hpp>
 
-#define N 26
+#define N 39//us24=26,sinet,Geant=39
 
 namespace ns3 {
 namespace ndn {

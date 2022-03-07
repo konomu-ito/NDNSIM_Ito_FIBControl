@@ -1,182 +1,183 @@
+# topo-grid-3x3.txt
+
+#   /--------\	    /-\	        /-\
+#   |Consumer|<---->| |<------->| |
+#   \--------/	    \-/	        \-/
+#       ^   	     ^ 	         ^
+#       |            |           |   1Mbps/10ms delay
+#       v            v           v
+#      /-\          /-\         /-\
+#      | |<-------->| |<------->| |
+#      \-/          \-/         \-/
+#       ^   	     ^ 	         ^
+#       |            |           |
+#       v            v           v
+#      /-\	    /-\	     /--------\
+#      | |<-------->| |<---->|Producer|
+#      \-/          \-/      \--------/
+
+# any empty lines and lines starting with '#' symbol is ignored
+#
+# The file should contain exactly two sections: router and link, each starting with the corresponding keyword
+#
+# router section defines topology nodes and their relative positions (e.g., to use in visualizer)
 router
 
-#node  city  y  x
-leaf-1   NA  34.98969   82.47403
-leaf-2   NA  34.44878   80.95045
-leaf-3   NA  42.66553   85.77594
-leaf-4   NA  47.06667   82.51667
-leaf-5   NA  38.78333   80.21667
-leaf-6   NA  44.52076   80.18804
-leaf-7   NA  36.23      79.71167
-leaf-8   NA  32.4488    78.95341
-leaf-9   NA  37.54744   77.04809
-leaf-10  NA  39.28951   75.56427
-leaf-11  NA  53.42415   72.79751
-leaf-12  NA  56.20626   74.53225
-leaf-13  NA  65.01155   69.15901
-leaf-14  NA  53.81622   68.07945
-leaf-15  NA  63.46667   65.26667
-leaf-16  NA  64.85      61.6
-leaf-17  NA  44.52556   66.00917
-leaf-18  NA  51.53333   72.1
-leaf-19  NA  49.36361   72.54111
-leaf-20  NA  49.13991   77.59801
-leaf-21  NA  47.20674   78.24816
-leaf-22  NA  20.96667   68.81667
-leaf-23  NA  26.39744   70.5165
-leaf-24  NA  50.56513   74.90401
-leaf-25  NA  46.07798   75.91444
-leaf-26  NA  44.60513   76.15108
-leaf-27  NA  46.47208   78.30849
-leaf-28  NA  54.0       85.0
-leaf-29  NA  67.71556   85.85222
-leaf-30  NA  8.20459    94.23548
-leaf-31  NA  23.83281   83.44399
-leaf-32  NA  29.97426   81.60853
-leaf-33  NA  40.1       92.1
-leaf-34  NA  48.1649    89.43258
-leaf-35  NA  52.36869   90.55148
-leaf-36  NA  54.85353   89.53696
-leaf-37  NA  54.20589   87.046
+# each line in this section represents one router and should have the following data
+# node  comment     yPos    xPos
+#########################################################
+######################################################
+Consumer1  NA        34.7897       82.374
+Node1    NA          34.8897       82.374
+Node2    NA          34.3488       80.8504
+Node3    NA          42.5655       85.6759
+Node4    NA          46.9667       82.4167
+Node5    NA          38.6833       80.1167
+Node6    NA          44.4208       80.088
+Node7    NA          36.13       79.6117
+Node8    NA          32.3488       78.8534
+Node9    NA          37.4474       76.9481
+Node10   NA          39.1895       75.4643
+Node11   NA          53.3242       72.6975
+Node12   NA          56.1063       74.4323
+Node13   NA          64.9116       69.059
+Node14   NA          53.7162       67.9794
+Node15   NA          63.3667       65.1667
+Node16   NA          64.75       61.5
+Node17   NA          44.4256       65.9092
+Node18   NA          51.4333       72
+Node19   NA          49.2636       72.4411
+Node20   NA          49.0399       77.498
+Node21   NA          47.1067       78.1482
+Node22   NA          20.8667       68.7167
+Node23   NA          26.2974       70.4165
+Node24   NA          50.4651       74.804
+Node25   NA          45.978       75.8144
+Node26   NA          44.5051       76.0511
+Node27   NA          46.3721       78.2085
+Node28   NA          53.9       84.9
+Node29   NA          67.6156       85.7522
+Node30   NA          8.10459       94.1355
+Node31   NA          23.7328       83.344
+Node32   NA          29.8743       81.5085
+Node33   NA          40       92
+Node34   NA          48.0649       89.3326
+Node35   NA          52.2687       90.4515
+Node36   NA          54.7535       89.437
+Node37   NA          54.1059       86.946
+Producer1  NA        46.3721       78.1085
+F1a      NA          52.1687       90.3515
+F1b      NA          45.878       75.7144
+F1c      NA          64.65       61.4
+F2a      NA          36.03       79.5117
+F2b      NA          47.0067       78.0482
+F2c      NA          23.6328       83.244
+F3a      NA          53.2242       72.5975
+F3b      NA          64.8116       68.959
+F3c      NA          37.3474       76.8481
+F4a      NA          50.3651       74.704
+F4b      NA          39.0895       75.3643
+F4c      NA          48.9399       77.398
+F5a      NA          46.8667       82.3167
+F5b      NA          63.2667       65.0667
+F5c      NA          54.6535       89.337
+Consumer2  NA        36.03       79.6117
+Consumer3  NA        53.2242       72.6975
+Consumer4  NA        39.9       92
+Producer2  NA        46.3721       78.0085
+Producer3  NA        26.2974       70.3165
+Producer4  NA        26.2974       70.2165
+# Note that `node` can be any string. It is possible to access to the node by name using Names::Find, see examples.
 
-rtr-1   NA  34.88969   82.37403
-rtr-2   NA  34.34878   80.85045
-rtr-3   NA  42.56553   85.67594
-rtr-4   NA  46.96667   82.41667
-rtr-5   NA  38.68333   80.11667
-rtr-6   NA  44.42076   80.08804
-rtr-7   NA  36.13      79.61167
-rtr-8   NA  32.3488    78.85341
-rtr-9   NA  37.44744   76.94809
-rtr-10  NA  39.18951   75.46427
-rtr-11  NA  53.32415   72.69751
-rtr-12  NA  56.10626   74.43225
-rtr-13  NA  64.91155   69.05901
-rtr-14  NA  53.71622   67.97945
-rtr-15  NA  63.36667   65.16667
-rtr-16  NA  64.75      61.5
-rtr-17  NA  44.42556   65.90917
-rtr-18  NA  51.43333   72
-rtr-19  NA  49.26361   72.44111
-rtr-20  NA  49.03991   77.49801
-rtr-21  NA  47.10674   78.14816
-rtr-22  NA  20.86667   68.71667
-rtr-23  NA  26.29744   70.4165
-rtr-24  NA  50.46513   74.80401
-rtr-25  NA  45.97798   75.81444
-rtr-26  NA  44.50513   76.05108
-rtr-27  NA  46.37208   78.20849
-rtr-28  NA  53.9       84.9
-rtr-29  NA  67.61556   85.75222
-rtr-30  NA  8.10459    94.13548
-rtr-31  NA  23.73281   83.34399
-rtr-32  NA  29.87426   81.50853
-rtr-33  NA  40         92
-rtr-34  NA  48.0649    89.33258
-rtr-35  NA  52.26869   90.45148
-rtr-36  NA  54.75353   89.43696
-rtr-37  NA  54.10589   86.946
-
-
-
+# link section defines point-to-point links between nodes and characteristics of these links
 link
 
-# from     to     capacity    metric   delay   queue
-rtr-1      rtr-2     10Mbps      1   1ms   50
-rtr-1      rtr-3     10Mbps      1   1ms   50
-rtr-1      rtr-5     10Mbps      1   1ms   50
-rtr-1      rtr-32    10Mbps      1   1ms   50
-rtr-1      rtr-28    10Mbps      1   1ms   50
-rtr-2      rtr-31    10Mbps      1   1ms   50
-rtr-3      rtr-30    10Mbps      1   1ms   50
-rtr-3      rtr-33    10Mbps      1   1ms   50
-rtr-3      rtr-5     10Mbps      1   1ms   50
-rtr-3      rtr-36    10Mbps      1   1ms   50
-rtr-3      rtr-34    10Mbps      1   1ms   50
-rtr-3      rtr-29    10Mbps      1   1ms   50
-rtr-4      rtr-5     10Mbps      1   1ms   50
-rtr-4      rtr-6     10Mbps      1   1ms   50
-rtr-4      rtr-28    10Mbps      1   1ms   50
-rtr-5      rtr-6     10Mbps      1   1ms   50
-rtr-5      rtr-7     10Mbps      1   1ms   50
-rtr-5      rtr-9     10Mbps      1   1ms   50
-rtr-5      rtr-15    10Mbps      1   1ms   50
-rtr-5      rtr-16    10Mbps      1   1ms   50
-rtr-5      rtr-27    10Mbps      1   1ms   50
-rtr-5      rtr-29    10Mbps      1   1ms   50
-rtr-6      rtr-21    10Mbps      1   1ms   50
-rtr-7      rtr-8     10Mbps      1   1ms   50
-rtr-8      rtr-9     10Mbps      1   1ms   50
-rtr-8      rtr-24    10Mbps      1   1ms   50
-rtr-8      rtr-32    10Mbps      1   1ms   50
-rtr-9      rtr-10    10Mbps      1   1ms   50
-rtr-9      rtr-24    10Mbps      1   1ms   50
-rtr-10     rtr-24    10Mbps      1   1ms   50
-rtr-10     rtr-17    10Mbps      1   1ms   50
-rtr-10     rtr-27    10Mbps      1   1ms   50
-rtr-10     rtr-14    10Mbps      1   1ms   50
-rtr-11     rtr-20    10Mbps      1   1ms   50
-rtr-11     rtr-18    10Mbps      1   1ms   50
-rtr-11     rtr-12    10Mbps      1   1ms   50
-rtr-11     rtr-13    10Mbps      1   1ms   50
-rtr-11     rtr-14    10Mbps      1   1ms   50
-rtr-12     rtr-13    10Mbps      1   1ms   50
-rtr-12     rtr-20    10Mbps      1   1ms   50
-rtr-14     rtr-27    10Mbps      1   1ms   50
-rtr-15     rtr-32    10Mbps      1   1ms   50
-rtr-16     rtr-28    10Mbps      1   1ms   50
-rtr-19     rtr-25    10Mbps      1   1ms   50
-rtr-20     rtr-24    10Mbps      1   1ms   50
-rtr-20     rtr-25    10Mbps      1   1ms   50
-rtr-20     rtr-21    10Mbps      1   1ms   50
-rtr-21     rtr-27    10Mbps      1   1ms   50
-rtr-22     rtr-23    10Mbps      1   1ms   50
-rtr-22     rtr-32    10Mbps      1   1ms   50
-rtr-25     rtr-26    10Mbps      1   1ms   50
-rtr-26     rtr-27    10Mbps      1   1ms   50
-rtr-28     rtr-37    10Mbps      1   1ms   50
-rtr-30     rtr-32    10Mbps      1   1ms   50
-rtr-31     rtr-32    10Mbps      1   1ms   50
-rtr-33     rtr-34    10Mbps      1   1ms   50
-rtr-34     rtr-35    10Mbps      1   1ms   50
-rtr-36     rtr-37    10Mbps      1   1ms   50
-
-
-
-leaf-1     rtr-1     10Mbps      1   1ms   50
-leaf-2     rtr-2     10Mbps      1   1ms   50
-leaf-3     rtr-3     10Mbps      1   1ms   50
-leaf-4     rtr-4     10Mbps      1   1ms   50
-leaf-5     rtr-5     10Mbps      1   1ms   50
-leaf-6     rtr-6     10Mbps      1   1ms   50
-leaf-7     rtr-7     10Mbps      1   1ms   50
-leaf-8     rtr-8     10Mbps      1   1ms   50
-leaf-9     rtr-9     10Mbps      1   1ms   50
-leaf-10    rtr-10    10Mbps      1   1ms   50
-leaf-11    rtr-11    10Mbps      1   1ms   50
-leaf-12    rtr-12    10Mbps      1   1ms   50
-leaf-13    rtr-13    10Mbps      1   1ms   50
-leaf-14    rtr-14    10Mbps      1   1ms   50
-leaf-15    rtr-15    10Mbps      1   1ms   50
-leaf-16    rtr-16    10Mbps      1   1ms   50
-leaf-17    rtr-17    10Mbps      1   1ms   50
-leaf-18    rtr-18    10Mbps      1   1ms   50
-leaf-19    rtr-19    10Mbps      1   1ms   50
-leaf-20    rtr-20    10Mbps      1   1ms   50
-leaf-21    rtr-21    10Mbps      1   1ms   50
-leaf-22    rtr-22    10Mbps      1   1ms   50
-leaf-23    rtr-23    10Mbps      1   1ms   50
-leaf-24    rtr-24    10Mbps      1   1ms   50
-leaf-25    rtr-25    10Mbps      1   1ms   50
-leaf-26    rtr-26    10Mbps      1   1ms   50
-leaf-27    rtr-27    10Mbps      1   1ms   50
-leaf-28    rtr-28    10Mbps      1   1ms   50
-leaf-29    rtr-29    10Mbps      1   1ms   50
-leaf-30    rtr-30    10Mbps      1   1ms   50
-leaf-31    rtr-31    10Mbps      1   1ms   50
-leaf-32    rtr-32    10Mbps      1   1ms   50
-leaf-33    rtr-33    10Mbps      1   1ms   50
-leaf-34    rtr-34    10Mbps      1   1ms   50
-leaf-35    rtr-35    10Mbps      1   1ms   50
-leaf-36    rtr-36    10Mbps      1   1ms   50
-leaf-37    rtr-37    10Mbps      1   1ms   50
+# Each line should be in the following format (only first two are required, the rest can be omitted)
+# srcNode   dstNode     bandwidth   metric  delay   queue
+# bandwidth: link bandwidth
+# metric: routing metric
+# delay:  link delay
+# queue:  MaxPackets for transmission queue on the link (both directions)
+#########################################################
+######################################################
+Producer1   Node27       1Mbps       1       0ms     1000
+Producer2   Node27       1Mbps       1       0ms     1000
+Producer3   Node23       1Mbps       1       0ms     1000
+Producer4   Node23       1Mbps       1       0ms     1000
+Node1       Node2       1Mbps       1       1ms     1000
+Node1       Node3       1Mbps       1       1ms     1000
+Node1       Node5       1Mbps       1       1ms     1000
+Node1       Node28       1Mbps       1       1ms     1000
+Node1       Node32       1Mbps       1       1ms     1000
+Node2       Node31       1Mbps       1       1ms     1000
+Node3       Node5       1Mbps       1       1ms     1000
+Node3       Node29       1Mbps       1       1ms     1000
+Node3       Node30       1Mbps       1       1ms     1000
+Node3       Node33       1Mbps       1       1ms     1000
+Node3       Node34       1Mbps       1       1ms     1000
+Node3       Node36       1Mbps       1       1ms     1000
+Node4       Node5       1Mbps       1       1ms     1000
+Node4       Node6       1Mbps       1       1ms     1000
+Node4       Node28       1Mbps       1       1ms     1000
+Node5       Node6       1Mbps       1       1ms     1000
+Node5       Node7       1Mbps       1       1ms     1000
+Node5       Node9       1Mbps       1       1ms     1000
+Node5       Node15       1Mbps       1       1ms     1000
+Node5       Node16       1Mbps       1       1ms     1000
+Node5       Node27       1Mbps       1       1ms     1000
+Node5       Node29       1Mbps       1       1ms     1000
+Node6       Node21       1Mbps       1       1ms     1000
+Node7       Node8       1Mbps       1       1ms     1000
+Node8       Node9       1Mbps       1       1ms     1000
+Node8       Node24       1Mbps       1       1ms     1000
+Node8       Node32       1Mbps       1       1ms     1000
+Node9       Node10       1Mbps       1       1ms     1000
+Node9       Node24       1Mbps       1       1ms     1000
+Node10       Node14       1Mbps       1       1ms     1000
+Node10       Node17       1Mbps       1       1ms     1000
+Node10       Node24       1Mbps       1       1ms     1000
+Node10       Node27       1Mbps       1       1ms     1000
+Node11       Node12       1Mbps       1       1ms     1000
+Node11       Node13       1Mbps       1       1ms     1000
+Node11       Node14       1Mbps       1       1ms     1000
+Node11       Node18       1Mbps       1       1ms     1000
+Node11       Node20       1Mbps       1       1ms     1000
+Node12       Node13       1Mbps       1       1ms     1000
+Node12       Node20       1Mbps       1       1ms     1000
+Node14       Node27       1Mbps       1       1ms     1000
+Node15       Node32       1Mbps       1       1ms     1000
+Node16       Node28       1Mbps       1       1ms     1000
+Node19       Node25       1Mbps       1       1ms     1000
+Node20       Node21       1Mbps       1       1ms     1000
+Node20       Node24       1Mbps       1       1ms     1000
+Node20       Node25       1Mbps       1       1ms     1000
+Node21       Node27       1Mbps       1       1ms     1000
+Node22       Node23       1Mbps       1       1ms     1000
+Node22       Node32       1Mbps       1       1ms     1000
+Node25       Node26       1Mbps       1       1ms     1000
+Node26       Node27       1Mbps       1       1ms     1000
+Node28       Node37       1Mbps       1       1ms     1000
+Node30       Node32       1Mbps       1       1ms     1000
+Node31       Node32       1Mbps       1       1ms     1000
+Node33       Node34       1Mbps       1       1ms     1000
+Node34       Node35       1Mbps       1       1ms     1000
+Node36       Node37       1Mbps       1       1ms     1000
+F1a         Node35      0.2Mbps       1       0ms    1000
+F1b         Node25      0.2Mbps       1       0ms    1000
+F1c         Node16      0.2Mbps       1       0ms    1000
+F2a         Node7       0.2Mbps       1       0ms    1000
+F2b         Node21      0.2Mbps       1       0ms    1000
+F2c         Node31      0.2Mbps       1       0ms    1000
+F3a         Node11      0.2Mbps       1       0ms    1000
+F3b         Node13      0.2Mbps       1       0ms    1000
+F3c         Node9       0.2Mbps       1       0ms    1000
+F4a         Node24      0.2Mbps       1       0ms    1000
+F4b         Node10      0.2Mbps       1       0ms    1000
+F4c         Node20      0.2Mbps       1       0ms    1000
+F5a         Node4       0.2Mbps       1       0ms    1000
+F5b         Node15      0.2Mbps       1       0ms    1000
+F5c         Node36      0.2Mbps       1       0ms    1000
+Consumer1   Node1       1Mbps       1       0ms     1000
+Consumer2   Node7       1Mbps       1       0ms     1000
+Consumer3   Node11       1Mbps       1       0ms     1000
+Consumer4   Node33       1Mbps       1       0ms     1000

@@ -221,7 +221,7 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 
 	// insert in-record
 	pitEntry->insertOrUpdateInRecord(const_cast<Face&>(inFace), interest);
-	std::cout << "--------------------------------------------" << std::endl;
+	//std::cout << "--------------------------------------------" << std::endl;
 	//ADDED Print Interest functionName
 	//std::cout << "Name: " << interest.getName() << std::endl;
 	/*
@@ -269,170 +269,9 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 	std::string currentNodeName;
 	int funcNum = 0;
 
-	/*
-  //for us
-  switch(currentNode) {
-    case 0:
-      currentNodeName = "Consumer";
-      break;
-    case 1:
-      currentNodeName = "Node1";
-      break;
-    case 2:
-      currentNodeName = "Node2";
-      break;
-    case 3:
-      currentNodeName = "Node3";
-      break;
-    case 4:
-      currentNodeName = "Node4";
-      break;
-    case 5:
-      currentNodeName = "Node5";
-      break;
-    case 6:
-      currentNodeName = "Node6";
-      break;
-    case 7:
-      currentNodeName = "Node7";
-      break;
-    case 8:
-      currentNodeName = "Node8";
-      break;
-    case 9:
-      currentNodeName = "Node9";
-      break;
-    case 10:
-      currentNodeName = "Node10";
-      break;
-    case 11:
-      currentNodeName = "Node11";
-      break;
-    case 12:
-      currentNodeName = "Node12";
-      break;
-    case 13:
-      currentNodeName = "Node13";
-      break;
-    case 14:
-      currentNodeName = "Node14";
-      break;
-    case 15:
-      currentNodeName = "Node15";
-      break;
-    case 16:
-      currentNodeName = "Node16";
-      break;
-    case 17:
-      currentNodeName = "Node17";
-      break;
-    case 18:
-      currentNodeName = "Node18";
-      break;
-    case 19:
-      currentNodeName = "Node19";
-      break;
-    case 20:
-      currentNodeName = "Node20";
-      break;
-    case 21:
-      currentNodeName = "Node21";
-      break;
-    case 22:
-      currentNodeName = "Node22";
-      break;
-    case 23:
-      currentNodeName = "Node23";
-      break;
-    case 24:
-      currentNodeName = "Node24";
-      break;
-    case 25:
-      currentNodeName = "Producer";
-      break;
-    case 26:
-      currentNodeName = "F1a";
-      funcNum = 1;
-      break;
-    case 27:
-      currentNodeName = "F1b";
-      funcNum = 2;
-      break;
-    case 28:
-      currentNodeName = "F1c";
-      funcNum = 3;
-      break;
-    case 29:
-      currentNodeName = "F2a";
-      funcNum = 4;
-      break;
-    case 30:
-      currentNodeName = "F2b";
-      funcNum = 5;
-      break;
-    case 31:
-      currentNodeName = "F2c";
-      funcNum = 6;
-      break;
-    case 32:
-      currentNodeName = "F3a";
-      funcNum = 7;
-      break;
-    case 33:
-      currentNodeName = "F3b";
-      funcNum = 8;
-      break;
-    case 34:
-      currentNodeName = "F3c";
-      funcNum = 9;
-      break;
-    case 35:
-      currentNodeName = "F4a";
-      funcNum = 10;
-      break;
-    case 36:
-      currentNodeName = "F4b";
-      funcNum = 11;
-      break;
-    case 37:
-      currentNodeName = "F4c";
-      funcNum = 12;
-      break;
-    case 38:
-      currentNodeName = "F5a";
-      funcNum = 13;
-      break;
-    case 39:
-      currentNodeName = "F5b";
-      funcNum = 14;
-      break;
-    case 40:
-      currentNodeName = "F5c";
-      funcNum = 15;
-      break;
-    case 41:
-      currentNodeName = "Consumer2";
-      break;
-    case 42:
-      currentNodeName = "Consumer3";
-      break;
-    case 43:
-      currentNodeName = "Consumer4";
-      break;
-    case 44:
-      currentNodeName = "Producer2";
-      break;
-    case 45:
-      currentNodeName = "Producer3";
-      break;
-    case 46:
-      currentNodeName = "Producer4";
-      break;
-  }
-	 */
-
 
 	//for us1
+	/*
 	switch(currentNode) {
 	case 0:
 		currentNodeName = "Consumer1";
@@ -651,11 +490,275 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 		currentNodeName = "Producer4";
 		break;
 	}
+	*/
 
-		 std::cout << "Interest Packet" << std::endl;
-		 std::cout << "Node          : " << currentNodeName << std::endl;
-		 std::cout << "Function Name : " << interest.getFunction() << std::endl;
-		 std::cout << "Content  Name : " << interest.getName() << std::endl;
+	//Sinet,Geant
+	///*
+	switch(currentNode) {
+	case 0:
+		currentNodeName = "Consumer1";
+		break;
+	case 1:
+		currentNodeName = "Node1";
+		break;
+	case 2:
+		currentNodeName = "Node2";
+		break;
+	case 3:
+		currentNodeName = "Node3";
+		break;
+	case 4:
+		currentNodeName = "Node4";
+		break;
+	case 5:
+		currentNodeName = "Node5";
+		break;
+	case 6:
+		currentNodeName = "Node6";
+		break;
+	case 7:
+		currentNodeName = "Node7";
+		break;
+	case 8:
+		currentNodeName = "Node8";
+		break;
+	case 9:
+		currentNodeName = "Node9";
+		break;
+	case 10:
+		currentNodeName = "Node10";
+		break;
+	case 11:
+		currentNodeName = "Node11";
+		break;
+	case 12:
+		currentNodeName = "Node12";
+		break;
+	case 13:
+		currentNodeName = "Node13";
+		break;
+	case 14:
+		currentNodeName = "Node14";
+		break;
+	case 15:
+		currentNodeName = "Node15";
+		break;
+	case 16:
+		currentNodeName = "Node16";
+		break;
+	case 17:
+		currentNodeName = "Node17";
+		break;
+	case 18:
+		currentNodeName = "Node18";
+		break;
+	case 19:
+		currentNodeName = "Node19";
+		break;
+	case 20:
+		currentNodeName = "Node20";
+		break;
+	case 21:
+		currentNodeName = "Node21";
+		break;
+	case 22:
+		currentNodeName = "Node22";
+		break;
+	case 23:
+		currentNodeName = "Node23";
+		break;
+	case 24:
+		currentNodeName = "Node24";
+		break;
+	case 25:
+		currentNodeName = "Node25";
+		break;
+	case 26:
+		currentNodeName = "Node26";
+		break;
+	case 27:
+		currentNodeName = "Node27";
+		break;
+	case 28:
+		currentNodeName = "Node28";
+		break;
+	case 29:
+		currentNodeName = "Node29";
+		break;
+	case 30:
+		currentNodeName = "Node30";
+		break;
+	case 31:
+		currentNodeName = "Node31";
+		break;
+	case 32:
+		currentNodeName = "Node32";
+		break;
+	case 33:
+		currentNodeName = "Node33";
+		break;
+	case 34:
+		currentNodeName = "Node34";
+		break;
+	case 35:
+		currentNodeName = "Node35";
+		break;
+	case 36:
+		currentNodeName = "Node36";
+		break;
+	case 37:
+		currentNodeName = "Node37";
+		break;
+	case 38:
+		currentNodeName = "Producer1";
+		break;
+	case 39:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1a";
+		}
+		funcNum = 1;
+		break;
+	case 40:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1b";
+		}
+		funcNum = 2;
+		break;
+	case 41:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1c";
+		}
+		funcNum = 3;
+		break;
+	case 42:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2a";
+		}
+		funcNum = 4;
+		break;
+	case 43:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2b";
+		}
+		funcNum = 5;
+		break;
+	case 44:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2c";
+		}
+		funcNum = 6;
+		break;
+	case 45:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3a";
+		}
+		funcNum = 7;
+		break;
+	case 46:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3b";
+		}
+		funcNum = 8;
+		break;
+	case 47:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3c";
+		}
+		funcNum = 9;
+		break;
+	case 48:
+		if(ns3::getChoiceType()==4){
+ */
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4a";
+		}
+		funcNum = 10;
+		break;
+	case 49:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4b";
+		}
+		funcNum = 11;
+		break;
+	case 50:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4c";
+		}
+		funcNum = 12;
+		break;
+	case 51:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5a";
+		}
+		funcNum = 13;
+		break;
+	case 52:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5b";
+		}
+		funcNum = 14;
+		break;
+	case 53:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5c";
+		}
+		funcNum = 15;
+		break;
+	case 54:
+		currentNodeName = "Consumer2";
+		break;
+	case 55:
+		currentNodeName = "Consumer3";
+		break;
+	case 56:
+		currentNodeName = "Consumer4";
+		break;
+	case 57:
+		currentNodeName = "Producer2";
+		break;
+	case 58:
+		currentNodeName = "Producer3";
+		break;
+	case 59:
+		currentNodeName = "Producer4";
+		break;
+  }
+  //*/
+
+
+		//   std::cout << "Interest Packet" << std::endl;
+		//   std::cout << "Node          : " << currentNodeName << std::endl;
+		//   std::cout << "Function Name : " << interest.getFunction() << std::endl;
+		//  std::cout << "Content  Name : " << interest.getName() << std::endl;
 
 	
 	/*
@@ -939,10 +1042,10 @@ Forwarder::onContentStoreMiss(const Face& inFace, const shared_ptr<pit::Entry> p
 						funcStr = "/F5c";
 					}
 				}
-				std::cout << "funcName: " << interest.getFunction();
+				//std::cout << "funcName: " << interest.getFunction();
 				interest.replaceHeadFunction(interest,make_shared<std::string>(funcStr));
 				interest.addFunctionFullName(Name(funcStr));
-				std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
+				//std::cout << "funcName: " << interest.getFunction() << ", const: " << interest.getFunctionFullName() << std::endl;
 			}
 				if(ns3::getChoiceType() == 4){//先頭ファンクションが削除されたため次のファンクションインスタンスを選択するために印をつける
 				std::string funcStr;
@@ -1279,7 +1382,7 @@ Forwarder::onInterestFinalize(const shared_ptr<pit::Entry>& pitEntry, bool isSat
 void
 Forwarder::onIncomingData(Face& inFace, const Data& data)
 {
-	std::cout << "--------------------------------------------" << std::endl;
+	//std::cout << "--------------------------------------------" << std::endl;
 	// receive Data
 	NFD_LOG_DEBUG("onIncomingData face=" << inFace.getId() << " data=" << data.getName());
 	data.setTag(make_shared<lp::IncomingFaceIdTag>(inFace.getId()));
@@ -1298,7 +1401,8 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	int currentNode = getNode()->GetId();
 	std::string currentNodeName;
 
-	// for us
+	// for us1
+	/*
 	switch(currentNode) {
 	case 0:
 		currentNodeName = "Consumer1";
@@ -1502,6 +1606,252 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		currentNodeName = "Producer4";
 		break;
 	}
+*/
+	//Sinet,Geant
+	///*
+	switch(currentNode) {
+	case 0:
+		currentNodeName = "Consumer1";
+		break;
+	case 1:
+		currentNodeName = "Node1";
+		break;
+	case 2:
+		currentNodeName = "Node2";
+		break;
+	case 3:
+		currentNodeName = "Node3";
+		break;
+	case 4:
+		currentNodeName = "Node4";
+		break;
+	case 5:
+		currentNodeName = "Node5";
+		break;
+	case 6:
+		currentNodeName = "Node6";
+		break;
+	case 7:
+		currentNodeName = "Node7";
+		break;
+	case 8:
+		currentNodeName = "Node8";
+		break;
+	case 9:
+		currentNodeName = "Node9";
+		break;
+	case 10:
+		currentNodeName = "Node10";
+		break;
+	case 11:
+		currentNodeName = "Node11";
+		break;
+	case 12:
+		currentNodeName = "Node12";
+		break;
+	case 13:
+		currentNodeName = "Node13";
+		break;
+	case 14:
+		currentNodeName = "Node14";
+		break;
+	case 15:
+		currentNodeName = "Node15";
+		break;
+	case 16:
+		currentNodeName = "Node16";
+		break;
+	case 17:
+		currentNodeName = "Node17";
+		break;
+	case 18:
+		currentNodeName = "Node18";
+		break;
+	case 19:
+		currentNodeName = "Node19";
+		break;
+	case 20:
+		currentNodeName = "Node20";
+		break;
+	case 21:
+		currentNodeName = "Node21";
+		break;
+	case 22:
+		currentNodeName = "Node22";
+		break;
+	case 23:
+		currentNodeName = "Node23";
+		break;
+	case 24:
+		currentNodeName = "Node24";
+		break;
+	case 25:
+		currentNodeName = "Node25";
+		break;
+	case 26:
+		currentNodeName = "Node26";
+		break;
+	case 27:
+		currentNodeName = "Node27";
+		break;
+	case 28:
+		currentNodeName = "Node28";
+		break;
+	case 29:
+		currentNodeName = "Node29";
+		break;
+	case 30:
+		currentNodeName = "Node30";
+		break;
+	case 31:
+		currentNodeName = "Node31";
+		break;
+	case 32:
+		currentNodeName = "Node32";
+		break;
+	case 33:
+		currentNodeName = "Node33";
+		break;
+	case 34:
+		currentNodeName = "Node34";
+		break;
+	case 35:
+		currentNodeName = "Node35";
+		break;
+	case 36:
+		currentNodeName = "Node36";
+		break;
+	case 37:
+		currentNodeName = "Node37";
+		break;
+	case 38:
+		currentNodeName = "Producer1";
+		break;
+	case 39:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1a";
+		}
+		break;
+	case 40:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1b";
+		}
+		break;
+	case 41:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F1";
+		}else{
+			currentNodeName = "F1c";
+		}
+		break;
+	case 42:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2a";
+		}
+		break;
+	case 43:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2b";
+		}
+		break;
+	case 44:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F2";
+		}else{
+			currentNodeName = "F2c";
+		}
+		break;
+	case 45:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3a";
+		}
+		break;
+	case 46:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3b";
+		}
+		break;
+	case 47:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F3";
+		}else{
+			currentNodeName = "F3c";
+		}
+		break;
+	case 48:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4a";
+		}
+		break;
+	case 49:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4b";
+		}
+		break;
+	case 50:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F4";
+		}else{
+			currentNodeName = "F4c";
+		}
+		break;
+	case 51:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5a";
+		}
+		break;
+	case 52:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5b";
+		}
+		break;
+	case 53:
+		if(ns3::getChoiceType()==4){
+			currentNodeName = "F5";
+		}else{
+			currentNodeName = "F5c";
+		}
+		break;
+	case 54:
+		currentNodeName = "Consumer2";
+		break;
+	case 55:
+		currentNodeName = "Consumer3";
+		break;
+	case 56:
+		currentNodeName = "Consumer4";
+		break;
+	case 57:
+		currentNodeName = "Producer2";
+		break;
+	case 58:
+		currentNodeName = "Producer3";
+		break;
+	case 59:
+		currentNodeName = "Producer4";
+		break;
+  }
+  //*/
 
 	// if(ns3::getChoiceType() == 4){
 	// 	if(data.getTag<lp::FunctionNameTag>() != nullptr){
@@ -1522,85 +1872,15 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	// }
 
 
-	/*
-  switch(currentNode) {
-    case 0:
-      currentNodeName = "Consumer";
-      break;
-    case 1:
-      currentNodeName = "Node0";
-      break;
-    case 2:
-      currentNodeName = "Node1";
-      break;
-    case 3:
-      currentNodeName = "Node2";
-      break;
-    case 4:
-      currentNodeName = "Node3";
-      break;
-    case 5:
-      currentNodeName = "Node4";
-      break;
-    case 6:
-      currentNodeName = "Node5";
-      break;
-    case 7:
-      currentNodeName = "Node6";
-      break;
-    case 8:
-      currentNodeName = "Node7";
-      break;
-    case 9:
-      currentNodeName = "Node8";
-      break;
-    case 10:
-      currentNodeName = "Producer";
-      break;
-    case 11:
-      currentNodeName = "F1a";
-      break;
-    case 12:
-      currentNodeName = "F2a";
-      break;
-    case 13:
-      currentNodeName = "F3a";
-      break;
-    case 14:
-      currentNodeName = "F2b";
-      break;
-    case 15:
-      currentNodeName = "F3b";
-      break;
-    case 16:
-      currentNodeName = "F1b";
-      break;
-    case 17:
-      currentNodeName = "F3c";
-      break;
-    case 18:
-      currentNodeName = "F2c";
-      break;
-    case 19:
-      currentNodeName = "F1c";
-      break;
-    case 20:
-      currentNodeName = "Consumer2";
-      break;
-    case 21:
-      currentNodeName = "Consumer3";
-      break;
-  }
-	 */
-
 	std::cout << "Data Packet" << std::endl;
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
-
-	if(26 <= currentNode && currentNode <= 40){
-		data.setServiceTime(data.getServiceTime() + time::milliseconds(40));
-	}
-
+	//if(ns3::getChoiceType() != 0){
+		if(39 <= currentNode && cur
+ */rentNode <= 53){ //us24:26-40,Sinet,Geant:39-53
+			data.setServiceTime(data.getServiceTime() + time::milliseconds(40));
+		}
+	//}
 
 	//std::cout << "Function Name : " << data.getFunction() << std::endl;
 
@@ -1609,10 +1889,10 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 		if(data.getTag<lp::FunctionNameTag>() != nullptr){
 			Name funcName = *(data.getTag<lp::FunctionNameTag>());
 			std::string funcString = funcName.toUri();
-			std::cout << "Function Name: " << funcString << std::endl;
+			//std::cout << "Function Name: " << funcString << std::endl;
 		if(data.getTag<lp::PartialHopTag>() != nullptr){
-			std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
-			std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
+			//std::cout << "Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;
+			//std::cout << "Function Count: " << *(data.getTag<lp::CountTag>()) << std::endl;
 	 	}
 	 }
 	}
@@ -1660,7 +1940,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 						offset = pos + separator_length;
 					}
 				}
-				if(26 <= currentNode && currentNode <= 40){//ファンクション列をinterestと前後逆にして扱う
+				if(39 <= currentNode && currentNode <= 53){//ファンクション列をinterestと前後逆にして扱う//us24:26-40,Sinet:39-53
 					int number;
 					int character;
 
@@ -1862,7 +2142,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 				}
 			}
 			//Dataパケットに追加したフィールドの更新
-			if(26 <= currentNode && currentNode <= 40){
+			if(39 <= currentNode && currentNode <= 53){//us24:26-40,Sinet,Geant:39-53
 				data.setTag<lp::CountTag>(make_shared<lp::CountTag>(m_fib.getFcc()));
 				data.setTag<lp::PartialHopTag>(make_shared<lp::PartialHopTag>(0));
 				//std::cout << "After Hop Count: " << *(data.getTag<lp::PartialHopTag>()) << std::endl;

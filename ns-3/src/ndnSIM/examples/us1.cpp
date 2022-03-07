@@ -56,8 +56,14 @@ main(int argc, char* argv[])
 
 	CommandLine cmd;
 	cmd.Parse(argc, argv);
+	//シミュレーション設定
 	//choose one {siraiwaNDN, roundRobin, duration, randChoice, fibControl}
-	const char* type = "duration";
+	const char* type = "siraiwaNDN";
+	//choose one {noCache, onCache}
+	const string cachetype = "noCache";
+	
+
+
 	setChoiceType(type);
 	ns3::setWeight(1);
 	AnnotatedTopologyReader topologyReader("", 25);
@@ -67,65 +73,71 @@ main(int argc, char* argv[])
 	// Install NDN stack on all nodes
 
 	//No Cache
-	ndn::StackHelper ndnHelper;
-	ndnHelper.SetOldContentStore("ns3::ndn::cs::Nocache");
-	ndnHelper.InstallAll();
-
-	//On Cache by konomu
-	// ndn::StackHelper ndnHelper1;
-	// ndnHelper1.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize",
-	// 							"100"); // default ContentStore parameters
-	// ndnHelper1.Install(Names::Find<Node>("Node1"));
-	// ndnHelper1.Install(Names::Find<Node>("Node2"));
-	// ndnHelper1.Install(Names::Find<Node>("Node3"));
-	// ndnHelper1.Install(Names::Find<Node>("Node4"));
-	// ndnHelper1.Install(Names::Find<Node>("Node5"));
-	// ndnHelper1.Install(Names::Find<Node>("Node6"));
-	// ndnHelper1.Install(Names::Find<Node>("Node7"));
-	// ndnHelper1.Install(Names::Find<Node>("Node8"));
-	// ndnHelper1.Install(Names::Find<Node>("Node9"));
-	// ndnHelper1.Install(Names::Find<Node>("Node10"));
-	// ndnHelper1.Install(Names::Find<Node>("Node11"));
-	// ndnHelper1.Install(Names::Find<Node>("Node12"));
-	// ndnHelper1.Install(Names::Find<Node>("Node13"));
-	// ndnHelper1.Install(Names::Find<Node>("Node14"));
-	// ndnHelper1.Install(Names::Find<Node>("Node15"));
-	// ndnHelper1.Install(Names::Find<Node>("Node16"));
-	// ndnHelper1.Install(Names::Find<Node>("Node17"));
-	// ndnHelper1.Install(Names::Find<Node>("Node18"));
-	// ndnHelper1.Install(Names::Find<Node>("Node19"));
-	// ndnHelper1.Install(Names::Find<Node>("Node20"));
-	// ndnHelper1.Install(Names::Find<Node>("Node21"));
-	// ndnHelper1.Install(Names::Find<Node>("Node22"));
-	// ndnHelper1.Install(Names::Find<Node>("Node23"));
-	// ndnHelper1.Install(Names::Find<Node>("Node24"));
+	if(cachetype == "noCache"){
+		ndn::StackHelper ndnHelper;
+		ndnHelper.SetOldContentStore("ns3::ndn::cs::Nocache");
+		ndnHelper.InstallAll();
+	}
 	
 
-	// ndn::StackHelper ndnHelper2;
-	// ndnHelper2.SetOldContentStore("ns3::ndn::cs::Nocache"); 
-	// ndnHelper2.Install(Names::Find<Node>("Consumer1"));
-	// ndnHelper2.Install(Names::Find<Node>("Producer1"));
-	// ndnHelper2.Install(Names::Find<Node>("F1a"));
-	// ndnHelper2.Install(Names::Find<Node>("F1b"));
-	// ndnHelper2.Install(Names::Find<Node>("F1c"));
-	// ndnHelper2.Install(Names::Find<Node>("F2a"));
-	// ndnHelper2.Install(Names::Find<Node>("F2b"));
-	// ndnHelper2.Install(Names::Find<Node>("F2c"));
-	// ndnHelper2.Install(Names::Find<Node>("F3a"));
-	// ndnHelper2.Install(Names::Find<Node>("F3b"));
-	// ndnHelper2.Install(Names::Find<Node>("F3c"));
-	// ndnHelper2.Install(Names::Find<Node>("F4a"));
-	// ndnHelper2.Install(Names::Find<Node>("F4b"));
-	// ndnHelper2.Install(Names::Find<Node>("F4c"));
-	// ndnHelper2.Install(Names::Find<Node>("F5a"));
-	// ndnHelper2.Install(Names::Find<Node>("F5b"));
-	// ndnHelper2.Install(Names::Find<Node>("F5c"));
-	// ndnHelper2.Install(Names::Find<Node>("Consumer2"));
-	// ndnHelper2.Install(Names::Find<Node>("Consumer3"));
-	// ndnHelper2.Install(Names::Find<Node>("Consumer4"));
-	// ndnHelper2.Install(Names::Find<Node>("Producer2"));
-	// ndnHelper2.Install(Names::Find<Node>("Producer3"));
-	// ndnHelper2.Install(Names::Find<Node>("Producer4"));
+	//On Cache by konomu
+	if(cachetype == "onCache"){
+		ndn::StackHelper ndnHelper1;
+		ndnHelper1.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize",
+									"100"); // default ContentStore parameters
+		ndnHelper1.Install(Names::Find<Node>("Node1"));
+		ndnHelper1.Install(Names::Find<Node>("Node2"));
+		ndnHelper1.Install(Names::Find<Node>("Node3"));
+		ndnHelper1.Install(Names::Find<Node>("Node4"));
+		ndnHelper1.Install(Names::Find<Node>("Node5"));
+		ndnHelper1.Install(Names::Find<Node>("Node6"));
+		ndnHelper1.Install(Names::Find<Node>("Node7"));
+		ndnHelper1.Install(Names::Find<Node>("Node8"));
+		ndnHelper1.Install(Names::Find<Node>("Node9"));
+		ndnHelper1.Install(Names::Find<Node>("Node10"));
+		ndnHelper1.Install(Names::Find<Node>("Node11"));
+		ndnHelper1.Install(Names::Find<Node>("Node12"));
+		ndnHelper1.Install(Names::Find<Node>("Node13"));
+		ndnHelper1.Install(Names::Find<Node>("Node14"));
+		ndnHelper1.Install(Names::Find<Node>("Node15"));
+		ndnHelper1.Install(Names::Find<Node>("Node16"));
+		ndnHelper1.Install(Names::Find<Node>("Node17"));
+		ndnHelper1.Install(Names::Find<Node>("Node18"));
+		ndnHelper1.Install(Names::Find<Node>("Node19"));
+		ndnHelper1.Install(Names::Find<Node>("Node20"));
+		ndnHelper1.Install(Names::Find<Node>("Node21"));
+		ndnHelper1.Install(Names::Find<Node>("Node22"));
+		ndnHelper1.Install(Names::Find<Node>("Node23"));
+		ndnHelper1.Install(Names::Find<Node>("Node24"));
+	
+
+		ndn::StackHelper ndnHelper2;
+		ndnHelper2.SetOldContentStore("ns3::ndn::cs::Nocache"); 
+		ndnHelper2.Install(Names::Find<Node>("Consumer1"));
+		ndnHelper2.Install(Names::Find<Node>("Producer1"));
+		ndnHelper2.Install(Names::Find<Node>("F1a"));
+		ndnHelper2.Install(Names::Find<Node>("F1b"));
+		ndnHelper2.Install(Names::Find<Node>("F1c"));
+		ndnHelper2.Install(Names::Find<Node>("F2a"));
+		ndnHelper2.Install(Names::Find<Node>("F2b"));
+		ndnHelper2.Install(Names::Find<Node>("F2c"));
+		ndnHelper2.Install(Names::Find<Node>("F3a"));
+		ndnHelper2.Install(Names::Find<Node>("F3b"));
+		ndnHelper2.Install(Names::Find<Node>("F3c"));
+		ndnHelper2.Install(Names::Find<Node>("F4a"));
+		ndnHelper2.Install(Names::Find<Node>("F4b"));
+		ndnHelper2.Install(Names::Find<Node>("F4c"));
+		ndnHelper2.Install(Names::Find<Node>("F5a"));
+		ndnHelper2.Install(Names::Find<Node>("F5b"));
+		ndnHelper2.Install(Names::Find<Node>("F5c"));
+		ndnHelper2.Install(Names::Find<Node>("Consumer2"));
+		ndnHelper2.Install(Names::Find<Node>("Consumer3"));
+		ndnHelper2.Install(Names::Find<Node>("Consumer4"));
+		ndnHelper2.Install(Names::Find<Node>("Producer2"));
+		ndnHelper2.Install(Names::Find<Node>("Producer3"));
+		ndnHelper2.Install(Names::Find<Node>("Producer4"));
+	}
+	
 
 	// Set BestRoute strategy
 	ndn::StrategyChoiceHelper::InstallAll("/prefix1", "/localhost/nfd/strategy/best-route/%FD%01");
@@ -904,9 +916,9 @@ main(int argc, char* argv[])
     app.Stop(Seconds(20.0));
   }
 */
+	
 	//コンシューマーのリクエスト周期
-	string freq = "30";
-	//30くらい
+	string freq = "10";
 	//ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
 	ndn::AppHelper consumerHelper("ns3::ndn::ConsumerZipfMandelbrot");
 	consumerHelper.SetPrefix(prefix3);
@@ -970,23 +982,45 @@ main(int argc, char* argv[])
 
 	Simulator::Run();
 	std::string filename;
-	switch(getChoiceType()){
-	case 0:
-		filename = freq + "siraiwaFccCache.txt";
-		break;
-	case 1:
-		filename = freq + "roundRobinFccCache.txt";
-		break;
-	case 2:
-		filename = freq + "durationFcc.txt";
-		break;
-	case 3:
-		filename = freq + "randChoiceCache.txt";
-		break;
-	case 4:
-		filename = freq + "fibControlCache.txt";
-		break;
+	if(cachetype == "noCache"){
+		switch(getChoiceType()){
+		case 0:
+			filename = freq + "siraiwaFcc.txt";
+			break;
+		case 1:
+			filename = freq + "roundRobinFcc.txt";
+			break;
+		case 2:
+			filename = freq + "durationFcc.txt";
+			break;
+		case 3:
+			filename = freq + "randChoice.txt";
+			break;
+		case 4:
+			filename = freq + "fibControl.txt";
+			break;
+		}
 	}
+	if(cachetype == "onCache"){
+		switch(getChoiceType()){
+		case 0:
+			filename = freq + "siraiwaFccCache.txt";
+			break;
+		case 1:
+			filename = freq + "roundRobinFccCache.txt";
+			break;
+		case 2:
+			filename = freq + "durationFccCache.txt";
+			break;
+		case 3:
+			filename = freq + "randChoiceCache.txt";
+			break;
+		case 4:
+			filename = freq + "fibControlCache.txt";
+			break;
+		}
+	}
+	
 	std::ofstream writing_file;
 	writing_file.open(filename, std::ios::out);
 	std::cout << "writing " << filename << "..." << getTotalSend() << std::endl;

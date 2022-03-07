@@ -4,13 +4,14 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             // Pipe Launch calls waf with appropriate arguments
             "name": "(gdb) Pipe Launch",
             "type": "cppdbg",
             "request": "launch",
                       // my build folder is ${workspaceFolder}/build, substitute yours
-            "program": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3/build/src/ndnSIM/examples/ns3-dev-us1-debug", //ここに実行したいプログラムを設定する
+            "program": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3/build/src/ndnSIM/examples/ns3-dev-sinet-debug", //ここに実行したいプログラムを設定する
             "args": [],
             "stopAtEntry": true,
             "cwd": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3",
@@ -25,7 +26,7 @@
                     "/usr/bin/gdb", "--interpreter=mi",  // --interpreter lets vscode talk to gdb
                     "--args", "%s",
                     "'",  // closing quote for command template
-                    "--run", "us1"], //実行するプログラムの指定？
+                    "--run", "sinet"], //実行するプログラムの指定？
                 "pipeCwd": ""
             },
             "MIMode": "gdb",
@@ -43,7 +44,7 @@
             "type": "cppdbg",
             "request": "launch",
             // my build folder is ${workspaceFolder}/build, substitute yours
-            "program": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3/build/src/ndnSIM/examples/ns3-dev-us1-debug", //ここに実行したいプログラムを設定する
+            "program": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3/build/src/ndnSIM/examples/ns3-dev-sinet-debug", //ここに実行したいプログラムを設定する
             "stopAtEntry": true,
             "cwd": "/home/konomu/ndnSIM-FuncChain-yamaguchiFIB/ns-3",
             // replace the values below with those found from running

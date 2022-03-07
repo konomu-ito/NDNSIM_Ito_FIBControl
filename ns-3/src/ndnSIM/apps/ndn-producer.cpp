@@ -107,7 +107,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   // dataName.appendVersion();
 
   increaseDataNum();
-  std::cout << "Data Num:" << getDataNum() << std::endl;
+  //std::cout << "Data Num:" << getDataNum() << std::endl;
 
 
   auto data = make_shared<Data>();
@@ -115,7 +115,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
   if(getChoiceType() == 2){
 	  Name funcName(interest->getFunctionFullName());
 	  auto string = funcName.toUri();
-	  std::cout << "string:" << string << std::endl;
+	  //std::cout << "string:" << string << std::endl;
 
 	  data->setTag<lp::FunctionNameTag>(make_shared<lp::FunctionNameTag>(funcName));
 	  data->setTag<lp::PartialHopTag>(nullptr);
@@ -126,7 +126,7 @@ Producer::OnInterest(shared_ptr<const Interest> interest)
 
     Name funcName(interest->getFunctionFullName());
 	  auto string = funcName.toUri();
-	  std::cout << "string:" << string << std::endl;
+	  //std::cout << "string:" << string << std::endl;
 
     //data->setFunction(funcName);
 

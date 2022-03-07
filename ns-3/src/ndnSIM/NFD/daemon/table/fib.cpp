@@ -110,10 +110,11 @@ Fib::selectFunction(const Name& prefix) const
 			//std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
 		}else if(entry->getCost() < fibEntrY->getCost()){
 			fibEntrY = entry;
-			//std::cout << "Selected:" << exFunctionName.toUri() << std::endl;
+			//std::cout << "Selected2:" << exFunctionName.toUri() << std::endl;
 		}
 		indicator++;
 	}
+	//std::cout << "FCC:" << fibEntrY->getFcc() << std::endl;
 	fibEntrY->setFcc(fibEntrY->getFcc() + 1);
 	return fibEntrY;
 }
