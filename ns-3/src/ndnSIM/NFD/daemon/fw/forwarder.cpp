@@ -1875,8 +1875,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 	std::cout << "Node          : " << currentNodeName << std::endl;
 	std::cout << "Content  Name : " << data.getName() << std::endl;
 	//if(ns3::getChoiceType() != 0){
-		if(39 <= currentNode && cur
- */rentNode <= 53){ //us24:26-40,Sinet,Geant:39-53
+		if(39 <= currentNode && currentNode <= 53){ //us24:26-40,Sinet,Geant:39-53
 			data.setServiceTime(data.getServiceTime() + time::milliseconds(40));
 		}
 	//}
@@ -2006,7 +2005,7 @@ Forwarder::onIncomingData(Face& inFace, const Data& data)
 					if(currentNodeName.compare("F1a") == 0){
 						//table[1][1][0]++;
 						number = 1;
-						character 測定結果= 0;
+						character = 0;
 
 					}else if(currentNodeName.compare("F1b") == 0){
 						//table[1][1][1]++;
